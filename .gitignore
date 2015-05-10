@@ -3,3 +3,5 @@ _test
 .Rapp.history
 credentials.dta
 creating-credentials.r
+.Rproj.user
+tmp/
