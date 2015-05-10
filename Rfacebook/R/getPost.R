@@ -50,39 +50,32 @@
 #' }
 #'
 
-getPost <- function(post, token, n=500, comments=TRUE, likes=TRUE, n.likes=n,
-	n.comments=n){
+getPost <- function(post, token, n=500, comments=TRUE, likes=TRUE, n.likes=n, n.comments=n, additional.fields = NULL){
+  
+  post.fields <- paste0(unique(
+    unlist(strsplit(c("from,message,created_time,type,link,name,shares", additional.fields), split = ","))),
+    collapse = ","
+    )
+  
+    url <- paste0(
+      "https://graph.facebook.com/v2.3/?ids=",
+      paste0(post, collapse = ","),
+      "&fields=", post.fields,
+      ",comments.summary(true)",
+      ifelse(comments==TRUE, 
+      paste0(".fields(id,from,message,created_time,like_count)",
+      ifelse(n.comments > 500, ".limit(500)", paste0(".limit(", n.comments, ")"))),
+      ".limit(0)"),
+      ",likes.summary(true)",
+      ifelse(likes==TRUE, 
+             paste0(".fields(id,name,profile_type)",
+                    ifelse(n.likes > 500, ".limit(500)", paste0(".limit(", n.likes, ")"))),
+             ".limit(0)")
+    )
 
-	url <- paste0("https://graph.facebook.com/", post,
-				"?fields=from,message,created_time,type,link,name,shares")
 
-	if (comments==TRUE){
-		url <- paste0(url, ",comments.summary(true).",
-			"fields(id,from,message,created_time,like_count)")
-		if (n.comments>=500){
-			url <- paste0(url, ".limit(500)")
-		}
-		if (n.comments<500){
-			url <- paste0(url, ".limit(", n.comments, ")")
-		}
-	}
-	if (comments==FALSE){
-		url <- paste0(url, ",comments.summary(true)")
-	}
-	if (likes==TRUE){
-		url <- paste0(url, ",likes.summary(true).",
-			"fields(id,name)")
-		if (n.likes>=2000){
-			url <- paste0(url, ".limit(2000)")
-		}
-		if (n.likes<2000){
-			url <- paste0(url, ".limit(", n.likes, ")")
-		}
-	}
-	if (likes==FALSE){
-		url <- paste0(url, ",likes.summary(true)")
-	}
 
+  
 	# making query
 	content <- callAPI(url=url, token=token)
 
@@ -99,9 +92,16 @@ getPost <- function(post, token, n=500, comments=TRUE, likes=TRUE, n.likes=n,
 		stop("Post could not be found")
 	}
 
+  return(content)
+  
 	# putting it together
 	out <- list()
-	out[["post"]] <- postDataToDF(content)
+	out[["posts"]] <- do.call(rbind.fill,
+                            lapply(content, function(sublist) {
+                              postDataToDF2(sublist, post.fields)
+                              })
+                            )
+
 	if (likes && n.likes > 0) out[["likes"]] <- likesDataToDF(content$likes$data)
 	if (likes && n.likes > 0) n.l <- ifelse(!is.null(out$likes), dim(out$likes)[1], 0)
 	if (n.likes == 0) n.l <- 0
