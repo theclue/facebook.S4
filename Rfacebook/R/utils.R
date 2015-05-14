@@ -77,53 +77,52 @@ insightsDataToDF <- function(json, values, metric){
   return(df)
 }
 
-postDataToDF <- function(json, post.fields){
-  data.frame(
-    do.call(
-      data.frame, 
-      list(
-        do.call(c,(json[which(names(json) %in%  unlist(strsplit(post.fields, split = ",")))])),
-        stringsAsFactors = FALSE)
-    ),
-    likes_count = ifelse(!is.null(json$likes$summary$total_count),
-                         json$likes$summary$total_count, 0),
-    comments_count = ifelse(!is.null(json$comments$summary$total_count),
-                            json$comments$summary$total_count, 0),
-    shares_count = ifelse(!is.null(json$shares$count),
-                          json$shares$count, 0)
+detailsDataToDF <- function(json, fields = NULL){
+  
+  if(length(json) == 0 | is.null(fields)) return(NULL)
+  
+  # remove duplicates, then collate
+  collate.fields <- paste0(unique(
+    unlist(strsplit(fields, split = ","))),
+    collapse = ","
+  )
+  
+  do.call(rbind.fill,
+          lapply(lapply(json, function(likeitem) { 
+            do.call(data.frame,
+                    list(likeitem[which(names(likeitem) %in%  unlist(strsplit(collate.fields, split = ",")))],
+                         stringsAsFactors = FALSE)
+            )}), function(l) {
+              l
+            })
   )
 }
 
 
-likesDataToDF <- function(json){
-	if (!is.null(json)){
-		df <- data.frame(
-			from_name = unlistWithNA(json, "name"),
-			from_id = unlistWithNA(json, "id"),
-			stringsAsFactors=F
-			)
-	}
-	if (length(json)==0){
-		df <- NULL
-	}
-	return(df)
+postDataToDF <- function(json, fields){
+  
+    data.frame(
+      do.call(
+        data.frame, 
+        list(
+          do.call(c,(json[which(names(json) %in%  unlist(strsplit(fields, split = ",")))])),
+          stringsAsFactors = FALSE)
+      ),
+      likes_count = ifelse(!is.null(json$likes$summary$total_count),
+                           json$likes$summary$total_count, 0),
+      comments_count = ifelse(!is.null(json$comments$summary$total_count),
+                              json$comments$summary$total_count, 0),
+      shares_count = ifelse(!is.null(json$shares$count),
+                            json$shares$count, 0)
+    )
 }
 
-commentsDataToDF <- function(json){
-	if (!is.null(json)){
-		df <- data.frame(
-			from_id = unlistWithNA(json, c('from', 'id')),
-			from_name = unlistWithNA(json, c('from', 'name')),
-			message = unlistWithNA(json, 'message'),
-			created_time = unlistWithNA(json, 'created_time'),
-			likes_count = unlistWithNA(json, 'like_count'),
-			id = unlistWithNA(json, 'id'),
-		stringsAsFactors=F)
-	}
-	if (is.null(json)){
-		df <- NULL
-	}
-	return(df)
+likesDataToDF <- function(json, fields = "id,name"){
+  detailsDataToDF(json, fields)
+}
+
+commentsDataToDF <- function(json, fields = "id,from,message,created_time,like_count"){
+  detailsDataToDF(json, fields)
 }
 
 userDataToDF <- function(user_data, private_info){

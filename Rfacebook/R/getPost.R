@@ -50,58 +50,51 @@
 #' }
 #'
 
-getPost <- function(post, token, n=500, comments=TRUE, likes=TRUE, n.likes=n, n.comments=n, additional.fields = NULL){
+getPost <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "from,message,created_time,type,link,name,shares"){
   
   post.fields <- paste0(unique(
-    unlist(strsplit(c("from,message,created_time,type,link,name,shares", additional.fields), split = ","))),
+    unlist(strsplit(fields, split = ","))),
     collapse = ","
     )
   
     url <- paste0(
       "https://graph.facebook.com/v2.3/?ids=",
-      paste0(post, collapse = ","),
+      paste0(posts, collapse = ","),
       "&fields=", post.fields,
       ",comments.summary(true)",
-      ifelse(comments==TRUE, 
-      paste0(".fields(id,from,message,created_time,like_count)",
-      ifelse(n.comments > 500, ".limit(500)", paste0(".limit(", n.comments, ")"))),
-      ".limit(0)"),
+      ifelse(n.comments > 0, paste0(".fields(id,from,message,created_time,like_count).limit(", n.comments, ")"), ".limit(0)"),
       ",likes.summary(true)",
-      ifelse(likes==TRUE, 
-             paste0(".fields(id,name,profile_type)",
-                    ifelse(n.likes > 500, ".limit(500)", paste0(".limit(", n.likes, ")"))),
-             ".limit(0)")
+      ifelse(n.likes > 0, paste0(".fields(id,name,profile_type).limit(", n.likes, ")"), ".limit(0)")
     )
 
-
-
-  
-	# making query
 	content <- callAPI(url=url, token=token)
 
+  # Check for permission
+  if (length(content)==0){ 
+    stop("You're not authorized to get this information, Please check your permissions before retrying.")
+  }  
 	# error traps: retry 3 times if error
 	error <- 0
 	while (length(content$error_code)>0){
-		cat("Error!\n")
 		Sys.sleep(0.5)
 		error <- error + 1
 		content <- callAPI(url=url, token=token)		
 		if (error==3){ stop(content$error_msg) }
 	}
-	if (length(content)==0){ 
-		stop("Post could not be found")
-	}
 
-  return(content)
+  message(content$error_code)
+
   
 	# putting it together
 	out <- list()
 	out[["posts"]] <- do.call(rbind.fill,
                             lapply(content, function(sublist) {
-                              postDataToDF2(sublist, post.fields)
+                              postDataToDF(sublist, post.fields)
                               })
                             )
 
+  return(out)
+  
 	if (likes && n.likes > 0) out[["likes"]] <- likesDataToDF(content$likes$data)
 	if (likes && n.likes > 0) n.l <- ifelse(!is.null(out$likes), dim(out$likes)[1], 0)
 	if (n.likes == 0) n.l <- 0
