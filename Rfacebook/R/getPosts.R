@@ -47,14 +47,17 @@
 #' }
 #'
 
-getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,from,message,created_time,type,link,name,shares"){
+getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,from,message,created_time,type,link,name"){
+  
+  details.pagination.define <- 500
+  posts.pagination.define <- 10
   
   post.fields <- paste0(unique(
     unlist(strsplit(fields, split = ","))),
     collapse = ","
   )
   posts.v <- unique(unlist(strsplit(posts, split = ",")))
-  posts.f <- rep(seq_len(ceiling(length(posts.v) / 50)),each = 50,length.out = length(posts.v))
+  posts.f <- rep(seq_len(ceiling(length(posts.v) / posts.pagination.define)),each = posts.pagination.define,length.out = length(posts.v))
   posts.chunks <- split(posts.v, f = posts.f)
 
   if(length(posts.chunks) > 1){
@@ -75,9 +78,9 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
     paste0(posts.v, collapse = ","),
     "&fields=", post.fields,
     ",comments.summary(true)",
-    ifelse(n.comments > 0, paste0(".fields(id,from,message,created_time,like_count).limit(", ifelse(n.comments > 1000, 1000, n.comments), ")"), ".limit(0)"),
+    ifelse(n.comments > 0, paste0(".fields(id,from,message,created_time,like_count).limit(", ifelse(n.comments > details.pagination.define, details.pagination.define, n.comments), ")"), ".limit(0)"),
     ",likes.summary(true)",
-    ifelse(n.likes > 0, paste0(".fields(id,name,profile_type).limit(", ifelse(n.likes > 1000, 1000, n.likes), ")"), ".limit(0)")
+    ifelse(n.likes > 0, paste0(".fields(id,name,profile_type).limit(", ifelse(n.likes > details.pagination.define, details.pagination.define, n.likes), ")"), ".limit(0)")
   )
   
   content <- callAPI(url=url, token=token)
@@ -89,7 +92,7 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
   # error traps: retry 3 times if error
   error <- 0
   while (length(content$error_code)>0){
-    Sys.sleep(0.5)
+    Sys.sleep(1)
     error <- error + 1
     content <- callAPI(url=url, token=token)		
     if (error==3){ stop(content$error_msg) }
@@ -146,6 +149,9 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
                                   if(total.likes >= n.likes | is.null(next.url)){
                                     return(head(l, n.likes))
                                   }
+                                  
+                                  # Graceful waiting before next call
+                                  Sys.sleep(0.5)
                                   
                                 }
                               }
