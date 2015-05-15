@@ -1,23 +1,22 @@
-#' @rdname fb.Corpus
-#' @export
-fb.Corpus <- function(posts, likes, comments){
+#' @rdname fb.Posts
+fb.Posts <- function(posts, likes, comments){
   if((is.null(posts) | !is.data.frame(posts)) | !is.data.frame(likes) | !is.data.frame(comments)){
     stop("Invalid arguments to Facebook Posts Corpus constructor")
   }
   
   me <- list(posts=posts, likes=likes, comments=comments)
-  class(me) <- append(class(me),"fb.Corpus")
+  class(me) <- append(class(me),"fb.Posts")
   
   return(me)
 }
 
-#' @rdname print.fb.Corpus
+#' @rdname print.fb.Posts
 #' @export
-print.fb.Corpus <- function(corpus) {
-  cat(paste("A Facebook Post Corpus made of", nrow(corpus$posts), "posts,", nrow(corpus$comments), "comments and", nrow(corpus$likes), "likes."))
+print.fb.Posts <- function(Posts) {
+  cat(paste("\nA Facebook Post Posts made of", nrow(Posts$posts), "posts,", nrow(Posts$comments), "comments and", nrow(Posts$likes), "likes.\n"))
 }
 
-rbind.fb.Corpus <- function(...){
+rbind.fb.Posts <- function(...){
   
   allargs <- list(...)
   n <- length(allargs)
@@ -29,12 +28,12 @@ rbind.fb.Corpus <- function(...){
   all.Comments <- do.call(rbind.fill, lapply(allargs, function(element) { return(element$comments) }))
   all.Likes <- do.call(rbind.fill, lapply(allargs, function(element) { return(element$likes) }))
   
-  return(fb.Corpus(all.Posts, all.Likes, all.Comments))
+  return(fb.Posts(all.Posts, all.Likes, all.Comments))
 
 }
 
 
-# fb.Corpus <- function(posts, likes, comments)
+# fb.Posts <- function(posts, likes, comments)
 # {
 #   
 #   ## Get the environment for this
@@ -59,6 +58,6 @@ rbind.fb.Corpus <- function(...){
 #   assign('this',me,envir=thisEnv)
 #   
 #   ## Set the name for the class
-#   class(me) <- append(class(me),"fb.Corpus")
+#   class(me) <- append(class(me),"fb.Posts")
 #   return(me)
 # }
