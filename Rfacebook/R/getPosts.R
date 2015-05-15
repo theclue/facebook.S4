@@ -9,7 +9,7 @@
 #' list of comments and likes.
 #'
 #' @details 
-#' \code{getPosts} returns a list with three components: \code{posts}, 
+#' \code{getPosts} returns a list with three data frames: \code{posts}, 
 #' \code{likes}, and \code{comments}. First, \code{posts} contains information
 #' about the posts: author, creation date, id, counts of likes, comments, and 
 #' shares, etc. Second, \code{likes} is a data frame that contains names and
@@ -34,7 +34,7 @@
 #' @param n.comments numeric, maximum number of likes to return. Default is 
 #' \code{n}.
 #' 
-#' @param fields A vector or a comma-delimited strings of fields to get 
+#' @param fields vector or a comma-delimited string with the page-level metadata set to get.
 #' \code{n}.
 #'
 #' @examples \dontrun{
@@ -42,8 +42,8 @@
 #' ## Getting information about Facebook's Facebook Page
 #'	load("fb_oauth")
 #'	fb_page <- getPage(page="facebook", token=fb_oauth)
-#' ## Getting information and likes/comments about most recent post
-#'	posts <- getPosts(post=fbpages$id, n=2000, token=fb_oauth)
+#' ## Getting information and likes/comments about 10 most recent posts
+#'	posts <- getPosts(post=fbpages[10,]$id, n=2000, token=fb_oauth)
 #' }
 #'
 
