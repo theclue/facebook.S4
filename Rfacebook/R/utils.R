@@ -32,22 +32,6 @@ newsDataToDF <- function(json){
 	return(df)
 }
 
-pageDataToDF <- function(json){
-	df <- data.frame(
-		from_id = unlistWithNA(json, c('from', 'id')),
-		from_name = unlistWithNA(json, c('from', 'name')),
-		message = unlistWithNA(json, 'message'),
-		created_time = unlistWithNA(json, 'created_time'),
-		type = unlistWithNA(json, 'type'),
-		link = unlistWithNA(json, 'link'),
-		id = unlistWithNA(json, 'id'),
-		likes_count = unlistWithNA(json, c('likes', 'summary', 'total_count')),
-		comments_count = unlistWithNA(json, c('comments', 'summary', 'total_count')),
-		shares_count = unlistWithNA(json, c('shares', 'count')),
-		stringsAsFactors=F)
-	return(df)
-}
-
 insightsDataToDF <- function(json, values, metric){
   if (metric!="page_fans_country"){
     df <- data.frame(
@@ -88,9 +72,9 @@ detailsDataToDF <- function(json, fields = NULL){
   )
   
   do.call(rbind.fill,
-          lapply(lapply(json, function(likeitem) { 
+          lapply(lapply(json, function(item) { 
             do.call(data.frame,
-                    list(likeitem[which(names(likeitem) %in%  unlist(strsplit(collate.fields, split = ",")))],
+                    list(item[which(names(item) %in%  unlist(strsplit(collate.fields, split = ",")))],
                          stringsAsFactors = FALSE)
             )}), function(l) {
               l
@@ -98,9 +82,25 @@ detailsDataToDF <- function(json, fields = NULL){
   )
 }
 
+pageDataToDF <- function(json, fields = NULL){
+  
+  if(length(json) == 0 | is.null(fields)) return(NULL)
+  
+  # remove duplicates, then collate
+  collate.fields <- paste0(unique(
+    unlist(strsplit(fields, split = ","))),
+    collapse = ","
+  )
+  
+  do.call(data.frame,
+          list(json[which(names(json) %in%  unlist(strsplit(collate.fields, split = ",")))],
+               stringsAsFactors = FALSE)
+  )
+}
+
 
 postDataToDF <- function(json, fields){
-  
+
     data.frame(
       do.call(
         data.frame, 
@@ -293,11 +293,12 @@ getTokenVersion <- function(token){
 
 
 formatFbDate <- function(datestring, format="datetime") {
+
     if (format=="datetime"){
         date <- as.POSIXct(datestring, format = "%Y-%m-%dT%H:%M:%S+0000", tz = "GMT")    
     }
     if (format=="date"){
-        date <- as.Date(datestring, format = "%Y-%m-%dT%H:%M:%S+0000", tz = "GMT")   
+        date <- as.Date(datestring, format = "%Y-%m-%dT%H:%M:%S+0000", tz = "GMT", origin="1970-01-01")   
     }
     return(date)
 }
