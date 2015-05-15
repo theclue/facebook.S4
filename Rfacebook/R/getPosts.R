@@ -43,7 +43,7 @@
 #'	load("fb_oauth")
 #'	fb_page <- getPage(page="facebook", token=fb_oauth)
 #' ## Getting information and likes/comments about most recent post
-#'	posts <- getPosts(post=fb_page$id[1:10], n=2000, token=fb_oauth)
+#'	posts <- getPosts(post=fbpages$id, n=2000, token=fb_oauth)
 #' }
 #'
 
@@ -104,23 +104,7 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
                               postDataToDF(sublist, post.fields)
                             })
   )
-  
-  
-  #   if (n.likes > 0) {
-  #     out[["likes"]] <- do.call(rbind.fill,
-  #                               lapply(content, function(sublist) {
-  #                                 l <- likesDataToDF(sublist$likes$data)
-  #                                 if(length(l) > 0) {
-  #                                   l$post.id <- sublist$id
-  #                                 }
-  #                                 return(l)
-  #                               })
-  #     )
-  #     
-  #   }
-  #   
-  
-  # Likes
+    # Likes
   if (n.likes > 0) {
     all.Likes <- do.call(rbind.fill,
                               lapply(content, function(sublist) {
@@ -138,7 +122,7 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
                                   next.url <- likedata$paging$`next`
                                   
                                   l.page <- likesDataToDF(likedata$data)
-                                  if(length(l.page) > 0) {
+                                  if(!is.null(l.page) && nrow(l.page) > 0) {
                                     l.page$post.id <- sublist$id
                                     l <- rbind.fill(l, l.page)
                                     page <- page + 1
@@ -177,7 +161,7 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
                                      next.url <- commentdata$paging$`next`
                                      
                                      c.page <- commentsDataToDF(commentdata$data)
-                                     if(length(c.page) > 0) {
+                                     if(!is.null(c.page) && nrow(c.page) > 0) {
                                        c.page$post.id <- sublist$id
                                        c <- rbind.fill(c, c.page)
                                        page <- page + 1
@@ -196,7 +180,7 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
     
   }
   
-  fb.c <- fb.Corpus(all.Posts, all.Likes, all.Comments)
+  fb.c <- fb.Posts(all.Posts, all.Likes, all.Comments)
   #fb.c[["raw"]] <- content
   
   return(fb.c)
