@@ -1,19 +1,19 @@
-#' @rdname getPage
+#' @rdname getPages
 #' @export
 #'
 #' @title 
-#' Extract list of posts from a public Facebook page
+#' Extract a list of pages and posts attributes list of posts from public Facebook pages
 #'
 #' @description
-#' \code{getPage} retrieves information from a public Facebook page. Note that
-#' information about users that have turned on the "follow" option on their 
-#' profile can also be retrieved with this function.
+#' \code{getPages} returns a list of two data frames: \code{pages} contains all metadata
+#' of the pages while \code{posts} has a summary of the posts of the pages.
+#' You can then use \code{\link{getPosts}} to further dig into posts details.
 #'
 #' @author
-#' Pablo Barbera \email{pablo.barbera@@nyu.edu}
-#' @seealso \code{\link{getUsers}}, \code{\link{getPost}}, \code{\link{fbOAuth}}
+#' Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+#' @seealso \code{\link{getUsers}}, \code{\link{getPosts}}, \code{\link{fbOAuth}}
 #'
-#' @param page A page ID or page name.
+#' @param A vector or a comma-delimited string of page IDs or page name.
 #'
 #' @param token Either a temporary access token created at
 #' \url{https://developers.facebook.com/tools/explorer} or the OAuth token 
@@ -29,6 +29,8 @@
 #' @param until A UNIX timestamp or strtotime data value that points to
 #' the end of the time range to be searched. For more information on the
 #' accepted values, see: \url{http://php.net/manual/en/function.strtotime.php}
+#' 
+#' @param fields vector or a comma-delimited string with the page-level metadata set to get.
 #'
 #' @param feed If \code{TRUE}, the function will also return posts on the page
 #' that were made by others (not only the admin of the page).
@@ -38,10 +40,10 @@
 #' ## See examples for fbOAuth to know how token was created.
 #' ## Getting information about Facebook's Facebook Page
 #'	load("fb_oauth")
-#'	fb_page <- getPage(page="facebook", token=fb_oauth)
-#' ## Getting posts on Humans of New York page, including posts by others users
+#'	fb_pages <- getPage(page="facebook", token=fb_oauth)
+#' ## Getting posts on 9th Circle Games page, including posts by others users
 #' ## (not only owner of page)
-#'  page <- getPage(page="humansofnewyork", token=fb_oauth, feed=TRUE)
+#'  page <- getPage(page="9thcirclegames", token=fb_oauth, feed=TRUE)
 #' ## Getting posts on Humans of New York page in January 2013
 #'  page <- getPage(page="humansofnewyork", token=fb_oauth, n=1000
 #'		since='2013/01/01', until='2013/01/31')
@@ -82,7 +84,8 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
       "https://graph.facebook.com/v2.3/?ids=",
       paste0(pages.v, collapse = ","),
       "&fields=", page.fields,
-      ",posts.limit(", ifelse(n > posts.pagination.define, posts.pagination.define, n), ")",
+      ",", (ifelse(feed == TRUE, "posts", "feed")),
+      ".limit(", ifelse(n > posts.pagination.define, posts.pagination.define, n), ")",
       ifelse(!is.null(since), paste0(".since(", since, ")"), ""),
       ifelse(!is.null(until), paste0(".until(", until, ")"), ""),
       ifelse(n > 0, "{id,from{id,name},message,created_time,type,link,likes.limit(0).summary(true),comments.limit(0).summary(true)}", "")
@@ -126,7 +129,7 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
                              repeat {
                                postdata <- NULL
                                if(page == 0){
-                                 postdata <- sublist$post
+                                 postdata <- ifelse(feed = TRUE, sublist$feed, sublist$post)
                                } else {
                                  postdata <- callAPI(url=next.url, token=token)
                                }
@@ -157,7 +160,7 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
                                     ifelse(!is.null(p.page), (min(formatFbDate(p.page$created_time, "date")) < min.since), FALSE)
                                )
                                {
-                                 cat("...Done!")
+                                 cat("...Done!\n")
                                  return(head(p, n))
                                }
                                
@@ -173,5 +176,4 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
     
     return(fb.Pages(pages = all.Pages, posts = all.Posts))
   }
-  
 }
