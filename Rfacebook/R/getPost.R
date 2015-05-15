@@ -9,6 +9,9 @@
 #' list of comments and likes.
 #'
 #' @details 
+#' \code{getPost} is a convenient wrapper for \code{\link{getPosts}} intented to be
+#' 100% compatibile with the original Rfacebook function of the same name.
+#' It is deprecated and it will drop sometime sooner or later. 
 #' \code{getPost} returns a list with three components: \code{post}, 
 #' \code{likes}, and \code{comments}. First, \code{post} contains information
 #' about the post: author, creation date, id, counts of likes, comments, and 
@@ -18,8 +21,8 @@
 #' message, creation time, id).
 #'
 #' @author
-#' Pablo Barbera \email{pablo.barbera@@nyu.edu}
-#' @seealso \code{\link{getUsers}}, \code{\link{getPage}}, \code{\link{fbOAuth}}
+#' Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+#' @seealso \code{\link{getPosts}}
 #'
 #' @param post A post ID
 #'
@@ -43,109 +46,17 @@
 #' @examples \dontrun{
 #' ## See examples for fbOAuth to know how token was created.
 #' ## Getting information about Facebook's Facebook Page
-#'	load("fb_oauth")
+#'  load("fb_oauth")
 #'	fb_page <- getPage(page="facebook", token=fb_oauth)
 #' ## Getting information and likes/comments about most recent post
 #'	post <- getPost(post=fb_page$id[1], n=2000, token=fb_oauth)
 #' }
 #'
-
-getPost <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "from,message,created_time,type,link,name,shares"){
+getPost <- function(post, token, n=500, comments=TRUE, likes=TRUE, n.likes=n ,n.comments=n){
   
-  post.fields <- paste0(unique(
-    unlist(strsplit(fields, split = ","))),
-    collapse = ","
-    )
+  warning("This function is deprecated and will be eventually dropped in future versions. Consider using the getPosts instead.")
+  p <- getPosts(posts = post, token = token, n = n, n.likes = ifelse(likes == TRUE, n.likes, 0), n.comments = ifelse(comments == TRUE, comments, 0), fields = "from,message,created_time,type,link" )
   
-    url <- paste0(
-      "https://graph.facebook.com/v2.3/?ids=",
-      paste0(posts, collapse = ","),
-      "&fields=", post.fields,
-      ",comments.summary(true)",
-      ifelse(n.comments > 0, paste0(".fields(id,from,message,created_time,like_count).limit(", n.comments, ")"), ".limit(0)"),
-      ",likes.summary(true)",
-      ifelse(n.likes > 0, paste0(".fields(id,name,profile_type).limit(", n.likes, ")"), ".limit(0)")
-    )
-
-	content <- callAPI(url=url, token=token)
-
-  # Check for permission
-  if (length(content)==0){ 
-    stop("You're not authorized to get this information, Please check your permissions before retrying.")
-  }  
-	# error traps: retry 3 times if error
-	error <- 0
-	while (length(content$error_code)>0){
-		Sys.sleep(0.5)
-		error <- error + 1
-		content <- callAPI(url=url, token=token)		
-		if (error==3){ stop(content$error_msg) }
-	}
-
-  message(content$error_code)
-
+  return(p)
   
-	# putting it together
-	out <- list()
-	out[["posts"]] <- do.call(rbind.fill,
-                            lapply(content, function(sublist) {
-                              postDataToDF(sublist, post.fields)
-                              })
-                            )
-
-  return(out)
-  
-	if (likes && n.likes > 0) out[["likes"]] <- likesDataToDF(content$likes$data)
-	if (likes && n.likes > 0) n.l <- ifelse(!is.null(out$likes), dim(out$likes)[1], 0)
-	if (n.likes == 0) n.l <- 0
-	if (!likes) n.l <- Inf
-	if (comments && n.likes > 0) out[["comments"]] <- commentsDataToDF(content$comments$data)
-	if (comments && n.likes > 0) n.c <- ifelse(!is.null(out$comments), dim(out$comments)[1], 0)
-	if (n.comments == 0) n.c <- 0
-	if (!comments) n.c <- Inf
-	
-	# paging if we n.comments OR n.likes haven't been downloaded
-	if (n.likes > n.l || n.comments > n.c){
-		# saving URLs for next batch of likes and comments
-		if (likes) url.likes <- content$likes$paging$`next`
-		if (!likes) url.likes <- NULL
-		if (comments) url.comments <- content$comments$paging$`next`
-		if (!comments) url.comments <- NULL
-
-		if (!is.null(url.likes) && likes && n.likes > n.l){
-			# retrieving next batch of likes
-			url <- content$likes$paging$`next`
-			content <- callAPI(url=url.likes, token=token)
-			out[["likes"]] <- rbind(out[["likes"]],
-					likesDataToDF(content$data))
-			n.l <- dim(out$likes)[1]
-			# next likes, in batches of 500
-			while (n.l < n.likes & length(content$data)>0 &
-				!is.null(url <- content$paging$`next`)){
-				url <- content$paging$`next`
-				content <- callAPI(url=url, token=token)
-				out[["likes"]] <- rbind(out[["likes"]],
-					likesDataToDF(content$data))
-				n.l <- dim(out$likes)[1]
-			}
-		}
-		if (!is.null(url.comments) && comments && n.comments > n.c){
-			# retriving next batch of comments
-			content <- callAPI(url=url.comments, token=token)
-			out[["comments"]] <- rbind(out[["comments"]],
-					commentsDataToDF(content$data))
-			n.c <- dim(out$comments)[1]
-			# next comments, in batches of 500
-			while (n.c < n.comments & length(content$data)>0 &
-				!is.null(content$paging$`next`)){
-				url <- content$paging$`next`
-				content <- callAPI(url=url, token=token)
-				out[["comments"]] <- rbind(out[["comments"]],
-					commentsDataToDF(content$data))
-				n.c <- dim(out$comments)[1]
-			}
-		}
-	}
-
-	return(out)
 }
