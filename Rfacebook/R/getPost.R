@@ -21,7 +21,7 @@
 #' message, creation time, id).
 #'
 #' @author
-#' Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+#' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
 #' @seealso \code{\link{getPosts}}
 #'
 #' @param post A post ID

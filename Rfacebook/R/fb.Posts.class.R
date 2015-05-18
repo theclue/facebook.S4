@@ -1,4 +1,3 @@
-#' @rdname fb.Posts
 fb.Posts <- function(posts, likes, comments){
   if((is.null(posts) | !is.data.frame(posts)) | !is.data.frame(likes) | !is.data.frame(comments)){
     stop("Invalid arguments to Facebook Posts Corpus constructor")
@@ -10,7 +9,6 @@ fb.Posts <- function(posts, likes, comments){
   return(me)
 }
 
-#' @rdname print.fb.Posts
 #' @export
 print.fb.Posts <- function(Posts) {
   cat(paste("\nA Facebook Post Posts made of", nrow(Posts$posts), "posts,", nrow(Posts$comments), "comments and", nrow(Posts$likes), "likes.\n"))

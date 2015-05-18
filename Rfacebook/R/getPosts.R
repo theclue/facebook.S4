@@ -18,7 +18,7 @@
 #' message, creation time, id).
 #'
 #' @author
-#' Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+#' Gabriele Baldassarre
 #' @seealso \code{\link{getUsers}}, \code{\link{getPage}}, \code{\link{fbOAuth}}
 #'
 #' @param posts A vector or a comma-delimited string of post IDs
@@ -34,7 +34,7 @@
 #' @param n.comments numeric, maximum number of likes to return. Default is 
 #' \code{n}.
 #' 
-#' @param fields vector or a comma-delimited string with the page-level metadata set to get.
+#' @param fields vector or comma-delimited string with the page-level metadata set to get.
 #' \code{n}.
 #'
 #' @examples \dontrun{
@@ -104,7 +104,8 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
                               postDataToDF(sublist, post.fields)
                             })
   )
-    # Likes
+  
+  # Likes
   if (n.likes > 0) {
     all.Likes <- do.call(rbind.fill,
                               lapply(content, function(sublist) {

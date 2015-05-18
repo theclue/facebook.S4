@@ -10,7 +10,7 @@
 #' You can then use \code{\link{getPosts}} to further dig into posts details.
 #'
 #' @author
-#' Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+#' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
 #' @seealso \code{\link{getUsers}}, \code{\link{getPosts}}, \code{\link{fbOAuth}}
 #'
 #' @param A vector or a comma-delimited string of page IDs or page name.

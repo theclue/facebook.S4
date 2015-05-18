@@ -1,4 +1,3 @@
-#' @rdname fb.Pages
 fb.Pages <- function(pages, posts){
   if((is.null(pages) | !is.data.frame(pages)) | !is.data.frame(posts)){
     stop("Invalid arguments to Facebook Pages Corpus constructor")
@@ -10,7 +9,6 @@ fb.Pages <- function(pages, posts){
   return(me)
 }
 
-#' @rdname print.fb.Pages
 #' @export
 print.fb.Pages <- function(Pages) {
   cat(paste("\nA Facebook Pages Corpus made of", nrow(Pages$pages), "pages and", nrow(Pages$posts), "posts.\n"))
