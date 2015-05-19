@@ -129,7 +129,11 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
                              repeat {
                                postdata <- NULL
                                if(page == 0){
-                                 postdata <- ifelse(feed == TRUE, sublist$feed, sublist$post)
+                                 if(feed == TRUE){
+                                   postdata <- sublist$feed
+                                 } else {
+                                   postdata <- sublist$posts
+                                 }
                                } else {
                                  postdata <- callAPI(url=next.url, token=token)
                                }
