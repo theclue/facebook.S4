@@ -88,7 +88,7 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
       ".limit(", ifelse(n > posts.pagination.define, posts.pagination.define, n), ")",
       ifelse(!is.null(since), paste0(".since(", since, ")"), ""),
       ifelse(!is.null(until), paste0(".until(", until, ")"), ""),
-      ifelse(n > 0, "{id,from{id,name},message,created_time,type,link,likes.limit(0).summary(true),comments.limit(0).summary(true)}", "")
+      ifelse(n > 0, "{id,from{id,name},message,created_time,type,link,shares,likes.limit(0).summary(true),comments.limit(0).summary(true)}", "")
     )
 
     content <- callAPI(url=url, token=token)
