@@ -84,13 +84,13 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
       "https://graph.facebook.com/v2.3/?ids=",
       paste0(pages.v, collapse = ","),
       "&fields=", page.fields,
-      ",", (ifelse(feed == TRUE, "posts", "feed")),
+      ",", (ifelse(feed != TRUE, "posts", "feed")),
       ".limit(", ifelse(n > posts.pagination.define, posts.pagination.define, n), ")",
       ifelse(!is.null(since), paste0(".since(", since, ")"), ""),
       ifelse(!is.null(until), paste0(".until(", until, ")"), ""),
       ifelse(n > 0, "{id,from{id,name},message,created_time,type,link,likes.limit(0).summary(true),comments.limit(0).summary(true)}", "")
     )
-    
+
     content <- callAPI(url=url, token=token)
     
     # Check for permission
@@ -125,7 +125,7 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
                              
                              # TODO: make a better log
                              cat(paste("\nGetting posts for ", sublist$name, sep = ""))
-                             
+
                              repeat {
                                postdata <- NULL
                                if(page == 0){
@@ -138,6 +138,7 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
                                  postdata <- callAPI(url=next.url, token=token)
                                }
                                next.url <- postdata$paging$`next`
+                               
                                
                                p.page <- do.call(rbind.fill,
                                                  lapply(postdata$data, function(sublist) {
