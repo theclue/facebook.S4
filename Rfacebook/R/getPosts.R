@@ -113,6 +113,9 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
                                 l <- data.frame()
                                 total.likes <- 0
                                 
+                                # TODO: make a better log
+                                cat(paste("\nGetting likes for post ", sublist$id, sep = ""))
+                                
                                 repeat {
                                   likedata <- NULL
                                   if(page == 0){
@@ -129,9 +132,12 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
                                     page <- page + 1
                                     total.likes <- total.likes + nrow(l.page)
                                     
+                                    cat(paste("...", total.likes, sep = ""))
+                                    
                                   }
                                   
                                   if(total.likes >= n.likes | is.null(next.url)){
+                                    cat("...Done!\n")
                                     return(head(l, n.likes))
                                   }
                                   
@@ -152,6 +158,9 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
                                    c <- data.frame()
                                    total.comments <- 0
                                    
+                                   # TODO: make a better log
+                                   cat(paste("\nGetting comments for post ", sublist$id, sep = ""))
+                                   
                                    repeat {
                                      commentdata <- NULL
                                      if(page == 0){
@@ -168,11 +177,17 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
                                        page <- page + 1
                                        total.comments <- total.comments + nrow(c.page)
                                        
+                                       cat(paste("...", total.comments, sep = ""))
+                                       
                                      }
                                      
                                      if(total.comments >= n.comments | is.null(next.url)){
+                                       cat("...Done!\n")
                                        return(head(c, n.comments))
                                      }
+                                     
+                                     # Graceful waiting before next call
+                                     Sys.sleep(0.5)
                                      
                                    }
                                  }
