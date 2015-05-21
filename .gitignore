@@ -5,3 +5,5 @@ credentials.dta
 creating-credentials.r
 .Rproj.user
 tmp/
+.RData
+.Rhistory
