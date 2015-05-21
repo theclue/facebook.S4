@@ -139,7 +139,6 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
                                }
                                next.url <- postdata$paging$`next`
                                
-                               
                                p.page <- do.call(rbind.fill,
                                                  lapply(postdata$data, function(sublist) {
                                                    postDataToDF(sublist, "id,from,message,created_time,type,link")
