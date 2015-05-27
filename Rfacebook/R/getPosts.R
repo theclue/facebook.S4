@@ -14,7 +14,7 @@
 #' about the posts: author, creation date, id, counts of likes, comments, and 
 #' shares, etc. Second, \code{likes} is a data frame that contains names and
 #' Facebook IDs of all the users that liked the post. Finally, \code{comments}
-#' is a data frame with information about the comments to the post (author, 
+#' is a data frame with information about the comments to the posts (author, 
 #' message, creation time, id).
 #'
 #' @author
