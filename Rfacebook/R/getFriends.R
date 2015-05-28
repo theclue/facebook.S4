@@ -24,7 +24,6 @@
 #'
 #' @param fields vector or comma-separated string of fields to get
 #'
-#'
 #' @examples \dontrun{
 #' ## Copy and paste token created at FB Graph API Explorer
 #'  token <- "XXXXXX"

@@ -21,7 +21,7 @@ created with \code{fbOAuth}.}
 \item{n.comments}{numeric, maximum number of likes to return. Default is
 \code{n}.}
 
-\item{fields}{vector or a comma-delimited string with the page-level metadata set to get.
+\item{fields}{vector or comma-delimited string with the page-level metadata set to get.
 \code{n}.}
 }
 \description{
@@ -34,7 +34,7 @@ list of comments and likes.
 about the posts: author, creation date, id, counts of likes, comments, and
 shares, etc. Second, \code{likes} is a data frame that contains names and
 Facebook IDs of all the users that liked the post. Finally, \code{comments}
-is a data frame with information about the comments to the post (author,
+is a data frame with information about the comments to the posts (author,
 message, creation time, id).
 }
 \examples{

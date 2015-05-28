@@ -98,12 +98,10 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
     if (error==3){ stop(content$error_msg) }
   }
   
-  
-  all.Posts <- do.call(rbind.fill,
-                            lapply(content, function(sublist) {
-                              postDataToDF(sublist, post.fields)
-                            })
-  )
+
+all.Posts <- data.frame(detailsDataToDF(content, fields = "id,from,message,created_time,type,link"),
+           summaryDataToDF(content, fields = "likes.count,comments.count,shares.count"))
+
   
   # Likes
   if (n.likes > 0) {
@@ -125,7 +123,7 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
                                   }
                                   next.url <- likedata$paging$`next`
                                   
-                                  l.page <- likesDataToDF(likedata$data)
+                                  l.page <- detailsDataToDF(likedata$data, fields = "id,name")
                                   if(!is.null(l.page) && nrow(l.page) > 0) {
                                     l.page$post.id <- sublist$id
                                     l <- rbind.fill(l, l.page)
@@ -170,7 +168,7 @@ getPosts <- function(posts, token, n=500, n.likes=n, n.comments=n, fields = "id,
                                      }
                                      next.url <- commentdata$paging$`next`
                                      
-                                     c.page <- commentsDataToDF(commentdata$data)
+                                     c.page <- detailsDataToDF(commentdata$data, fields = "id,from,message,created_time,like_count")
                                      if(!is.null(c.page) && nrow(c.page) > 0) {
                                        c.page$post.id <- sublist$id
                                        c <- rbind.fill(c, c.page)

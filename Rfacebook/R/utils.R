@@ -71,58 +71,43 @@ detailsDataToDF <- function(json, fields = NULL){
     collapse = ","
   )
   
-  do.call(rbind.fill,
-          lapply(lapply(json, function(item) { 
+ do.call(rbind.fill,
+          lapply(lapply(json, function(item) {
             do.call(data.frame,
                     list(item[which(names(item) %in%  unlist(strsplit(collate.fields, split = ",")))],
-                         stringsAsFactors = FALSE)
-            )}), function(l) {
+                         stringsAsFactors = FALSE),
+            )
+            }), function(l) {
               l
             })
   )
 }
 
-pageDataToDF <- function(json, fields = NULL){
+
+summaryDataToDF <- function(json, fields = NULL){
   
   if(length(json) == 0 | is.null(fields)) return(NULL)
   
-  # remove duplicates, then collate
-  collate.fields <- paste0(unique(
-    unlist(strsplit(fields, split = ","))),
-    collapse = ","
+  fields <- unique(
+    unlist(strsplit(fields, split = ",")))
+  
+  s <- do.call(rbind.fill,
+               lapply(lapply(json, function(item) {
+                 data.frame(
+                             likes.count = ifelse(is.list(item$likes),
+                                                  item$likes$summary$total_count, 0),
+                             comments.count = ifelse(is.list(item$comments),
+                                                  item$comments$summary$total_count, 0),
+                             shares.count = ifelse(!is.null(item$shares),
+                                                   item$shares$count, 0)           
+                 )
+               }), function(l) {
+                 l
+               })
   )
   
-  do.call(data.frame,
-          list(json[which(names(json) %in%  unlist(strsplit(collate.fields, split = ",")))],
-               stringsAsFactors = FALSE)
-  )
-}
-
-
-postDataToDF <- function(json, fields){
-
-    data.frame(
-      do.call(
-        data.frame, 
-        list(
-          do.call(c,(json[which(names(json) %in%  unlist(strsplit(fields, split = ",")))])),
-          stringsAsFactors = FALSE)
-      ),
-      likes_count = ifelse(!is.null(json$likes$summary$total_count),
-                           json$likes$summary$total_count, 0),
-      comments_count = ifelse(!is.null(json$comments$summary$total_count),
-                              json$comments$summary$total_count, 0),
-      shares_count = ifelse(!is.null(json$shares$count),
-                            json$shares$count, 0)
-    )
-}
-
-likesDataToDF <- function(json, fields = "id,name"){
-  detailsDataToDF(json, fields)
-}
-
-commentsDataToDF <- function(json, fields = "id,from,message,created_time,like_count"){
-  detailsDataToDF(json, fields)
+  return(s[,fields])
+  
 }
 
 userDataToDF <- function(user_data, private_info){
@@ -146,30 +131,6 @@ userDataToDF <- function(user_data, private_info){
 	}
 	return(df)
 }
-
-checkinDataToDF <- function(checkin_data){
-	df <- data.frame(
-		checkin_time = unlistWithNA(checkin_data, 'created_time'),
-		place_id = unlistWithNA(checkin_data, c('place', 'id')),
-		place_name = unlistWithNA(checkin_data, c('place', 'name')),
-		place_city = unlistWithNA(checkin_data, c('place', 'location','city')),
-		place_state = unlistWithNA(checkin_data, c('place', 'location','state')),
-		place_country = unlistWithNA(checkin_data, c('place', 'location','country')),
-		place_lat = unlistWithNA(checkin_data, c('place', 'location', 'latitude')),
-		place_long = unlistWithNA(checkin_data, c('place', 'location', 'longitude')),
-		stringsAsFactors=F)
-	return(df)
-}
-
-userLikesToDF <- function(user_likes){
-	df <- data.frame(
-		id = unlistWithNA(user_likes, 'id'),
-		names = unlistWithNA(user_likes, 'name'),
-		website = unlistWithNA(user_likes, 'website'),
-		stringsAsFactors=F)
-	return(df)
-}
-
 
 tagsDataToDF <- function(tags){
     tags <- lapply(tags, '[[', "tags")

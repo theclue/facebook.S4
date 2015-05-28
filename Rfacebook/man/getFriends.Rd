@@ -4,16 +4,14 @@
 \alias{getFriends}
 \title{Extract list of friends with their information}
 \usage{
-getFriends(token, simplify = FALSE)
+getFriends(token, users = "me", fields = "id,name")
 }
 \arguments{
 \item{token}{Either a temporary access token created at
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
 created with \code{fbOAuth}.}
 
-\item{simplify}{If \code{TRUE}, function will return only name and id for each friend.
-If \code{FALSE}, it will return additional information from their profiles: gender, birthday,
-location, hometown, relationship status and profile picture.}
+\item{fields}{vector or comma-separated string of fields to get}
 }
 \description{
 \code{getFriends} retrieves information about the user's friends.
@@ -28,13 +26,13 @@ token to query the API will be returned.
 \dontrun{
 ## Copy and paste token created at FB Graph API Explorer
  token <- "XXXXXX"
-	my_friends <- getFriends(token=token, simplify=TRUE)
+	my_friends <- getFriends(token=token)
 ## Since users are ordered by ID, this will return 10 oldest user accounts
 	head(my_friends, n=10)
 }
 }
 \author{
-Pablo Barbera \email{pablo.barbera@nyu.edu}
+Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
 \code{\link{getUsers}}, \code{\link{fbOAuth}}

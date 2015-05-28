@@ -2,34 +2,39 @@
 % Please edit documentation in R/getLikes.R
 \name{getLikes}
 \alias{getLikes}
-\title{Extract list of likes of a Facebook friend}
+\title{Extract list of likes from Facebook users}
 \usage{
-getLikes(user, n = 500, token)
+getLikes(users, n = 500, token, fields = "category,name,id,created_time")
 }
 \arguments{
-\item{user}{A user ID or screen name.}
-
 \item{n}{Maximum number of likes to return for each user.}
 
 \item{token}{Either a temporary access token created at
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
 created with \code{fbOAuth}.}
+
+\item{user}{A vector or comma-delimited string with IDs or screen names.}
 }
 \description{
-\code{getLikes} retrieves information about a friend's likes
+\code{getLikes} retrieves information about the likes from a list of Facebook IDs and/or names.
 }
 \details{
 This function requires the use of an OAuth token with the following
 permissions: user_likes, friends_likes
+
+This function requires the use of a OAuth token with user_likes
+permission granted. After the introduction of version 2.0 of the Graph API,
+only likes from users who are using the application that you used to generate the
+token to query the API will be returned.
 }
 \examples{
 \dontrun{
- token <- 'XXXXX'
- my_likes <- getLikes(user="me", token=token)
+ load("fb_oauth")
+ me.likes <- getLikes(users="me", token=fb_oauth)
 }
 }
 \author{
-Pablo Barbera \email{pablo.barbera@nyu.edu}
+Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
 \code{\link{getFriends}}, \code{\link{fbOAuth}}

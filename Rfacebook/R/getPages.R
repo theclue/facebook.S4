@@ -90,7 +90,7 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
       ifelse(!is.null(until), paste0(".until(", until, ")"), ""),
       ifelse(n > 0, "{id,from{id,name},message,created_time,type,link,shares,likes.limit(0).summary(true),comments.limit(0).summary(true)}", "")
     )
-
+    
     content <- callAPI(url=url, token=token)
     
     # Check for permission
@@ -105,11 +105,7 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
       if (error==3){ stop(content$error_msg) }
     }
     
-    all.Pages <- do.call(rbind.fill,
-                         lapply(content, function(sublist) {
-                           pageDataToDF(sublist, page.fields)
-                         })
-    )
+    all.Pages <- detailsDataToDF(content, page.fields)
     
     # Posts
     all.Posts <- data.frame()
@@ -125,7 +121,7 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
                              
                              # TODO: make a better log
                              cat(paste("\nGetting posts for ", sublist$name, sep = ""))
-
+                             
                              repeat {
                                postdata <- NULL
                                if(page == 0){
@@ -139,14 +135,11 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
                                }
                                next.url <- postdata$paging$`next`
                                
-                               p.page <- do.call(rbind.fill,
-                                                 lapply(postdata$data, function(sublist) {
-                                                   postDataToDF(sublist, "id,from,message,created_time,type,link")
-                                                 })
-                               )
-                               
-                               
+                               p.page <- data.frame(detailsDataToDF(postdata$data, fields = "id,from,message,created_time,type,link"),
+                                                    summaryDataToDF(postdata$data, fields = "likes.count,comments.count,shares.count"))
+                                                             
                                if(!is.null(p.page) && nrow(p.page) > 0) {
+                                 
                                  p.page$page.id <- sublist$id
                                  p <- rbind.fill(p, p.page)
                                  page <- page + 1
@@ -161,7 +154,7 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
                                # I'm also making sure the function stops when that happens
                                if(total.posts >= n |
                                     is.null(next.url) |
-                                    ifelse(!is.null(p.page), (min(formatFbDate(p.page$created_time, "date")) < min.since), FALSE)
+                                    ifelse(nrow(p.page) > 0, (min(formatFbDate(p.page$created_time, "date")) < min.since), FALSE)
                                )
                                {
                                  cat("...Done!\n")

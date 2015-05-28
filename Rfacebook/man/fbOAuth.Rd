@@ -71,6 +71,6 @@ try again in a few minutes to make sure your app had its settings updated proper
 Pablo Barbera \email{pablo.barbera@nyu.edu}
 }
 \seealso{
-\code{\link{getUsers}}, \code{\link{getPost}}, \code{\link{searchFacebook}}
+\code{\link{getUsers}}, \code{\link{getPosts}}, \code{\link{searchFacebook}}
 }
 
