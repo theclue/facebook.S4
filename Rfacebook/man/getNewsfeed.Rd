@@ -4,8 +4,8 @@
 \alias{getNewsfeed}
 \title{Download recent posts from the authenticated user's newsfeed}
 \usage{
-getNewsfeed(token, n = 500, n.likes = n, n.comments = n,
-  fields = "id,from,message,created_time,type,link,name")
+getNewsfeed(token, n = 500,
+  fields = "id,from.fields(id,name),message,created_time,type,link,name")
 }
 \arguments{
 \item{token}{Either a temporary access token created at
@@ -13,11 +13,6 @@ getNewsfeed(token, n = 500, n.likes = n, n.comments = n,
 created with \code{fbOAuth}.}
 
 \item{n}{numeric, maximum number of comments and likes to return.}
-
-\item{n.likes}{numeric, maximum number of likes to return. Default is \code{n}.}
-
-\item{n.comments}{numeric, maximum number of comments to return. Default is
-\code{n}.}
 
 \item{fields}{vector or comma-delimited string with the post-level details to get.
 \code{n}.}
