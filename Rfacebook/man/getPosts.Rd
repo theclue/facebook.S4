@@ -18,10 +18,10 @@ created with \code{fbOAuth}.}
 
 \item{n.likes}{numeric, maximum number of likes to return. Default is \code{n}.}
 
-\item{n.comments}{numeric, maximum number of likes to return. Default is
+\item{n.comments}{numeric, maximum number of comments to return. Default is
 \code{n}.}
 
-\item{fields}{vector or comma-delimited string with the page-level metadata set to get.
+\item{fields}{vector or comma-delimited string with the post-level details to get.
 \code{n}.}
 }
 \description{
@@ -42,9 +42,9 @@ message, creation time, id).
 ## See examples for fbOAuth to know how token was created.
 ## Getting information about Facebook's Facebook Page
 	load("fb_oauth")
-	fb_page <- getPage(page="facebook", token=fb_oauth)
+	fb.page <- getPages("9thcirclegames", token=fb_oauth)
 ## Getting information and likes/comments about 10 most recent posts
-	posts <- getPosts(post=fbpages[10,]$id, n=2000, token=fb_oauth)
+	post.details <- getPosts(post=fb.page$posts[10,]$id, n=2000, token=fb_oauth)
 }
 }
 \author{
