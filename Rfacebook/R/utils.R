@@ -14,24 +14,6 @@ searchDataToDF <- function(json){
 	return(df)
 }
 
-newsDataToDF <- function(json){
-	df <- data.frame(
-		from_id = unlistWithNA(json, c('from', 'id')),
-		from_name = unlistWithNA(json, c('from', 'name')),
-		to_id = unlistWithNA(json, c('to', 'data', "1", 'id')),
-		to_name = unlistWithNA(json, c('to', 'data', '1', 'name')),
-		message = unlistWithNA(json, 'message'),
-		created_time = unlistWithNA(json, 'created_time'),
-		type = unlistWithNA(json, 'type'),
-		link = unlistWithNA(json, 'link'),
-		id = unlistWithNA(json, 'id'),
-		likes_count = unlistWithNA(json, c('likes', 'summary', 'total_count')),
-		comments_count = unlistWithNA(json, c('comments', 'summary', 'total_count')),
-		shares_count = unlistWithNA(json, c('shares', 'count')),
-		stringsAsFactors=F)
-	return(df)
-}
-
 insightsDataToDF <- function(json, values, metric){
   if (metric!="page_fans_country"){
     df <- data.frame(
