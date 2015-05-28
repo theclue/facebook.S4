@@ -4,31 +4,39 @@
 \alias{getNewsfeed}
 \title{Download recent posts from the authenticated user's newsfeed}
 \usage{
-getNewsfeed(token, n = 200)
+getNewsfeed(token, n = 500, n.likes = n, n.comments = n,
+  fields = "id,from,message,created_time,type,link,name")
 }
 \arguments{
 \item{token}{Either a temporary access token created at
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
 created with \code{fbOAuth}.}
 
-\item{n}{Maximum number of posts to return.}
+\item{n}{numeric, maximum number of comments and likes to return.}
+
+\item{n.likes}{numeric, maximum number of likes to return. Default is \code{n}.}
+
+\item{n.comments}{numeric, maximum number of comments to return. Default is
+\code{n}.}
+
+\item{fields}{vector or comma-delimited string with the post-level details to get.
+\code{n}.}
 }
 \description{
-\code{getNewsfeed} retrieves status updates from the authenticated user's
-News Feed
+\code{getNewsfeed} returns a data frame with the current user' newsfeed.
 }
 \examples{
 \dontrun{
 ## See examples for fbOAuth to know how token was created.
-## Capture 100 most recent posts on my newsfeed
+## Capture 100 most recent posts on my newsfeed and max 100 likes/comments for each one
 	load("fb_oauth")
 	my_newsfeed <- getNewsfeed(token=fb_oauth, n=100)
 }
 }
 \author{
-Pablo Barbera \email{pablo.barbera@nyu.edu}
+Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{fbOAuth}}, \code{\link{getPost}}
+\code{\link{fbOAuth}}, \code{\link{getPosts}}
 }
 
