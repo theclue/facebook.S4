@@ -11,164 +11,138 @@
 #' through the API. All the remaining fields will be missing.
 #'
 #' @author
-#' Pablo Barbera \email{pablo.barbera@@nyu.edu}
-#' @seealso \code{\link{getFriends}}, \code{\link{getPost}}, \code{\link{searchFacebook}}
+#' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
+#' @seealso \code{\link{getFriends}}, \code{\link{getPosts}}, \code{\link{searchFacebook}}
 #'
-#' @param users A vector of user IDs.
+#' @param users A vector of user or page IDs.
 #' 
 #' @param token Either a temporary access token created at
 #' \url{https://developers.facebook.com/tools/explorer} or the OAuth token 
 #' created with \code{fbOAuth}.
 #'
-#' @param private_info If \code{FALSE}, will return only information that is 
-#' publicly available for all users (name, gender, locale, profile picture). 
-#' If \code{TRUE}, will return additional information for users who are friends 
-#' with the authenticated user: birthday, location, hometown, and relationship 
-#' status. Note that these fields will ONLY be returned for friends and when
-#' the version of the token that is used to query the API is 1.0. For other 
-#' users, they will be \code{NA}, even if they are visible on Facebook via web.
 #'
 #' @examples \dontrun{
 #' ## See examples for fbOAuth to know how token was created.
 #' ## Getting information about the authenticated user
 #'  load("fb_oauth")
-#'	fb <- getUsers("me", token=fb_oauth)
+#'	fb <- getUsers("me,9thcirclegames", token=fb_oauth)
 #'	fb$username
 #' }
 #'
+getUsers <- function(users, token, user.fields = "id,name,first_name,last_name,gender,locale,picture.fields(url).type(large)", page.fields="id,name,category,picture.fields(url).type(large)"){
+  
+  users.pagination.define <- 25
+  
+  users.fields.url <- paste0(unique(
+    unlist(strsplit(user.fields, split = ","))),
+    collapse = ","
+  )
+  
+  users.fields <- paste0(unique(
+    unlist(strsplit(gsub('\\.fields\\((.*?)\\)','', 
+                         gsub('\\.type\\((.*?)\\)','', user.fields, perl = TRUE)
+                         , perl = TRUE), split = ","))),
+    collapse = ","
+  )
 
-getUsers <- function(users, token, private_info=FALSE)
-{
+  pages.fields.url <- paste0(unique(
+    unlist(strsplit(page.fields, split = ","))),
+    collapse = ","
+  )
+  
+  pages.fields <- paste0(unique(
+    unlist(strsplit(gsub('\\.fields\\((.*?)\\)','', 
+                         gsub('\\.type\\((.*?)\\)','', page.fields, perl = TRUE)
+                         , perl = TRUE), split = ","))),
+    collapse = ","
+  )
+  
+  users.v <- unique(unlist(strsplit(users, split = ",")))
+  users.f <- rep(seq_len(ceiling(length(users.v) / users.pagination.define)),each = users.pagination.define,length.out = length(users.v))
+  users.chunks <- split(users.v, f = users.f)
+  
+  if(length(users.chunks) > 1){
+    
+    do.call(rbind,
+            lapply(posts.chunks, function(single.chunk) {
+              getUsers(users = single.chunk, token = token, fields = fields)
+              
+            })
+    )
+    
+  }
+  
+  else {
 
-	tkversion <- getTokenVersion(token)
-	api.max <- ifelse(tkversion=='v2', 50, 500)
+    ## first query: checking what users are actual users vs pages
+    content <- callAPI(paste0("https://graph.facebook.com/v2.3/?ids=", paste0(users.v, collapse=",")), token)
+    
+    actual.users <- which(unlist(lapply(content, function(x) is.null(x$category))))
+    actual.pages <- which(unlist(lapply(content, function(x) !is.null(x$category))))
 
-	if (length(users)==1 && users=='me'){
-		query <- paste0('https://graph.facebook.com/',
-			ifelse(tkversion=='v2', 'v2.0/', ''), 'me?')
-		content <- callAPI(query, token)
-		df <- userDataToDF(list(content), private_info=private_info)
-		return(df)
-	}
+    all.df <- rbind.fill((function() {
 
-	n.users <- length(users)
-	first.n <- ifelse(n.users > api.max, api.max, n.users)
-	
-	users.query <- paste(users[1:first.n], collapse=",")
-	## first query: checking what users are actual users vs pages
-	query <- paste0('https://graph.facebook.com/',
-		ifelse(tkversion=='v2', 'v2.0/', ''), '?ids=', users.query)
-	## making query
-	content <- callAPI(query, token)
-	if (length(content$error_code)>0){
-		stop(content$error_msg, ". Querying too many users?")
-	}	
-	actual.users <- which(unlist(lapply(content, function(x) is.null(x$category))))
-	pages <- which(unlist(lapply(content, function(x) !is.null(x$category))))	
-	## getting data for users	
-	if (length(actual.users)>0){
-		if (private_info==TRUE){
-		query <- paste('https://graph.facebook.com/',
-			ifelse(tkversion=='v2', 'v2.0/', ''), '?ids=', 
-			paste(names(actual.users), collapse=","), 
-			"&fields=id,name,first_name,last_name,gender,locale,birthday,",
-			"location,hometown,relationship_status,picture.type(large)", sep="")
-		}
-		if (private_info==FALSE){
-		query <- paste('https://graph.facebook.com/',
-			ifelse(tkversion=='v2', 'v2.0/', ''), '?ids=', 
-			paste(names(actual.users), collapse=","),
-			"&fields=id,name,first_name,last_name,gender,locale,",
-			"picture.type(large)", sep="")
-		}		
-		## making query
-		content <- callAPI(query, token)
-		df.users <- userDataToDF(content, private_info=private_info)
-	}
-	if (length(actual.users)==0){
-		df.users <- NULL
-	}
-	if (length(pages)>0){
-		## getting data for pages
-		query <- paste('https://graph.facebook.com/',
-			ifelse(tkversion=='v2', 'v2.0/', ''), '?ids=', 
-			paste(names(pages), collapse=","), 
-			"&fields=id,name,category,likes,picture.type(large)", sep="")
-		## making query
-		content <- callAPI(query, token)
-		df.pages <- userDataToDF(content, private_info=private_info)	
-	}
-	if (length(pages)==0){
-		df.pages <- NULL
-	}
-	df <- rbind(df.users, df.pages)
-	#df <- df[!is.na(df$id),]
+    if (length(actual.users)>0){
 
-	# next users, in batches of 500
-	if (n.users > api.max){
-		n.done <- dim(df)[1]
-		cat(n.done, "users -- ")
-		while (n.done < n.users){
-			first.n <- n.done + 1
-			last.n <- ifelse(n.done + api.max > n.users, n.users, n.done + api.max)
-			users.query <- paste(users[first.n:last.n], collapse=",")
-			## first query: checking what users are actual users vs pages
-			query <- paste0('https://graph.facebook.com/',
-				ifelse(tkversion=='v2', 'v2.0/', ''), '?ids=', users.query)
-			## making query
-			content <- callAPI(query, token)
-			if (length(content$error_code)>0){
-				stop(content$error_msg, ". Querying too many users?")
-			}	
-			actual.users <- which(unlist(lapply(content, function(x) is.null(x$category))))
-			pages <- which(unlist(lapply(content, function(x) !is.null(x$category))))	
-			## getting data for users	
-			if (length(actual.users)>0){
-				if (private_info==TRUE){
-				query <- paste('https://graph.facebook.com/', 
-					ifelse(tkversion=='v2', 'v2.0/', ''), '?ids=', 
-					paste(names(actual.users), collapse=","), 
-					"&fields=id,name,first_name,last_name,gender,locale,birthday,",
-					"location,hometown,relationship_status,picture.type(large)", sep="")
-				}
-				if (private_info==FALSE){
-				query <- paste('https://graph.facebook.com/', 
-					ifelse(tkversion=='v2', 'v2.0/', ''), '?ids=', 
-					paste(names(actual.users), collapse=","),
-					"&fields=id,name,first_name,last_name,gender,locale,",
-					"picture.type(large)", sep="")
-				}		
-				## making query
-				content <- callAPI(query, token)
-				df.users <- userDataToDF(content, private_info=private_info)
-			}
-			if (length(actual.users)==0){
-				df.users <- NULL
-			}
-			if (length(pages)>0){
-				## getting data for pages
-				query <- paste('https://graph.facebook.com/', 
-					ifelse(tkversion=='v2', 'v2.0/', ''), '?ids=', 
-					paste(names(pages), collapse=","), 
-					"&fields=id,name,category,likes,picture.type(large)", sep="")
-				## making query
-				content <- callAPI(query, token)
-				df.pages <- userDataToDF(content, private_info=private_info)	
-			}
-			if (length(pages)==0){
-				df.pages <- NULL
-			}
-			df <- rbind(df, df.users, df.pages)
-			#df.new <- df[!is.na(df$id),]
-			n.done <- dim(df)[1]
-			cat(n.done, "users -- ")
-		}
-	}
-	# returning in original order of users
-	df <- df[order(match(df$id, users)),]
-	return(df)
+      url <- paste0(
+        "https://graph.facebook.com/v2.3/?ids=",
+        paste0(names(actual.users), collapse = ","),
+        "&fields=", users.fields.url
+      )
+
+      content <- callAPI(url=url, token=token)
+      
+      # Check for permission
+      if (length(content)==0){ 
+        stop("You're not authorized to get this information, Please check your permissions before retrying.")
+      }  
+      # error traps: retry 3 times if error
+      error <- 0
+      while (length(content$error_code)>0){
+        Sys.sleep(1)
+        error <- error + 1
+        content <- callAPI(url=url, token=token)    
+        if (error==3){ stop(content$error_msg) }
+      }
+      
+      return(detailsDataToDF(content, fields = users.fields))
+    } else return(data.frame())
+      
+    })()
+    , (function() {
+      
+      if (length(actual.pages)>0){
+        
+        url <- paste0(
+          "https://graph.facebook.com/v2.3/?ids=",
+          paste0(names(actual.pages), collapse = ","),
+          "&fields=", pages.fields.url
+        )
+
+        content <- callAPI(url=url, token=token)
+        
+        # Check for permission
+        if (length(content)==0){ 
+          stop("You're not authorized to get this information, Please check your permissions before retrying.")
+        }  
+        # error traps: retry 3 times if error
+        error <- 0
+        while (length(content$error_code)>0){
+          Sys.sleep(1)
+          error <- error + 1
+          content <- callAPI(url=url, token=token)    
+          if (error==3){ stop(content$error_msg) }
+        }
+        
+        return(detailsDataToDF(content, fields = pages.fields))
+      } else return(data.frame())
+      
+    }
+
+  )())
+  # returning in original order of users
+  # Something still wrong here...
+  return(all.df[order(match(all.df$id, users.v)),])
+  
+  }
 }
-
-
-
-
