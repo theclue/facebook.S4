@@ -4,22 +4,16 @@
 \alias{getUsers}
 \title{Extract information about one or more Facebook users}
 \usage{
-getUsers(users, token, private_info = FALSE)
+getUsers(users, token,
+  user.fields = "id,name,first_name,last_name,gender,locale,picture.fields(url).type(large)",
+  page.fields = "id,name,category,picture.fields(url).type(large)")
 }
 \arguments{
-\item{users}{A vector of user IDs.}
+\item{users}{A vector of user or page IDs.}
 
 \item{token}{Either a temporary access token created at
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
 created with \code{fbOAuth}.}
-
-\item{private_info}{If \code{FALSE}, will return only information that is
-publicly available for all users (name, gender, locale, profile picture).
-If \code{TRUE}, will return additional information for users who are friends
-with the authenticated user: birthday, location, hometown, and relationship
-status. Note that these fields will ONLY be returned for friends and when
-the version of the token that is used to query the API is 1.0. For other
-users, they will be \code{NA}, even if they are visible on Facebook via web.}
 }
 \description{
 \code{getUsers} retrieves public information about one or more Facebook users.
@@ -32,14 +26,14 @@ through the API. All the remaining fields will be missing.
 ## See examples for fbOAuth to know how token was created.
 ## Getting information about the authenticated user
  load("fb_oauth")
-	fb <- getUsers("me", token=fb_oauth)
+	fb <- getUsers("me,9thcirclegames", token=fb_oauth)
 	fb$username
 }
 }
 \author{
-Pablo Barbera \email{pablo.barbera@nyu.edu}
+Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{getFriends}}, \code{\link{getPost}}, \code{\link{searchFacebook}}
+\code{\link{getFriends}}, \code{\link{getPosts}}, \code{\link{searchFacebook}}
 }
 
