@@ -41,6 +41,6 @@ plus the given \code{type}.
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{fbOAuth}}, \code{\link{query}}
+\code{\link{fbOAuth}}, \code{\link{facebook.query}}
 }
 

@@ -14,7 +14,7 @@
 #' 
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
-#' @seealso \code{\link{fbOAuth}}, \code{\link{query}}
+#' @seealso \code{\link{fbOAuth}}, \code{\link{facebook.query}}
 #'
 #' @param query comma-delimited string or string vector containing keywords to search.
 #' Note that the returned results will contain any of the keywords. 
