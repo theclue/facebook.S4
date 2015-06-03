@@ -92,28 +92,6 @@ summaryDataToDF <- function(json, fields = NULL){
   
 }
 
-userDataToDF <- function(user_data, private_info){
-	df <- data.frame(
-		id = unlistWithNA(user_data, 'id'),
-		name = unlistWithNA(user_data, 'name'),
-		username = unlistWithNA(user_data, 'username'),
-		first_name = unlistWithNA(user_data, 'first_name'),
-		last_name = unlistWithNA(user_data, 'last_name'),
-		gender = unlistWithNA(user_data, 'gender'),
-		locale = unlistWithNA(user_data, 'locale'),
-		category = unlistWithNA(user_data, 'category'),
-		likes = unlistWithNA(user_data, 'likes'),
-		picture = unlistWithNA(user_data, c('picture', 'data', 'url')),
-		stringsAsFactors=F)
-	if (private_info==TRUE){
-		df$birthday <- unlistWithNA(user_data, 'birthday')
-		df$location <- unlistWithNA(user_data, c('location', 'name'))
-		df$hometown <- unlistWithNA(user_data, c('hometown', 'name'))
-		df$relationship_status <- unlistWithNA(user_data, 'relationship_status')
-	}
-	return(df)
-}
-
 tagsDataToDF <- function(tags){
     tags <- lapply(tags, '[[', "tags")
     tags <- lapply(tags, '[[', 'data')
@@ -171,28 +149,6 @@ unlistWithNA <- function(lst, field){
 	return(vect)
 }
 
-searchPageDataToDF <- function(json){
-  df <- data.frame(
-    id = unlistWithNA(json, 'id'),
-    about = unlistWithNA(json, 'about'),
-    category = unlistWithNA(json, 'category'),
-    description = unlistWithNA(json, 'description'),
-    general_info = unlistWithNA(json, 'general_info'),
-    likes = unlistWithNA(json, 'likes'),
-    link = unlistWithNA(json, 'link'),
-    city = unlistWithNA(json, c('location', 'city')),
-    state = unlistWithNA(json, c('location', 'state')),
-    country = unlistWithNA(json, c('location', 'country')),
-    latitude = unlistWithNA(json, c('location', 'latitude')),
-    longitude = unlistWithNA(json, c('location', 'longitude')),
-    name = unlistWithNA(json, 'name'),
-    talking_about_count = unlistWithNA(json, 'talking_about_count'),
-    username = unlistWithNA(json, 'username'),
-    website = unlistWithNA(json, 'website'),
-    stringsAsFactors=F)
-  return(df)
-}
-
 callAPI <- function(url, token){
 	if (class(token)[1]=="config"){
 		url.data <- GET(url, config=token)
@@ -245,6 +201,3 @@ formatFbDate <- function(datestring, format="datetime") {
     }
     return(date)
 }
-
-
-
