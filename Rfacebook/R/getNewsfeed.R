@@ -16,7 +16,6 @@
 #' created with \code{fbOAuth}.
 #'
 #' @param n numeric, maximum number of comments and likes to return.
-#'
 #' 
 #' @param fields vector or comma-delimited string with the post-level details to get.
 #' \code{n}.
