@@ -34,6 +34,6 @@ through the API. All the remaining fields will be missing.
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{getFriends}}, \code{\link{getPosts}}, \code{\link{searchFacebook}}
+\code{\link{facebook.friends}}, \code{\link{getPosts}}, \code{\link{searchFacebook}}
 }
 

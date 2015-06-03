@@ -18,7 +18,7 @@
 #'
 #' @author
 #' Pablo Barbera \email{pablo.barbera@@nyu.edu}
-#' @seealso \code{\link{getFriends}}, \code{\link{fbOAuth}}
+#' @seealso \code{\link{facebook.friends}}, \code{\link{fbOAuth}}
 #'
 #' @param token Either a temporary access token created at
 #' \url{https://developers.facebook.com/tools/explorer} or the OAuth token 
@@ -61,7 +61,7 @@ getNetwork <- function(token, format='edgelist', verbose=TRUE){
 		base_url <- 'https://graph.facebook.com/'
 	}
 
-	friends <- getFriends(token=token, simplify=TRUE)
+	friends <- facebook.friends(token=token, simplify=TRUE)
 	edge.list <- NULL
 	n <- length(friends$id)
 	if (verbose==TRUE){ pb <- txtProgressBar(min=1,max=n, style=3) }

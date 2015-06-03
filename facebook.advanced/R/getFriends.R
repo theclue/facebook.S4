@@ -1,11 +1,11 @@
-#' @rdname getFriends
+#' @rdname facebook.friends
 #' @export
 #'
 #' @title 
 #' Extract list of friends with their information
 #'
 #' @description
-#' \code{getFriends} retrieves information about the user's friends.
+#' \code{facebook.friends} retrieves information about the user's friends.
 #'
 #' @details
 #' 
@@ -27,13 +27,13 @@
 #' @examples \dontrun{
 #' ## Copy and paste token created at FB Graph API Explorer
 #'  token <- "XXXXXX"
-#'	my_friends <- getFriends(token=token)
+#'	my.friends <- facebook.friends(token=token)
 #' ## Since users are ordered by ID, this will return 10 oldest user accounts
-#'	head(my_friends, n=10)
+#'	head(my.friends, n=10)
 #' }
 #'
 
-getFriends <- function(token, users="me", fields = "id,name"){
+facebook.friends <- function(token, users="me", fields = "id,name"){
   
   details.pagination.define <- 500
   friends.pagination.define <- 10  
@@ -55,7 +55,7 @@ getFriends <- function(token, users="me", fields = "id,name"){
     
     do.call(rbind,
             lapply(friends.chunks, function(single.chunk) {
-              getFriends(token = token, users = single.chunk, fields = fields)
+              facebook.friends(token = token, users = single.chunk, fields = fields)
               
             })
     )

@@ -6,7 +6,7 @@
 #'
 #' @seealso \code{\link{fbOAuth}}, \code{\link{getUsers}}, 
 #' \code{\link{getPosts}}, \code{\link{searchFacebook}},
-#' \code{\link{updateStatus}}, \code{\link{getFriends}}, 
+#' \code{\link{updateStatus}}, \code{\link{facebook.friends}}, 
 #' \code{\link{getNetwork}}, \code{\link{getPages}}
 #' @name facebook.advanced
 #' @aliases facebook.advanced

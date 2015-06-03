@@ -47,6 +47,6 @@ only friends who are using the application will be returned.
 Pablo Barbera \email{pablo.barbera@nyu.edu}
 }
 \seealso{
-\code{\link{getFriends}}, \code{\link{fbOAuth}}
+\code{\link{facebook.friends}}, \code{\link{fbOAuth}}
 }
 

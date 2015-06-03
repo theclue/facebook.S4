@@ -37,6 +37,6 @@ token to query the API will be returned.
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{getFriends}}, \code{\link{fbOAuth}}
+\code{\link{facebook.friends}}, \code{\link{fbOAuth}}
 }
 

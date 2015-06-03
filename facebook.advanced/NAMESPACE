@@ -2,10 +2,10 @@
 
 S3method(print,fb.Pages)
 S3method(print,fb.Posts)
+export(facebook.friends)
 export(facebook.query)
 export(facebook.search)
 export(fbOAuth)
-export(getFriends)
 export(getInsights)
 export(getLikes)
 export(getNetwork)

@@ -12,7 +12,7 @@
 #'
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
-#' @seealso \code{\link{getFriends}}, \code{\link{getPosts}}, \code{\link{searchFacebook}}
+#' @seealso \code{\link{facebook.friends}}, \code{\link{getPosts}}, \code{\link{searchFacebook}}
 #'
 #' @param users A vector of user or page IDs.
 #' 
