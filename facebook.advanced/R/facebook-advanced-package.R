@@ -1,4 +1,4 @@
-#' Access to Facebook API via R
+#' Access to Facebook API v2 via R
 #' 
 #' This package provides a series of functions that allow R users
 #' to access Facebook's API to get information about users and posts,
@@ -8,8 +8,8 @@
 #' \code{\link{getPosts}}, \code{\link{searchFacebook}},
 #' \code{\link{updateStatus}}, \code{\link{getFriends}}, 
 #' \code{\link{getNetwork}}, \code{\link{getPages}}
-#' @name Rfacebook-package
-#' @aliases Rfacebook
+#' @name facebook.advanced
+#' @aliases facebook.advanced
 #' @docType package
 #' @author Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
 #' @author Pablo Barbera \email{pablo.barbera@@nyu.edu}
