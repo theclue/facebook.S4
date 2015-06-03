@@ -8,10 +8,10 @@
 #' \code{searchPages} retrieves public pages that mention a given keyword
 #'
 #' @author
-#' Pablo Barbera \email{pablo.barbera@@nyu.edu}, Joel Gombin \email{joel.gombin@@gmail.com}
+#' Pablo Barbera \email{pablo.barbera@@nyu.edu}, Joel Gombin \email{joel.gombin@@gmail.com}, Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
 #' @seealso \code{\link{fbOAuth}}, \code{\link{searchFacebook}}
 #'
-#' @param string string or string vector containing keywords to search.
+#' @param query string or string vector containing keywords to search.
 #' Note that the returned results will contain any of the keywords. 
 #' 
 #' @param token Either a temporary access token created at
@@ -20,74 +20,75 @@
 #'
 #' @param n Maximum number of pages to return.
 #' 
+#' @param fields vector or comma-delimited string with the post-level details to get.
+#' \code{n}.
 #'
 #' @examples \dontrun{
 #' ## See examples for fbOAuth to know how token was created.
 #' ## Searching 100 public pages that mention "facebook"
 #'  load("fb_oauth")
-#'	pages <- searchPages( string="facebook", token=fb_oauth, n=100 )
+#'	pages <- searchPages(query="facebook", token=fb_oauth, n=100 )
 #' }
 #'
 
-searchPages <- function(string, token, n=200)
-{
-  if (length(string)>1){ string <- paste(string, collapse=" ") }
+searchPages <- function(query, token, n=200, fields="id,username,name,about,category,description,likes,link,talking_about_count"){
   
-  url <- paste("https://graph.facebook.com/search?q=", string,
-               "&type=page&limit=", sep="")
-  if (n<=200){
-    url <- paste(url, n, sep="")
-  }
-  if (n>200){
-    url <- paste(url, "200", sep="")
-  }
-  url <- paste(url, 
-               "&fields=id,about,category,category_list,description,general_info,likes,link,location,name,talking_about_count,username,website",
-               sep="")
+  limit <- ifelse(is.null(n), 200, n)
   
-  url <- URLencode(url)
+  pages.fields.url <- paste0(unique(
+    unlist(strsplit(fields, split = ","))),
+    collapse = ","
+  )
   
-  ## making query
-  content <- callAPI(url=url, token=token)
-  l <- length(content$data); cat(l, "pages ")
-  
-  ## retrying 3 times if error was found
-  error <- 0
-  while (length(content$error_code)>0){
-    cat("Error!\n")
-    Sys.sleep(0.5)
-    error <- error + 1
-    content <- callAPI(url=url, token=token)		
-    if (error==3){ stop(content$error_msg) }
-  }
-  if (length(content$data)==0){ 
-    stop("No public page mentioning the string were found")
-  }
-  df <- searchPageDataToDF(content$data)
+  pages.fields <- paste0(unique(
+    unlist(strsplit(gsub('\\.fields\\((.*?)\\)','', 
+                         gsub('\\.type\\((.*?)\\)','', fields, perl = TRUE)
+                         , perl = TRUE), split = ","))),
+    collapse = ","
+  )
 
-  ## paging if n>200
-  if (n>200){
-    df.list <- list(df)
-    while (l<n & length(content$data)>0 &
-             !is.null(content$paging$`next`)){
-      url <- content$paging$`next`
-      content <- callAPI(url=url, token=token)
-      l <- l + length(content$data)
-      if (length(content$data)>0){ cat(l, " ") }
-      
-      ## retrying 3 times if error was found
-      error <- 0
-      while (length(content$error_code)>0){
-        cat("Error!\n")
-        Sys.sleep(0.5)
-        error <- error + 1
-        content <- callAPI(url=url, token=token)		
-        if (error==3){ stop(content$error_msg) }
-      }
-      
-      df.list <- c(df.list, list(searchPageDataToDF(content$data)))
-    }
-    df <- do.call(rbind, df.list)
+  url <- URLencode(paste0(
+    "https://graph.facebook.com/v2.3/search?q=",
+    paste0(query, collapse = " "),
+    "&type=page&limit=",
+    limit,
+    "&fields=", pages.fields.url
+    ))
+
+  # Pagination using a lambda function
+  all.Pages  <- (function() {
+                           page <- 0
+                           p <- data.frame()
+                           total.pages <- 0
+
+                           repeat {
+                             pagedata <- NULL
+                             if(page == 0){
+                               pagedata <- callAPI(url=url , token=token)
+                             } else {
+                               pagedata <- callAPI(url=next.url, token=token)
+                             }
+                             next.url <- pagedata$paging$`next`
+                             p.page <- detailsDataToDF(pagedata$data, fields = pages.fields)
+                             
+                             if(!is.null(p.page) && nrow(p.page) > 0) {
+                               p <- rbind.fill(p, p.page)
+                               page <- page + 1
+                               total.pages <- total.pages + nrow(p.page)
+                             }
+
+                             # exit conditions
+                             if(total.pages >= n |
+                                  is.null(next.url)
+                             )
+                             {
+                               cat(paste0("Found ", min(n, total.pages), " ", ifelse(total.pages == 1, "page", "pages"), " for '", paste(query, collapse = " "), "'.\n"))
+                               return(head(p, n))
+                             }
+                             
+                             # Graceful waiting before next call
+                             Sys.sleep(0.5)
+                             
+                           }
+                         })()
   }
-  return(df)
-}
