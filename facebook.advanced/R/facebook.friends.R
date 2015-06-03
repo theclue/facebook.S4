@@ -64,10 +64,12 @@ facebook.friends <- function(token, users="me", fields = "id,name"){
   
   else {
     
-    url <- paste0(
-      "https://graph.facebook.com/v2.3/?ids=",
-      paste0(friends.v, collapse = ","),
-      "&fields=id,name,friends.summary(false){", friends.fields, "}"
+    url <- URLencode(
+      paste0(
+        "https://graph.facebook.com/v2.3/?ids=",
+        paste0(friends.v, collapse = ","),
+        "&fields=id,name,friends.summary(false){", friends.fields, "}"
+      )
     )
     
     content <- callAPI(url=url, token=token)
