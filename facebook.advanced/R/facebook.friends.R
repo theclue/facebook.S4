@@ -16,7 +16,8 @@
 #'
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
-#' @seealso \code{\link{getUsers}}, \code{\link{fbOAuth}}
+#' 
+#' @seealso \code{\link{facebook.users}}, \code{\link{fbOAuth}}
 #'
 #' @param token Either a temporary access token created at
 #' \url{https://developers.facebook.com/tools/explorer} or the OAuth token 

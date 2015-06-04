@@ -54,6 +54,6 @@ You can then use \code{\link{getPosts}} to further dig into posts details.
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{getUsers}}, \code{\link{getPosts}}, \code{\link{fbOAuth}}
+\code{\link{facebook.users}}, \code{\link{getPosts}}, \code{\link{fbOAuth}}
 }
 

@@ -12,7 +12,7 @@
 #' Pablo Barbera \email{pablo.barbera@@nyu.edu}, Zakharov Kyrylo 
 #' (\url{https://github.com/Amice13})
 #'
-#' @seealso \code{\link{getUsers}}, \code{\link{getPost}}
+#' @seealso \code{\link{facebook.users}}, \code{\link{getPost}}
 #'
 #' @param text string, text of the status update
 #'

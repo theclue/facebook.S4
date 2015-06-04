@@ -59,18 +59,18 @@ try again in a few minutes to make sure your app had its settings updated proper
 	fb_oauth <- fbOAuth(app_id="123456789", app_secret="1A2B3C4D")
 	save(fb_oauth, file="fb_oauth")
 	load("fb_oauth")
-	me <- getUsers("me", token=fb_oauth)
+	me <- facebook.users("me", token=fb_oauth)
 	me$username
 
 ## an example of a request using a temporary access token
 	token <- "XXXXXXAAAAAAA1111"
-	me <- getUsers("me", token=token)
+	me <- facebook.users("me", token=token)
 }
 }
 \author{
 Pablo Barbera \email{pablo.barbera@nyu.edu}
 }
 \seealso{
-\code{\link{getUsers}}, \code{\link{getPosts}}, \code{\link{searchFacebook}}
+\code{\link{facebook.users}}, \code{\link{getPosts}}, \code{\link{searchFacebook}}
 }
 

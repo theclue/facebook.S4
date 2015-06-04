@@ -19,7 +19,7 @@
 #'
 #' @author
 #' Gabriele Baldassarre
-#' @seealso \code{\link{getUsers}}, \code{\link{getPage}}, \code{\link{fbOAuth}}
+#' @seealso \code{\link{facebook.users}}, \code{\link{getPage}}, \code{\link{fbOAuth}}
 #'
 #' @param posts A vector or a comma-delimited string of post IDs
 #'

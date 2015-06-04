@@ -32,6 +32,6 @@ Pablo Barbera \email{pablo.barbera@nyu.edu}, Zakharov Kyrylo
 (\url{https://github.com/Amice13})
 }
 \seealso{
-\code{\link{getUsers}}, \code{\link{getPost}}
+\code{\link{facebook.users}}, \code{\link{getPost}}
 }
 

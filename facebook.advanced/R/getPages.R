@@ -11,7 +11,7 @@
 #'
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
-#' @seealso \code{\link{getUsers}}, \code{\link{getPosts}}, \code{\link{fbOAuth}}
+#' @seealso \code{\link{facebook.users}}, \code{\link{getPosts}}, \code{\link{fbOAuth}}
 #'
 #' @param A vector or a comma-delimited string of page IDs or page name.
 #'

@@ -1,35 +1,38 @@
-#' @rdname getUsers
+#' @rdname facebook.users
 #' @export
 #'
 #' @title 
 #' Extract information about one or more Facebook users
 #'
 #' @description
-#' \code{getUsers} retrieves public information about one or more Facebook users.
+#' \code{facebok.users} retrieves public information about one or more Facebook users.
 #'
 #' After version 2.0 of the Facebook API, only id, name, and picture are available
 #' through the API. All the remaining fields will be missing.
 #'
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
-#' @seealso \code{\link{facebook.friends}}, \code{\link{getPosts}}, \code{\link{searchFacebook}}
+#' @seealso \code{\link{facebook.friends}}, \code{\link{getPosts}}, \code{\link{facebook.search}}
 #'
 #' @param users A vector of user or page IDs.
 #' 
 #' @param token Either a temporary access token created at
 #' \url{https://developers.facebook.com/tools/explorer} or the OAuth token 
 #' created with \code{fbOAuth}.
+#' 
+#' @param users.fields vector or comma-separated string of fields to get (for user IDs)
 #'
+#' @param page.fields vector or comma-separated string of fields to get (for page IDs)
 #'
 #' @examples \dontrun{
 #' ## See examples for fbOAuth to know how token was created.
 #' ## Getting information about the authenticated user
 #'  load("fb_oauth")
-#'	fb <- getUsers("me,9thcirclegames", token=fb_oauth)
+#'	fb <- facebook.users("me,9thcirclegames", token=fb_oauth)
 #'	fb$username
 #' }
 #'
-getUsers <- function(users, token, user.fields = "id,name,first_name,last_name,gender,locale,picture.fields(url).type(large)", page.fields="id,name,category,picture.fields(url).type(large)"){
+facebook.users <- function(users, token, user.fields = "id,name,first_name,last_name,gender,locale,picture.fields(url).type(large)", page.fields="id,name,category,picture.fields(url).type(large)"){
   
   users.pagination.define <- 25
   
@@ -65,7 +68,7 @@ getUsers <- function(users, token, user.fields = "id,name,first_name,last_name,g
     
     do.call(rbind,
             lapply(posts.chunks, function(single.chunk) {
-              getUsers(users = single.chunk, token = token, fields = fields)
+              facebook.users(users = single.chunk, token = token, fields = fields)
               
             })
     )

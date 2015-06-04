@@ -4,7 +4,7 @@
 #' to access Facebook's API to get information about users and posts,
 #' and collect public status updates that mention specific keywords.
 #'
-#' @seealso \code{\link{fbOAuth}}, \code{\link{getUsers}}, 
+#' @seealso \code{\link{fbOAuth}}, \code{\link{facebook.users}}, 
 #' \code{\link{getPosts}}, \code{\link{searchFacebook}},
 #' \code{\link{updateStatus}}, \code{\link{facebook.friends}}, 
 #' \code{\link{getNetwork}}, \code{\link{getPages}}

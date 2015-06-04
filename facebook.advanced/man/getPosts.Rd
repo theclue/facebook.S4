@@ -51,6 +51,6 @@ message, creation time, id).
 Gabriele Baldassarre
 }
 \seealso{
-\code{\link{getUsers}}, \code{\link{getPage}}, \code{\link{fbOAuth}}
+\code{\link{facebook.users}}, \code{\link{getPage}}, \code{\link{fbOAuth}}
 }
 
