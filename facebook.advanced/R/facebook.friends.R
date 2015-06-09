@@ -8,9 +8,7 @@
 #' \code{facebook.friends} retrieves information about the user's friends.
 #'
 #' @details
-#' 
-#' This function requires the use of a OAuth token with extended 
-#' permissions. After the introduction of version 2.0 of the Graph API,
+#' After the introduction of version 2.0 of the Graph API,
 #' only friends who are using the application that you used to generate the 
 #' token to query the API will be returned.
 #'
@@ -19,11 +17,17 @@
 #' 
 #' @seealso \code{\link{facebook.users}}, \code{\link{fbOAuth}}
 #'
+#' @param users vector or comma-separated string of users to get friends
+#'
 #' @param token Either a temporary access token created at
 #' \url{https://developers.facebook.com/tools/explorer} or the OAuth token 
 #' created with \code{fbOAuth}.
 #'
 #' @param fields vector or comma-separated string of fields to get
+#' 
+#' @param .progress progress_bar object as defined in the plyr package.
+#' By default the \code{none} progress bar is used, which prints
+#' nothing to the console.
 #'
 #' @examples \dontrun{
 #' ## Copy and paste token created at FB Graph API Explorer
@@ -33,15 +37,10 @@
 #'	head(my.friends, n=10)
 #' }
 #'
-
-facebook.friends <- function(token, users="me", fields = "id,name"){
+facebook.friends <- function(users="me", token, fields = "id,name", .progress = create_progress_bar()){
   
   details.pagination.define <- 500
   friends.pagination.define <- 10  
-  
-  if (getTokenVersion(token)=="v1"){
-    stop("Calls using v1 token is no longer available.")
-  }
   
   friends.fields <- paste0(unique(
     unlist(strsplit(fields, split = ","))),
@@ -53,7 +52,13 @@ facebook.friends <- function(token, users="me", fields = "id,name"){
   friends.chunks <- split(friends.v, f = friends.f)
   
   if(length(friends.chunks) > 1){
+
+    # Init the progress bar
+    # An extra step is needed for the condition where 'users' has only one value
+    .progress$init(length(users)+1)
+    .progress$step()
     
+    # Recursive calls for each chunk
     do.call(rbind,
             lapply(friends.chunks, function(single.chunk) {
               facebook.friends(token = token, users = single.chunk, fields = fields)
@@ -96,8 +101,11 @@ facebook.friends <- function(token, users="me", fields = "id,name"){
                              f <- data.frame()
                              total.friends <- 0
                              
-                             # TODO: make a better log
-                             cat(paste("\nGetting ", sublist$name, "'s friends using this app", sep = ""))
+                             # Advance the progress bar
+                             if(inherits(try(.progress$step(), silent=T), "try-error")){
+                               .progress$init(length(users)+1)
+                               .progress$step()
+                             }
                              
                              repeat {
                                friendsdata <- NULL
@@ -120,7 +128,6 @@ facebook.friends <- function(token, users="me", fields = "id,name"){
                                }
                                
                                if(is.null(next.url)){
-                                 cat("...Done!\n")
                                  return(f)
                                }
                                
@@ -131,9 +138,6 @@ facebook.friends <- function(token, users="me", fields = "id,name"){
                            }
                            )
     )
-    
-    
     return(all.Friends)
   }
-  
 }
