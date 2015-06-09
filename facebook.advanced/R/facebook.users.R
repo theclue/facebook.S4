@@ -5,10 +5,14 @@
 #' Extract information about one or more Facebook users
 #'
 #' @description
-#' \code{facebok.users} retrieves public information about one or more Facebook users.
+#' \code{facebok.users} retrieves public information about one or more Facebook users or pages.
 #'
 #' After version 2.0 of the Facebook API, only id, name, and picture are available
 #' through the API. All the remaining fields will be missing.
+#' 
+#' Since users and pages have different sets of attributes and you won't know in advance if a (commenting)
+#' user is a page or not, this function will extract both. Parameters \code{users.fields} and \code{pages.fields}
+#' are used to drive which attributes to get.
 #'
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
@@ -23,6 +27,10 @@
 #' @param users.fields vector or comma-separated string of fields to get (for user IDs)
 #'
 #' @param page.fields vector or comma-separated string of fields to get (for page IDs)
+#' 
+#' @param .progress progress_bar object as defined in the plyr package.
+#' By default the \code{none} progress bar is used, which prints
+#' nothing to the console.
 #'
 #' @examples \dontrun{
 #' ## See examples for fbOAuth to know how token was created.
@@ -32,7 +40,11 @@
 #'	fb$username
 #' }
 #'
-facebook.users <- function(users, token, user.fields = "id,name,first_name,last_name,gender,locale,picture.fields(url).type(large)", page.fields="id,name,category,picture.fields(url).type(large)"){
+facebook.users <- function(users, 
+                           token, 
+                           user.fields = "id,name,first_name,last_name,gender,locale,picture.fields(url).type(large)", 
+                           page.fields="id,name,category,picture.fields(url).type(large)",
+                           .progress = create_progress_bar()){
   
   users.pagination.define <- 25
   
@@ -66,9 +78,13 @@ facebook.users <- function(users, token, user.fields = "id,name,first_name,last_
   
   if(length(users.chunks) > 1){
     
+    # Init the progress bar to the number of queries that will be performed (2 queries for each chunk)
+    .progress$init((length(users.chunks)*2)+1)
+    .progress$step()
+    
     do.call(rbind,
-            lapply(posts.chunks, function(single.chunk) {
-              facebook.users(users = single.chunk, token = token, fields = fields)
+            lapply(users.chunks, function(single.chunk) {
+              facebook.users(users = single.chunk, token = token, fields = fields, .progress = .progress)
               
             })
     )
@@ -78,7 +94,7 @@ facebook.users <- function(users, token, user.fields = "id,name,first_name,last_
   else {
 
     ## first query: checking what users are actual users vs pages
-    content <- callAPI(paste0("https://graph.facebook.com/v2.3/?ids=", paste0(users.v, collapse=",")), token)
+    content <- facebook.query(query=paste0("?ids=", paste0(users.v, collapse=",")), token=token)
     
     actual.users <- which(unlist(lapply(content, function(x) is.null(x$category))))
     actual.pages <- which(unlist(lapply(content, function(x) !is.null(x$category))))
@@ -87,25 +103,18 @@ facebook.users <- function(users, token, user.fields = "id,name,first_name,last_
 
     if (length(actual.users)>0){
 
-      url <- paste0(
-        "https://graph.facebook.com/v2.3/?ids=",
+      query <- paste0(
+        "?ids=",
         paste0(names(actual.users), collapse = ","),
         "&fields=", users.fields.url
       )
 
-      content <- callAPI(url=url, token=token)
+      content <- facebook.query(query=query, token=token)
       
-      # Check for permission
-      if (length(content)==0){ 
-        stop("You're not authorized to get this information, Please check your permissions before retrying.")
-      }  
-      # error traps: retry 3 times if error
-      error <- 0
-      while (length(content$error_code)>0){
-        Sys.sleep(1)
-        error <- error + 1
-        content <- callAPI(url=url, token=token)    
-        if (error==3){ stop(content$error_msg) }
+      # Advance the progress bar
+      if(inherits(try(.progress$step(), silent=T), "try-error")){
+        .progress$init((length(users.chunks)*2)+1)
+        .progress$step()
       }
       
       return(detailsDataToDF(content, fields = users.fields))
@@ -116,25 +125,18 @@ facebook.users <- function(users, token, user.fields = "id,name,first_name,last_
       
       if (length(actual.pages)>0){
         
-        url <- paste0(
-          "https://graph.facebook.com/v2.3/?ids=",
+        query <- paste0(
+          "?ids=",
           paste0(names(actual.pages), collapse = ","),
           "&fields=", pages.fields.url
         )
 
-        content <- callAPI(url=url, token=token)
+        content <- facebook.query(query=query, token=token)
         
-        # Check for permission
-        if (length(content)==0){ 
-          stop("You're not authorized to get this information, Please check your permissions before retrying.")
-        }  
-        # error traps: retry 3 times if error
-        error <- 0
-        while (length(content$error_code)>0){
-          Sys.sleep(1)
-          error <- error + 1
-          content <- callAPI(url=url, token=token)    
-          if (error==3){ stop(content$error_msg) }
+        # Advance the progress bar
+        if(inherits(try(.progress$step(), silent=T), "try-error")){
+          .progress$init((length(users.chunks)*2)+1)
+          .progress$step()
         }
         
         return(detailsDataToDF(content, fields = pages.fields))
@@ -144,7 +146,7 @@ facebook.users <- function(users, token, user.fields = "id,name,first_name,last_
 
   )())
   # returning in original order of users
-  # Something still wrong here...
+  # TODO: Something still wrong here...
   return(all.df[order(match(all.df$id, users.v)),])
   
   }

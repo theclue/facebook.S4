@@ -54,14 +54,13 @@ facebook.friends <- function(users="me", token, fields = "id,name", .progress = 
   if(length(friends.chunks) > 1){
 
     # Init the progress bar
-    # An extra step is needed for the condition where 'users' has only one value
     .progress$init(length(users)+1)
     .progress$step()
     
     # Recursive calls for each chunk
     do.call(rbind,
             lapply(friends.chunks, function(single.chunk) {
-              facebook.friends(token = token, users = single.chunk, fields = fields)
+              facebook.friends(token = token, users = single.chunk, fields = fields, .progress = .progress)
               
             })
     )
@@ -70,29 +69,14 @@ facebook.friends <- function(users="me", token, fields = "id,name", .progress = 
   
   else {
     
-    url <- URLencode(
+    url <- 
       paste0(
-        "https://graph.facebook.com/v2.3/?ids=",
+        "?ids=",
         paste0(friends.v, collapse = ","),
         "&fields=id,name,friends.summary(false){", friends.fields, "}"
       )
-    )
     
-    content <- callAPI(url=url, token=token)
-    
-    # Check for permission
-    if (length(content)==0){ 
-      stop("You're not authorized to get this information, Please check your permissions before retrying.")
-    }  
-    # error traps: retry 3 times if error
-    error <- 0
-    
-    while (length(content$error_code)>0){
-      Sys.sleep(1)
-      error <- error + 1
-      content <- callAPI(url=url, token=token)  	
-      if (error==3){ stop(content$error_msg) }
-    }
+    content <- facebook.query(query = url, token = token)
     
     # Friends
     all.Friends <- do.call(rbind.fill,
@@ -112,13 +96,13 @@ facebook.friends <- function(users="me", token, fields = "id,name", .progress = 
                                if(page == 0){
                                  friendsdata <- sublist$friends
                                } else {
-                                 friendsdata <- callAPI(url=next.url, token=token)
+                                 friendsdata <- facebook.query(query=next.url, token=token, endpoint=NULL)
                                }
                                next.url <- friendsdata$paging$`next`
                                
                                f.page <- detailsDataToDF(friendsdata$data, fields = friends.fields)
                                if(!is.null(f.page) && nrow(f.page) > 0) {
-                                 # TODO: use detailsDataToToDF here instead
+
                                  f.page$parent.id <- sublist$id
                                  f.page$parent.name <- sublist$name
                                  f <- rbind.fill(f, f.page)
