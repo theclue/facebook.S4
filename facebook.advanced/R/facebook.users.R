@@ -84,7 +84,12 @@ facebook.users <- function(users,
       .progress$step()
     }
     
-    all.df <- rbind.fill((function() {
+    all.df <- rbind.fill((function() {    
+      # Advance the progress bar
+      if(inherits(try(.progress$step(), silent=T), "try-error")){
+        .progress$init((length(users.chunks)*3)+1)
+        .progress$step()
+      }
       
       if (length(actual.users)>0){
         
@@ -99,14 +104,14 @@ facebook.users <- function(users,
         return(detailsDataToDF(content, fields = parsed.user$fields))
       } else return(data.frame())
       
+    })()
+    , (function() {
+      
       # Advance the progress bar
       if(inherits(try(.progress$step(), silent=T), "try-error")){
         .progress$init((length(users.chunks)*3)+1)
         .progress$step()
       }
-      
-    })()
-    , (function() {
 
       if (length(actual.pages)>0){
         
@@ -120,13 +125,7 @@ facebook.users <- function(users,
         
         return(detailsDataToDF(content, fields = parsed.page$fields))
       } else return(data.frame())
-
-      # Advance the progress bar
-      if(inherits(try(.progress$step(), silent=T), "try-error")){
-        .progress$init((length(users.chunks)*3)+1)
-        .progress$step()
-      }
-      
+    
     }
     
     )())
