@@ -114,10 +114,7 @@ facebook.friends <- function(users="me", token, fields = "id,name", .progress = 
                                if(is.null(next.url)){
                                  return(f)
                                }
-                               
-                               # Graceful waiting before next call
-                               Sys.sleep(0.5)
-                               
+                             
                              }
                            }
                            )
