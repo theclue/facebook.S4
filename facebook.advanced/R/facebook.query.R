@@ -10,7 +10,7 @@
 #'
 #' @details
 #' Write the query as you would do using the Graph Explroer at \url{https://developers.facebook.com/tools/explorer}
-#' but don't include the API version number and the trailing slashes.
+#' without including the API version number and the trailing slashes.
 #' 
 #' Please note that this function has no automatic paging support.
 #'
@@ -23,6 +23,9 @@
 #' @param token Either a temporary access token created at
 #' \url{https://developers.facebook.com/tools/explorer} or the OAuth token 
 #' created with \code{fbOAuth}.
+#' 
+#' @param endpoint string with the endpoint to the FB Graph. You can optionally end the URI with the API version, here
+#' For example \code{https://graph.facebook.com/v2.3}
 #'
 #' @examples \dontrun{
 #' ## Copy and paste token created at FB Graph API Explorer
@@ -30,11 +33,11 @@
 #'	results.json <- facebook.query(query="me/posts/?limit=10", token=token)
 #' }
 #'
-facebook.query <- function(query, token){
+facebook.query <- function(query, token, endpoint = "https://graph.facebook.com/v2.3"){
   
   url <- URLencode(
     paste0(
-      "https://graph.facebook.com/v2.3/",
+      ifelse(!is.null(endpoint) & length(endpoint)>0, ifelse((!grepl('/$', endpoint) & !grepl('^/', query)), paste0(endpoint,"/"), endpoint), ""),
       query,
       ifelse(grepl("\\?",query), "", "?")
     )
