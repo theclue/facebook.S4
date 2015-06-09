@@ -44,27 +44,17 @@ facebook.search <- function(query, token, n=200, type="page", fields="id,name"){
   
   limit <- ifelse(is.null(n), 200, n)
   
-  pages.fields.url <- paste0(unique(
-    unlist(strsplit(fields, split = ","))),
-    collapse = ","
-  )
+  parsed <- parse.input.fields(fields)
   
-  pages.fields <- paste0(unique(
-    unlist(strsplit(gsub('\\.fields\\((.*?)\\)','', 
-                         gsub('\\.type\\((.*?)\\)','', fields, perl = TRUE)
-                         , perl = TRUE), split = ","))),
-    collapse = ","
-  )
-  
-  url <- URLencode(paste0(
-    "https://graph.facebook.com/v2.3/search?q=",
+  query <- paste0(
+    "search?q=",
     paste0(query, collapse = " "),
     "&type=",
     type,
     "&limit=",
     limit,
-    "&fields=", pages.fields.url
-  ))
+    "&fields=", parsed$url
+  )
   
   # Pagination using a lambda function
   all.Pages  <- (function() {
@@ -75,12 +65,12 @@ facebook.search <- function(query, token, n=200, type="page", fields="id,name"){
     repeat {
       pagedata <- NULL
       if(page == 0){
-        pagedata <- callAPI(url=url , token=token)
+        pagedata <- facebook.query(query=query , token=token)
       } else {
-        pagedata <- callAPI(url=next.url, token=token)
+        pagedata <- facebook.query(query=next.url, token=token, endpoint=NULL)
       }
       next.url <- pagedata$paging$`next`
-      p.page <- detailsDataToDF(pagedata$data, fields = pages.fields)
+      p.page <- detailsDataToDF(pagedata$data, fields = parsed$fields)
       
       if(!is.null(p.page) && nrow(p.page) > 0) {
         p <- rbind.fill(p, p.page)
@@ -93,13 +83,9 @@ facebook.search <- function(query, token, n=200, type="page", fields="id,name"){
            is.null(next.url)
       )
       {
-        cat(paste0("Found ", min(n, total.pages), " ", paste0(type, ifelse(total.pages == 1, "", "s")), " for '", paste(query, collapse = " "), "'.\n"))
         p$type = type
         return(head(p, n))
       }
-      
-      # Graceful waiting before next call
-      Sys.sleep(0.5)
       
     }
   })()
