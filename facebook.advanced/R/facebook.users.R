@@ -48,29 +48,8 @@ facebook.users <- function(users,
   
   users.pagination.define <- 25
   
-  users.fields.url <- paste0(unique(
-    unlist(strsplit(user.fields, split = ","))),
-    collapse = ","
-  )
-  
-  users.fields <- paste0(unique(
-    unlist(strsplit(gsub('\\.fields\\((.*?)\\)','', 
-                         gsub('\\.type\\((.*?)\\)','', user.fields, perl = TRUE)
-                         , perl = TRUE), split = ","))),
-    collapse = ","
-  )
-
-  pages.fields.url <- paste0(unique(
-    unlist(strsplit(page.fields, split = ","))),
-    collapse = ","
-  )
-  
-  pages.fields <- paste0(unique(
-    unlist(strsplit(gsub('\\.fields\\((.*?)\\)','', 
-                         gsub('\\.type\\((.*?)\\)','', page.fields, perl = TRUE)
-                         , perl = TRUE), split = ","))),
-    collapse = ","
-  )
+  parsed.user <- parse.input.fields(user.fields)
+  parsed.page <- parse.input.fields(page.fields)
   
   users.v <- unique(unlist(strsplit(users, split = ",")))
   users.f <- rep(seq_len(ceiling(length(users.v) / users.pagination.define)),each = users.pagination.define,length.out = length(users.v))
@@ -78,8 +57,8 @@ facebook.users <- function(users,
   
   if(length(users.chunks) > 1){
     
-    # Init the progress bar to the number of queries that will be performed (2 queries for each chunk)
-    .progress$init((length(users.chunks)*2)+1)
+    # Init the progress bar to the number of queries that will be performed (3 queries for each chunk)
+    .progress$init((length(users.chunks)*3)+1)
     .progress$step()
     
     do.call(rbind,
@@ -92,62 +71,68 @@ facebook.users <- function(users,
   }
   
   else {
-
-    ## first query: checking what users are actual users vs pages
+    
+    ## first query: checking which users are actual users vs pages
     content <- facebook.query(query=paste0("?ids=", paste0(users.v, collapse=",")), token=token)
     
     actual.users <- which(unlist(lapply(content, function(x) is.null(x$category))))
     actual.pages <- which(unlist(lapply(content, function(x) !is.null(x$category))))
 
+    # Advance the progress bar
+    if(inherits(try(.progress$step(), silent=T), "try-error")){
+      .progress$init((length(users.chunks)*3)+1)
+      .progress$step()
+    }
+    
     all.df <- rbind.fill((function() {
-
-    if (length(actual.users)>0){
-
-      query <- paste0(
-        "?ids=",
-        paste0(names(actual.users), collapse = ","),
-        "&fields=", users.fields.url
-      )
-
-      content <- facebook.query(query=query, token=token)
+      
+      if (length(actual.users)>0){
+        
+        query <- paste0(
+          "?ids=",
+          paste0(names(actual.users), collapse = ","),
+          "&fields=", parsed.user$url
+        )
+        
+        content <- facebook.query(query=query, token=token)
+        
+        return(detailsDataToDF(content, fields = parsed.user$fields))
+      } else return(data.frame())
       
       # Advance the progress bar
       if(inherits(try(.progress$step(), silent=T), "try-error")){
-        .progress$init((length(users.chunks)*2)+1)
+        .progress$init((length(users.chunks)*3)+1)
         .progress$step()
       }
       
-      return(detailsDataToDF(content, fields = users.fields))
-    } else return(data.frame())
-      
     })()
     , (function() {
-      
+
       if (length(actual.pages)>0){
         
         query <- paste0(
           "?ids=",
           paste0(names(actual.pages), collapse = ","),
-          "&fields=", pages.fields.url
+          "&fields=", parsed.page$url
         )
-
+        
         content <- facebook.query(query=query, token=token)
         
-        # Advance the progress bar
-        if(inherits(try(.progress$step(), silent=T), "try-error")){
-          .progress$init((length(users.chunks)*2)+1)
-          .progress$step()
-        }
-        
-        return(detailsDataToDF(content, fields = pages.fields))
+        return(detailsDataToDF(content, fields = parsed.page$fields))
       } else return(data.frame())
+
+      # Advance the progress bar
+      if(inherits(try(.progress$step(), silent=T), "try-error")){
+        .progress$init((length(users.chunks)*3)+1)
+        .progress$step()
+      }
       
     }
-
-  )())
-  # returning in original order of users
-  # TODO: Something still wrong here...
-  return(all.df[order(match(all.df$id, users.v)),])
-  
+    
+    )())
+    # returning in original order of users
+    # TODO: Something still wrong here...
+    return(all.df[order(match(all.df$id, users.v)),])
+    
   }
 }

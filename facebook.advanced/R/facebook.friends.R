@@ -47,6 +47,8 @@ facebook.friends <- function(users="me", token, fields = "id,name", .progress = 
     collapse = ","
   )
   
+  parsed <- parse.input.fields(fields)
+  
   friends.v <- unique(unlist(strsplit(users, split = ",")))
   friends.f <- rep(seq_len(ceiling(length(friends.v) / friends.pagination.define)),each = friends.pagination.define,length.out = length(friends.v))
   friends.chunks <- split(friends.v, f = friends.f)
@@ -73,7 +75,7 @@ facebook.friends <- function(users="me", token, fields = "id,name", .progress = 
       paste0(
         "?ids=",
         paste0(friends.v, collapse = ","),
-        "&fields=id,name,friends.summary(false){", friends.fields, "}"
+        "&fields=id,name,friends.summary(false){", parsed$url, "}"
       )
     
     content <- facebook.query(query = url, token = token)
@@ -100,7 +102,7 @@ facebook.friends <- function(users="me", token, fields = "id,name", .progress = 
                                }
                                next.url <- friendsdata$paging$`next`
                                
-                               f.page <- detailsDataToDF(friendsdata$data, fields = friends.fields)
+                               f.page <- detailsDataToDF(friendsdata$data, fields = parsed$fields)
                                if(!is.null(f.page) && nrow(f.page) > 0) {
 
                                  f.page$parent.id <- sublist$id
