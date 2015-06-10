@@ -4,21 +4,27 @@
 \alias{facebook.friends}
 \title{Extract list of friends with their information}
 \usage{
-facebook.friends(token, users = "me", fields = "id,name")
+facebook.friends(users = "me", token, fields = "id,name",
+  .progress = create_progress_bar())
 }
 \arguments{
+\item{users}{vector or comma-separated string of users to get friends}
+
 \item{token}{Either a temporary access token created at
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
 created with \code{fbOAuth}.}
 
 \item{fields}{vector or comma-separated string of fields to get}
+
+\item{.progress}{progress_bar object as defined in the plyr package.
+By default the \code{none} progress bar is used, which prints
+nothing to the console.}
 }
 \description{
 \code{facebook.friends} retrieves information about the user's friends.
 }
 \details{
-This function requires the use of a OAuth token with extended
-permissions. After the introduction of version 2.0 of the Graph API,
+After the introduction of version 2.0 of the Graph API,
 only friends who are using the application that you used to generate the
 token to query the API will be returned.
 }

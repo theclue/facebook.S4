@@ -4,7 +4,7 @@
 \alias{facebook.query}
 \title{Perform a generic query}
 \usage{
-facebook.query(query, token)
+facebook.query(query, token, endpoint = "https://graph.facebook.com/v2.3")
 }
 \arguments{
 \item{query}{string containing the URL fragment for the FB Graph API}
@@ -12,6 +12,9 @@ facebook.query(query, token)
 \item{token}{Either a temporary access token created at
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
 created with \code{fbOAuth}.}
+
+\item{endpoint}{string with the endpoint to the FB Graph. You can optionally end the URI with the API version, here
+For example \code{https://graph.facebook.com/v2.3}}
 }
 \description{
 \code{query} performs a generic query on Facebook and returns a list reflecting the raw json tree
@@ -19,7 +22,7 @@ given by the API.
 }
 \details{
 Write the query as you would do using the Graph Explroer at \url{https://developers.facebook.com/tools/explorer}
-but don't include the API version number and the trailing slashes.
+without including the API version number and the trailing slashes.
 
 Please note that this function has no automatic paging support.
 }

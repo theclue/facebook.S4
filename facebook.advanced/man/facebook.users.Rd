@@ -6,7 +6,8 @@
 \usage{
 facebook.users(users, token,
   user.fields = "id,name,first_name,last_name,gender,locale,picture.fields(url).type(large)",
-  page.fields = "id,name,category,picture.fields(url).type(large)")
+  page.fields = "id,name,category,picture.fields(url).type(large)",
+  .progress = create_progress_bar())
 }
 \arguments{
 \item{users}{A vector of user or page IDs.}
@@ -17,13 +18,21 @@ created with \code{fbOAuth}.}
 
 \item{page.fields}{vector or comma-separated string of fields to get (for page IDs)}
 
+\item{.progress}{progress_bar object as defined in the plyr package.
+By default the \code{none} progress bar is used, which prints
+nothing to the console.}
+
 \item{users.fields}{vector or comma-separated string of fields to get (for user IDs)}
 }
 \description{
-\code{facebok.users} retrieves public information about one or more Facebook users.
+\code{facebok.users} retrieves public information about one or more Facebook users or pages.
 
 After version 2.0 of the Facebook API, only id, name, and picture are available
 through the API. All the remaining fields will be missing.
+
+Since users and pages have different sets of attributes and you won't know in advance if a (commenting)
+user is a page or not, this function will extract both. Parameters \code{users.fields} and \code{pages.fields}
+are used to drive which attributes to get.
 }
 \examples{
 \dontrun{
