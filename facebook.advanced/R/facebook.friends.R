@@ -71,14 +71,14 @@ facebook.friends <- function(users="me", token, fields = "id,name", .progress = 
   
   else {
     
-    url <- 
+    query <- 
       paste0(
         "?ids=",
         paste0(friends.v, collapse = ","),
         "&fields=id,name,friends.summary(false){", parsed$url, "}"
       )
     
-    content <- facebook.query(query = url, token = token)
+    content <- facebook.query(query = query, token = token)
     
     # Friends
     all.Friends <- do.call(rbind.fill,
