@@ -1,11 +1,11 @@
-#' @rdname getLikes
+#' @rdname facebook.users.likes
 #' @export
 #'
 #' @title 
 #' Extract list of likes from Facebook users
 #'
 #' @description
-#' \code{getLikes} retrieves information about the likes from a list of Facebook IDs and/or names.
+#' \code{facebook.users.likes} retrieves information about the likes from a list of Facebook IDs and/or names.
 #' 
 #' @details
 #' 
@@ -21,31 +21,38 @@
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
 #' @seealso \code{\link{facebook.friends}}, \code{\link{fbOAuth}}
 #'
+#' @param users A vector or comma-delimited string with IDs or screen names.
+#' 
 #' @param token Either a temporary access token created at
 #' \url{https://developers.facebook.com/tools/explorer} or the OAuth token 
 #' created with \code{fbOAuth}.
 #'
-#' @param user A vector or comma-delimited string with IDs or screen names.
-#'
 #' @param n Maximum number of likes to return for each user.
+#' 
+#' @param fields vector or comma-separated string of fields to get
+#' 
+#' @param .progress progress_bar object as defined in the plyr package.
+#' By default the \code{none} progress bar is used, which prints
+#' nothing to the console.
 #'
 #' @examples \dontrun{
 #'  load("fb_oauth")
-#'  me.likes <- getLikes(users="me", token=fb_oauth)
+#'  me.likes <- facebook.users.likes(users="me", token=fb_oauth)
 #' }
 #'
 
-getLikes <- function(users, n=500, token, fields="category,name,id,created_time"){
+facebook.users.likes <- function(users, 
+                                 token, 
+                                 n=500, 
+                                 fields="category,name,id,created_time",
+                                 .progress = create_progress_bar()){
   
   
   details.pagination.define <- 500
-  likes.pagination.define <- 10  
+  likes.pagination.define <- 10
   
+  parsed.user.likes <- parse.input.fields(fields)
   
-  likes.fields <- paste0(unique(
-    unlist(strsplit(fields, split = ","))),
-    collapse = ","
-  )
   
   likes.v <- unique(unlist(strsplit(users, split = ",")))
   likes.f <- rep(seq_len(ceiling(length(likes.v) / likes.pagination.define)),each = likes.pagination.define,length.out = length(likes.v))
@@ -53,38 +60,27 @@ getLikes <- function(users, n=500, token, fields="category,name,id,created_time"
   
   if(length(likes.chunks) > 1){
     
+    # Init the progress bar
+    .progress$init(length(users)+1)
+    .progress$step()
+    
+    # Recursive calls for each chunk
     do.call(rbind,
             lapply(likes.chunks, function(single.chunk) {
-              getLikes(users = single.chunk, n = n,  token = token, fields = fields)
-              
+              facebook.users.likes(users = single.chunk, token = token, n = n, fields = fields, .progress = .progress)         
             })
-    )
-    
+    )   
   }
   
   else {
     
-    url <- paste0(
-      "https://graph.facebook.com/v2.3/?ids=",
+    query <- paste0(
+      "?ids=",
       paste0(likes.v, collapse = ","),
       "&fields=id,name,likes{", likes.fields, "}"
     )
     
-    content <- callAPI(url=url, token=token)
-    
-    # Check for permission
-    if (length(content)==0){ 
-      stop("You're not authorized to get this information, Please check your permissions before retrying.")
-    }  
-    # error traps: retry 3 times if error
-    error <- 0
-    
-    while (length(content$error_code)>0){
-      Sys.sleep(1)
-      error <- error + 1
-      content <- callAPI(url=url, token=token)    
-      if (error==3){ stop(content$error_msg) }
-    }
+    content <- facebook.query(query=query, token=token)
     
     # Likes
     all.Likes <- data.frame()
@@ -96,30 +92,30 @@ getLikes <- function(users, n=500, token, fields="category,name,id,created_time"
                              l <- data.frame()
                              total.likes <- 0
                              
-                             # TODO: make a better log
-                             cat(paste("\nGetting likes for user ", sublist$name, "...", sep = ""))
+                             # Advance the progress bar
+                             if(inherits(try(.progress$step(), silent=T), "try-error")){
+                               .progress$init(length(users)+1)
+                               .progress$step()
+                             }
                              
                              repeat {
                                likesdata <- NULL
                                if(page == 0){
                                  likesdata <- sublist$likes 
                                } else {
-                                 likesdata <- callAPI(url=next.url, token=token)
+                                 likesdata <- facebook.query(query=next.url, token=token, endpoint=NULL)
                                }
                                next.url <- likesdata$paging$`next`
                                
                                l.page <- detailsDataToDF(likesdata$data, fields = likes.fields)
                                
-                               
                                if(!is.null(l.page) && nrow(l.page) > 0) {
-                                 # TODO: use detailsDataToToDF here instead
+                                 
                                  l.page$parent.id <- sublist$id
                                  l.page$parent.name <- sublist$name
                                  l <- rbind.fill(l, l.page)
                                  page <- page + 1
                                  total.likes <- total.likes + nrow(l.page)
-                                 
-                                 cat(paste("...", total.likes, sep = ""))
                                  
                                }
                                
@@ -127,12 +123,8 @@ getLikes <- function(users, n=500, token, fields="category,name,id,created_time"
                                     is.null(next.url)
                                )
                                {
-                                 cat("...Done!\n")
                                  return(head(l, n))
                                }
-                               
-                               # Graceful waiting before next call
-                               Sys.sleep(0.5)
                                
                              }
                            }
@@ -140,21 +132,6 @@ getLikes <- function(users, n=500, token, fields="category,name,id,created_time"
       )
       
     }
-    
     return(all.Likes)
   }
 }
-
-# query <- paste0('https://graph.facebook.com/', user, 
-#                 '?fields=likes.limit(', n, ').fields(id,name,website)')
-# content <- callAPI(query, token)
-# df <- userLikesToDF(content$likes$data)
-# next_url <- content$likes$paging$`next`
-# while (!is.null(next_url)){
-#   content <- callAPI(next_url, token)
-#   df <- rbind(df, userLikesToDF(content$data))
-#   next_url <- content$paging$`next`
-# }
-# return(df)
-
-
