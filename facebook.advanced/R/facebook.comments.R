@@ -80,7 +80,7 @@ facebook.comments <- function(posts,
         "&fields=id",
         ",comments.summary(true)",
         ifelse(n > 0, paste0(".fields(", parsed$url, ").limit(", ifelse(n > details.pagination.define, details.pagination.define, n), ")"), ".limit(0)"),
-        ",likes.summary(false)")
+        ",likes.summary(false).limit(0)")
     )
     
     content <- facebook.query(query = query, token = token)
