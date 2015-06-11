@@ -46,14 +46,16 @@ facebook.search <- function(query, token, n=200, type="page", fields="id,name"){
   
   parsed <- parse.input.fields(fields)
   
-  query <- paste0(
-    "search?q=",
-    paste0(query, collapse = " "),
-    "&type=",
-    type,
-    "&limit=",
-    limit,
-    "&fields=", parsed$url
+  query <- URLencode(
+    paste0(
+      "search?q=",
+      paste0(query, collapse = " "),
+      "&type=",
+      type,
+      "&limit=",
+      limit,
+      "&fields=", parsed$url
+    )
   )
   
   # Pagination using a lambda function

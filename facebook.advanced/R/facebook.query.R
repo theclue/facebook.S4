@@ -35,13 +35,12 @@
 #'
 facebook.query <- function(query, token, endpoint = "https://graph.facebook.com/v2.3"){
   
-  url <- URLencode(
+  url <- 
     paste0(
       ifelse(!is.null(endpoint) & length(endpoint)>0, ifelse((!grepl('/$', endpoint) & !grepl('^/', query)), paste0(endpoint,"/"), endpoint), ""),
       query,
       ifelse(grepl("\\?",query), "", "?")
     )
-  )
   
   content <- callAPI(url=url, token=token)
   

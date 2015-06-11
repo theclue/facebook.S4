@@ -74,10 +74,12 @@ facebook.users.likes <- function(users,
   
   else {
     
-    query <- paste0(
-      "?ids=",
-      paste0(likes.v, collapse = ","),
-      "&fields=id,name,likes{", likes.fields, "}"
+    query <- URLencode(
+      paste0(
+        "?ids=",
+        paste0(likes.v, collapse = ","),
+        "&fields=id,name,likes{", parsed.user.likes$url, "}"
+      )
     )
     
     content <- facebook.query(query=query, token=token)
@@ -107,7 +109,7 @@ facebook.users.likes <- function(users,
                                }
                                next.url <- likesdata$paging$`next`
                                
-                               l.page <- detailsDataToDF(likesdata$data, fields = likes.fields)
+                               l.page <- detailsDataToDF(likesdata$data, fields = parsed.user.likes$fields)
                                
                                if(!is.null(l.page) && nrow(l.page) > 0) {
                                  

@@ -77,7 +77,7 @@ facebook.users <- function(users,
     
     actual.users <- which(unlist(lapply(content, function(x) is.null(x$category))))
     actual.pages <- which(unlist(lapply(content, function(x) !is.null(x$category))))
-
+    
     # Advance the progress bar
     if(inherits(try(.progress$step(), silent=T), "try-error")){
       .progress$init((length(users.chunks)*3)+1)
@@ -93,10 +93,12 @@ facebook.users <- function(users,
       
       if (length(actual.users)>0){
         
-        query <- paste0(
-          "?ids=",
-          paste0(names(actual.users), collapse = ","),
-          "&fields=", parsed.user$url
+        query <- URLencode(
+          paste0(
+            "?ids=",
+            paste0(names(actual.users), collapse = ","),
+            "&fields=", parsed.user$url
+          )
         )
         
         content <- facebook.query(query=query, token=token)
@@ -112,20 +114,22 @@ facebook.users <- function(users,
         .progress$init((length(users.chunks)*3)+1)
         .progress$step()
       }
-
+      
       if (length(actual.pages)>0){
         
-        query <- paste0(
-          "?ids=",
-          paste0(names(actual.pages), collapse = ","),
-          "&fields=", parsed.page$url
+        query <- URLencode(
+          paste0(
+            "?ids=",
+            paste0(names(actual.pages), collapse = ","),
+            "&fields=", parsed.page$url
+          )
         )
         
         content <- facebook.query(query=query, token=token)
         
         return(detailsDataToDF(content, fields = parsed.page$fields))
       } else return(data.frame())
-    
+      
     }
     
     )())

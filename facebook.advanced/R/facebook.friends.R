@@ -71,12 +71,13 @@ facebook.friends <- function(users="me", token, fields = "id,name", .progress = 
   
   else {
     
-    query <- 
+    query <- URLencode(
       paste0(
         "?ids=",
         paste0(friends.v, collapse = ","),
         "&fields=id,name,friends.summary(false){", parsed$url, "}"
       )
+    )
     
     content <- facebook.query(query = query, token = token)
     
