@@ -8,8 +8,8 @@
 #' \code{facebook.users.likes} retrieves information about the likes from a list of Facebook IDs and/or names.
 #' 
 #' @details
-#' 
-#' This function requires the use of an OAuth token with the following
+#' This is a tiny wrapper around the generic \code{\link{facebook.get}} and 
+#' requires the use of an OAuth token with the following
 #' permissions: user_likes, friends_likes
 #' 
 #' This function requires the use of a OAuth token with user_likes 
@@ -47,93 +47,6 @@ facebook.users.likes <- function(users,
                                  fields="category,name,id,created_time",
                                  .progress = create_progress_bar()){
   
+  return(facebook.get(ids = users, type = "likes", token = token, n = n, fields = fields, .progress = .progress))
   
-  details.pagination.define <- 500
-  likes.pagination.define <- 10
-  
-  parsed.user.likes <- parse.input.fields(fields)
-  
-  
-  likes.v <- unique(unlist(strsplit(users, split = ",")))
-  likes.f <- rep(seq_len(ceiling(length(likes.v) / likes.pagination.define)),each = likes.pagination.define,length.out = length(likes.v))
-  likes.chunks <- split(likes.v, f = likes.f)
-  
-  if(length(likes.chunks) > 1){
-    
-    # Init the progress bar
-    .progress$init(length(users)+1)
-    .progress$step()
-    
-    # Recursive calls for each chunk
-    do.call(rbind,
-            lapply(likes.chunks, function(single.chunk) {
-              facebook.users.likes(users = single.chunk, token = token, n = n, fields = fields, .progress = .progress)         
-            })
-    )   
-  }
-  
-  else {
-    
-    query <- URLencode(
-      paste0(
-        "?ids=",
-        paste0(likes.v, collapse = ","),
-        "&fields=id,name,likes{", parsed.user.likes$url, "}"
-      )
-    )
-    
-    content <- facebook.query(query=query, token=token)
-    
-    # Likes
-    all.Likes <- data.frame()
-    if (n > 0) {
-      
-      all.Likes <- do.call(rbind.fill,
-                           lapply(content, function(sublist) {
-                             page <- 0
-                             l <- data.frame()
-                             total.likes <- 0
-                             
-                             # Advance the progress bar
-                             if(inherits(try(.progress$step(), silent=T), "try-error")){
-                               .progress$init(length(users)+1)
-                               .progress$step()
-                             }
-                             
-                             repeat {
-                               likesdata <- NULL
-                               if(page == 0){
-                                 likesdata <- sublist$likes 
-                               } else {
-                                 likesdata <- facebook.query(query=next.url, token=token, endpoint=NULL)
-                               }
-                               next.url <- likesdata$paging$`next`
-                               
-                               l.page <- detailsDataToDF(likesdata$data, fields = parsed.user.likes$fields)
-                               
-                               if(!is.null(l.page) && nrow(l.page) > 0) {
-                                 
-                                 l.page$parent.id <- sublist$id
-                                 l.page$parent.name <- sublist$name
-                                 l <- rbind.fill(l, l.page)
-                                 page <- page + 1
-                                 total.likes <- total.likes + nrow(l.page)
-                                 
-                               }
-                               
-                               if(total.likes >= n |
-                                    is.null(next.url)
-                               )
-                               {
-                                 return(head(l, n))
-                               }
-                               
-                             }
-                           }
-                           )
-      )
-      
-    }
-    return(all.Likes)
-  }
 }

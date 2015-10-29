@@ -38,8 +38,8 @@
 #' ## Getting information about Facebook's Facebook Page
 #'	load("fb_oauth")
 #'	fb.page <- facebook.pages("9thcirclegames", token=fb_oauth)
-#' ## Getting at most 2000 likesfor the ten most recent posts
-#'	recent.posts.likes <- facebook.likes(post=fb.page$posts[10,]$id, n=2000, token=fb_oauth)
+#' ## Getting at most 2000 likes for the ten most recent posts
+#'	recent.posts.likes <- facebook.likes(posts = fb.page$posts[10,]$id, n = 2000, token = fb_oauth)
 #' }
 #'
 facebook.likes <- function(posts, 
@@ -80,7 +80,7 @@ facebook.likes <- function(posts,
         "&fields=id",
         ",likes.summary(true)",
         ifelse(n > 0, paste0(".fields(", parsed$url, ").limit(", ifelse(n > details.pagination.define, details.pagination.define, n), ")"), ".limit(0)"),
-        ",comments.summary(false)")
+        ",comments.summary(false).limit(0)")
     )
     
     content <- facebook.query(query = query, token = token)
