@@ -7,7 +7,7 @@
 #' @description
 #' \code{getPages} returns a list of two data frames: \code{pages} contains all metadata
 #' of the pages while \code{posts} has a summary of the posts of the pages.
-#' You can then use \code{\link{getPosts}} to further dig into posts details.
+#' You can then use \code{\link{facebook.posts}} to further dig into posts details.
 #'
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
