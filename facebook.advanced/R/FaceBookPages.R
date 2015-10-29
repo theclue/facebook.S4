@@ -39,7 +39,6 @@ setMethod("c",
           }
 )
 
-
 setMethod("as.list",
           signature(x = "FacebookPageSet"),
           function (x, ...) 
