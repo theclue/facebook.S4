@@ -1,8 +1,14 @@
-setClass("FacebookPageSet",
+#' A class to represent a collection of valid Facebook Pages.
+#'
+#' @slot pages character vector with the ids/names of all the pages of the collection.
+#' @slot fields character vector with the content field of each page for the collection 
+#' @slot data named list representing the raw collection
+#' 
+#' @rdname FacebookPageset 
+setClass("FacebookPageset",
          
          # Define the slots
          slots = c(pages = "character",
-                   parameters = "list",
                    fields= "character",
                    data="list"
          ),
@@ -13,15 +19,16 @@ setClass("FacebookPageSet",
          }
 )
 
+#' @describeIn FacebookPageset combines two or more Facebook Pages collections into a new collection
 setMethod("c",
-          signature(x = "FacebookPageSet"),
+          signature(x = "FacebookPageset"),
           function (x, ..., recursive = FALSE) 
           {
             optional.elems <- list(...)
-            empty.set <- new("FacebookPageSet", parameters = x@parameters, fields = x@fields)
+            empty.set <- new("FacebookPageset", fields = x@fields)
             
             lapply(optional.elems, function(list.elem) {
-              stopifnot("FacebookPageSet" %in% class(list.elem))
+              stopifnot("FacebookPageset" %in% class(list.elem))
             })
             
             empty.set@data<- (do.call(c, list(x@data,
@@ -29,6 +36,7 @@ setMethod("c",
             )
             ))
             
+            # TODO: add dummy fields for subcollections without certain fields?
             empty.set@fields<- unique(do.call(c, list(x@fields,
                                                       do.call(c,lapply(optional.elems, slot, "fields"))
             )
@@ -39,13 +47,14 @@ setMethod("c",
           }
 )
 
+#' @describeIn FacebookPageset converts and combines one or more Facebook Pages collections into a named list
 setMethod("as.list",
-          signature(x = "FacebookPageSet"),
+          signature(x = "FacebookPageset"),
           function (x, ...) 
           {
             optional.elems <- list(...)
             lapply(optional.elems, function(list.elem) {
-              stopifnot("FacebookPageSet" %in% class(list.elem))
+              stopifnot("FacebookPageset" %in% class(list.elem))
             })
             return(do.call(c, list(x@data,
                                    do.call(c,lapply(optional.elems, slot, "data"))
@@ -56,7 +65,7 @@ setMethod("as.list",
 
 
 setMethod("initialize",
-          signature(x = "FacebookPageSet"),
+          signature(.Object = "FacebookPageset"),
           definition=function(.Object, pages=NULL, token=NULL, parameters=list(), fields=character(0)){
             
             # Validate parameters
@@ -65,11 +74,8 @@ setMethod("initialize",
             # Create an empty object
             if(is.null(pages) | is.null(token)){
               .Object@pages <- character(0)
-              .Object@parameters <- parameters
               return(.Object)
             }
-            
-            .Object@parameters <- parameters
             
             # Get the pages
             pages.pagination.define <- 25
@@ -86,7 +92,7 @@ setMethod("initialize",
               
               do.call(rbind,
                       lapply(c, function(single.chunk) {
-                        new("FacebookPageSet", pages = pages, token = token, parameters = parameters, fiels = fields )
+                        new("FacebookPageset", pages = pages, token = token, parameters = parameters, fiels = fields )
                       })
               )
               
@@ -94,9 +100,10 @@ setMethod("initialize",
             
             else {
               
+              # TODO: add parameters
               url <- paste0(
                 "https://graph.facebook.com/v2.3/?ids=", paste0(pages.v, collapse = ","),
-                "&fields=", page.fields
+                ifelse(length(page.fields), "&fields=", page.fields, "")
               )
               
               content <- callAPI(url=url, token=token)
@@ -133,24 +140,13 @@ setMethod("initialize",
 )
 
 # Commodity constructor
-FacebookPageSet <- function(pages, 
+FacebookPageset <- function(pages, 
                             token, 
                             parameters = list(), 
                             fields = character(0)){
   
-  return(new("FacebookPageSet", pages = pages, token = token, parameters = parameters, fields = fields))
+  return(new("FacebookPageset", pages = pages, token = token, parameters = parameters, fields = fields))
   
 }
 
-ciccio <- FacebookPageSet(pages="9thcirclegames", 
-                          token="CAACEdEose0cBADvheGGZBEBtr8fhoxy12hltKpvykvBhFJni79PT9jPOxS6T5149lGR2k5kj13us6hkJyV67ozdezmu45amjnMdJV1FWItHCHYM1llAjxrvOkM55n4i3u913Juh6XpHmdgdGCFOeaWMYgdBjd0NidZASxI9GNWE425xuEoWLzbMaK0zt0Qa5VkkZCBzj5XhzAwZAy0Okeo2vUbdNLnAZD", 
-                          fields = c("username", "name", "about", "category", "description", "likes", "link", "talking_about_count"))
-
-
-pasticcio <- FacebookPageSet(pages="NathanNeverSergioBonelliEditore,DegenesisRebirth", 
-                             token="CAACEdEose0cBADvheGGZBEBtr8fhoxy12hltKpvykvBhFJni79PT9jPOxS6T5149lGR2k5kj13us6hkJyV67ozdezmu45amjnMdJV1FWItHCHYM1llAjxrvOkM55n4i3u913Juh6XpHmdgdGCFOeaWMYgdBjd0NidZASxI9GNWE425xuEoWLzbMaK0zt0Qa5VkkZCBzj5XhzAwZAy0Okeo2vUbdNLnAZD", 
-                             fields = c("username", "name", "about", "category", "description", "likes", "link", "talking_about_count"))
-
-
-ciccio.bind <- c(ciccio, pasticcio, ciccio)
 
