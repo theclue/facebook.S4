@@ -52,9 +52,9 @@
 
 
 getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fields="id,username,name,about,category,description,likes,link,talking_about_count"){
-  
-  if(!is.null(since)) since <- ifelse("POSIXct" %in% class(since), since, as.numeric(formatFbDate(since)))
-  if(!is.null(until)) until <- ifelse("POSIXct" %in% class(until), until, as.numeric(formatFbDate(until)))
+
+  if(!is.null(since) & ("POSIXct" %in% class(since))) since <- as.numeric(formatFbDate(since))
+  if(!is.null(until) & ("POSIXct" %in% class(until))) until <- as.numeric(formatFbDate(until))
   
   pages.pagination.define <- 25
   posts.pagination.define <- 50
@@ -90,7 +90,7 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
       ifelse(!is.null(until), paste0(".until(", until, ")"), ""),
       ifelse(n > 0, "{id,from{id,name},message,created_time,type,link,shares,likes.limit(0).summary(true),comments.limit(0).summary(true)}", "")
     )
-    
+
     content <- callAPI(url=url, token=token)
     
     # Check for permission
