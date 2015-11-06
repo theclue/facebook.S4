@@ -4,7 +4,6 @@
 #' @slot fields character vector with the content field of each page for the collection 
 #' @slot data named list representing the raw collection
 #' 
-#' @rdname FacebookPageset 
 setClass("FacebookPageset",
          
          # Define the slots
@@ -19,7 +18,7 @@ setClass("FacebookPageset",
          }
 )
 
-#' @describeIn FacebookPageset combines two or more Facebook Pages collections into a new collection
+
 setMethod("c",
           signature(x = "FacebookPageset"),
           function (x, ..., recursive = FALSE) 
@@ -47,7 +46,6 @@ setMethod("c",
           }
 )
 
-#' @describeIn FacebookPageset converts and combines one or more Facebook Pages collections into a named list
 setMethod("as.list",
           signature(x = "FacebookPageset"),
           function (x, ...) 
@@ -62,7 +60,6 @@ setMethod("as.list",
             ))
           }
 )
-
 
 setMethod("initialize",
           signature(.Object = "FacebookPageset"),
@@ -139,7 +136,6 @@ setMethod("initialize",
           }
 )
 
-# Commodity constructor
 FacebookPageset <- function(pages, 
                             token, 
                             parameters = list(), 
