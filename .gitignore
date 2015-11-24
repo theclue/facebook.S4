@@ -7,3 +7,4 @@ creating-credentials.r
 tmp/
 .RData
 .Rhistory
+.httr-oauth

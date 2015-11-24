@@ -69,9 +69,9 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
   
   if(length(pages.chunks) > 1){
     
-    do.call(rbind,
+    do.call(rbind.fill,
             lapply(pages.chunks, function(single.chunk) {
-              getPages(pages = single.chunk, token = token, n = n, since = since, until = until, feed=FALSE, fields = fields)
+              getPages(pages = single.chunk, token = token, n = n, since = since, until = until, feed = feed, fields = fields)
               
             })
     )
