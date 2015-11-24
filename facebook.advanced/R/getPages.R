@@ -56,7 +56,7 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
   if(!is.null(since) & ("POSIXct" %in% class(since))) since <- as.numeric(formatFbDate(since))
   if(!is.null(until) & ("POSIXct" %in% class(until))) until <- as.numeric(formatFbDate(until))
   
-  pages.pagination.define <- 25
+  pages.pagination.define <- 50
   posts.pagination.define <- 50
   
   page.fields <- paste0(unique(
@@ -69,7 +69,7 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
   
   if(length(pages.chunks) > 1){
     
-    do.call(rbind.fill,
+    do.call(rbind,
             lapply(pages.chunks, function(single.chunk) {
               getPages(pages = single.chunk, token = token, n = n, since = since, until = until, feed = feed, fields = fields)
               
