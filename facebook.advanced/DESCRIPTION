@@ -1,6 +1,7 @@
 Package: facebook.advanced
 Title: Access to Facebook API v2 via R
-Description: Provides an interface to the Facebook API. Originally forked from RFacebook from Pablo Barbera.
+Description: Provides an interface to the Facebook API. Originally forked from
+    RFacebook from Pablo Barbera.
 Version: 1.0.0
 Date: 2015/06/01
 Author: Gabriele Baldassarre <gabriele@gabrielebaldassarre.com>
@@ -8,7 +9,33 @@ Maintainer: Gabriele Baldassarre <gabriele@gabrielebaldassarre.com>
 Depends:
     R (>= 2.12.0),
     httr,
+    magrittr,
     rjson,
     httpuv,
     plyr
 License: MIT
+Collate:
+    'generic-methods.R'
+    'FacebookPageset.R'
+    'facebook.advanced-package.R'
+    'facebook.comments.R'
+    'facebook.friends.R'
+    'facebook.get.R'
+    'facebook.likes.R'
+    'facebook.newsfeed.R'
+    'facebook.pages.conversations.R'
+    'facebook.permissions.R'
+    'facebook.posts.R'
+    'facebook.query.R'
+    'facebook.search.R'
+    'facebook.users.R'
+    'facebook.users.likes.R'
+    'fb.Pages.class.R'
+    'fb.Posts.class.R'
+    'fbOAuth.R'
+    'getInsights.R'
+    'getNetwork.R'
+    'getPages.R'
+    'magrittr.R'
+    'updateStatus.R'
+    'utils.R'

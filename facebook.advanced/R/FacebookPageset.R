@@ -1,24 +1,50 @@
+#' @include generic-methods.R
+NULL
+
 #' A class to represent a collection of valid Facebook Pages.
 #'
 #' @slot pages character vector with the ids/names of all the pages of the collection.
 #' @slot fields character vector with the content field of each page for the collection 
 #' @slot data named list representing the raw collection
-#' 
+#' @name FacebookPageset-class
+#' @rdname FacebookPageset-class
+#' @author Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
+#' @exportClass FacebookPageset
+#' @family API Resources
 setClass("FacebookPageset",
-         
-         # Define the slots
          slots = c(pages = "character",
                    fields= "character",
                    data="list"
          ),
-         
-         # The inspector
          validity = function(object){
+           # TBD
            return(TRUE)
          }
 )
 
+#' @rdname facebookpageset-methods
+setMethod("[",
+  signature="FacebookPageset",
+  function(x,i,j,drop){
+    empty.set <- new("FacebookPageset")
+    
+    slot(empty.set, "fields", x@fields)
+    
+    slot(empty.set, "pages") <- (function(idx){
+      if(is.numeric(i)) return(x@pages[i])
+      return(x@pages[x@pages %in% as.character(i)])
+    })(i)
+    
+    slot(empty.set, "data") <- (function(idx){
+      if(is.numeric(i)) return(x@data[i])
+      return(x@data[x@data %in% as.character(i)])
+    })(i)
+    
+    return(empty.set)
+   }
+)
 
+#' @rdname facebookpageset-methods
 setMethod("c",
           signature(x = "FacebookPageset"),
           function (x, ..., recursive = FALSE) 
@@ -46,20 +72,6 @@ setMethod("c",
           }
 )
 
-setMethod("as.list",
-          signature(x = "FacebookPageset"),
-          function (x, ...) 
-          {
-            optional.elems <- list(...)
-            lapply(optional.elems, function(list.elem) {
-              stopifnot("FacebookPageset" %in% class(list.elem))
-            })
-            return(do.call(c, list(x@data,
-                                   do.call(c,lapply(optional.elems, slot, "data"))
-            )
-            ))
-          }
-)
 
 setMethod("initialize",
           signature(.Object = "FacebookPageset"),
@@ -97,12 +109,23 @@ setMethod("initialize",
             
             else {
               
-              # TODO: add parameters
+              query.parameters <- sub("&$", "",
+                                      sub('([[:punct:]])\\1+', '\\1',
+                                          do.call(paste, list(
+                                            lapply(seq_along(parameters), function(y, n, i) {
+                                              if(is.null((y[[i]]))) return("")
+                                              paste(n[[i]], y[[i]], sep="=")
+                                            }
+                                            , y=parameters, n=names(parameters)),
+                                            collapse = "&"))
+                                      )
+              )
               url <- paste0(
                 "https://graph.facebook.com/v2.3/?ids=", paste0(pages.v, collapse = ","),
-                ifelse(length(page.fields), "&fields=", page.fields, "")
+                ifelse(length(parameters), paste0("&", query.parameters), ""),
+                ifelse(length(page.fields), paste("&fields", page.fields, sep="="), "")
               )
-              
+
               content <- callAPI(url=url, token=token)
               
               # Check for permission
@@ -136,6 +159,8 @@ setMethod("initialize",
           }
 )
 
+#' @export
+#' @describeIn FacebookPageset-class Constructs a new \code{FacebookPageset} object.
 FacebookPageset <- function(pages, 
                             token, 
                             parameters = list(), 
@@ -145,4 +170,38 @@ FacebookPageset <- function(pages,
   
 }
 
+#' @export
+#' @describeIn FacebookPageset-class Checks whether \code{x} is a \code{FacebookPageSet}.
+is.Pageset <- function(x) is(x, "FacebookPageset")
 
+#' @export
+#' @rdname facebookpageset-methods
+as.list.FacebookPageset <- function (x, ...) 
+{
+  optional.elems <- list(...)
+  lapply(optional.elems, function(list.elem) {
+    stopifnot("FacebookPageset" %in% class(list.elem))
+  })
+  return(do.call(c, list(x@data,
+                         do.call(c,lapply(optional.elems, slot, "data"))
+  )
+  ))
+}
+setAs("FacebookPageset", "list", function(from) as.list.FacebookPageset(from))
+
+#' @rdname facebookpageset-methods
+setMethod("as.list", signature(x = "FacebookPageset"), as.list.FacebookPageset)
+
+#' @export
+#' @rdname facebookpageset-methods
+as.data.frame.FacebookPageset <- function (x, row.names = NULL, optional = FALSE, ...) {
+  df <- detailsDataToDF(x@data, x@fields)
+  if(row.names == TRUE){
+    row.names(df) <- x@pages
+  }
+  return(df)
+}
+setAs("FacebookPageset", "data.frame", function(from) as.data.frame.FacebookPageset(from))
+
+#' @rdname facebookpageset-methods
+setMethod("as.data.frame", signature(x = "FacebookPageset"), as.data.frame.FacebookPageset)
