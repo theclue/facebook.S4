@@ -56,7 +56,7 @@ getPages <- function(pages, token, n=100, since=NULL, until=NULL, feed=FALSE, fi
   if(!is.null(since) & ("POSIXct" %in% class(since))) since <- as.numeric(formatFbDate(since))
   if(!is.null(until) & ("POSIXct" %in% class(until))) until <- as.numeric(formatFbDate(until))
   
-  pages.pagination.define <- 50
+  pages.pagination.define <- 25
   posts.pagination.define <- 50
   
   page.fields <- paste0(unique(
