@@ -8,7 +8,7 @@ Author: Gabriele Baldassarre <gabriele@gabrielebaldassarre.com>
 Maintainer: Gabriele Baldassarre <gabriele@gabrielebaldassarre.com>
 Depends:
     R (>= 2.12.0),
-    httr,
+    httr (>= 1.0.0),
     magrittr,
     rjson,
     httpuv,
