@@ -1,4 +1,5 @@
-#' @rdname fbOAuth
+#' Auth
+#'
 #' @export
 fbOAuth <- function(app_id, app_secret, permissions="public_profile,user_friends", cache=TRUE)
 {

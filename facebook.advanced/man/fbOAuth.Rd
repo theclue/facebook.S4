@@ -2,8 +2,12 @@
 % Please edit documentation in R/fbOAuth.R
 \name{fbOAuth}
 \alias{fbOAuth}
+\title{Auth}
 \usage{
 fbOAuth(app_id, app_secret, permissions = "public_profile,user_friends",
   cache = TRUE)
+}
+\description{
+Auth
 }
 
