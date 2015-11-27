@@ -66,15 +66,14 @@ setMethod("initialize",
               
               .Object@id <- names(content)
               
+              # TODO: too sever filter
               .Object@fields <- unique(
                 do.call(c, lapply(
                   content, function(item){ names(item)[which(names(item) %in%  unlist(strsplit(element.fields, split = ",")))] }
                 )
                 )
               )
-              
-              print(content)
-              
+
               .Object@data <- do.call(list, lapply(content, function(item){
                 return(item[which(names(item) %in%  unlist(strsplit(element.fields, split = ",")))])
                 
