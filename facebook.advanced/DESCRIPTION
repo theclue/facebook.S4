@@ -16,7 +16,14 @@ Depends:
 License: MIT
 Collate:
     'generic-methods.R'
-    'FacebookPageset.R'
+    'FacebookGenericCollection-class.R'
+    'FacebookGenericCollection-methods.R'
+    'FacebookPagesCollection-class.R'
+    'FacebookPagesCollection-methods.R'
+    'FacebookPagesCollection.R'
+    'FacebookPostsCollection-class.R'
+    'FacebookPostsCollection-methods.R'
+    'FacebookPostsCollection.R'
     'facebook.advanced-package.R'
     'facebook.comments.R'
     'facebook.friends.R'
@@ -37,5 +44,7 @@ Collate:
     'getNetwork.R'
     'getPages.R'
     'magrittr.R'
+    'onAttach.R'
+    'onLoad.R'
     'updateStatus.R'
     'utils.R'
