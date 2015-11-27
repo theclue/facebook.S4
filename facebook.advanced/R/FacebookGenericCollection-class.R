@@ -24,10 +24,7 @@ setMethod("initialize",
             
             elements.pagination.define <- getOption("facebook.pagination")
             
-            element.fields <- paste0(unique(
-              unlist(strsplit(fields, split = ","))),
-              collapse = ","
-            )
+            parsed <- parse.input.fields(fields)
             
             elements.v <- unique(unlist(strsplit((function(){
               if(class(id)==class(.Object)) return(id@id)
@@ -59,26 +56,20 @@ setMethod("initialize",
               url <- paste0(
                 "https://graph.facebook.com/v", getOption("facebook.api"), "/?ids=", paste0(elements.v, collapse = ","),
                 ifelse(length(parameters), paste0("&", query.parameters), ""),
-                ifelse(length(element.fields), paste("&fields", element.fields, sep="="), "")
+                ifelse(length(fields), paste("&fields", parsed$url, sep="="), "")
               )
 
               content <- callAPI(url=url, token=token)
               
               .Object@id <- names(content)
               
-              # TODO: too sever filter
-              .Object@fields <- unique(
-                do.call(c, lapply(
-                  content, function(item){ names(item)[which(names(item) %in%  unlist(strsplit(element.fields, split = ",")))] }
-                )
-                )
-              )
+              .Object@fields <- parsed$fields
 
               .Object@data <- do.call(list, lapply(content, function(item){
-                return(item[which(names(item) %in%  unlist(strsplit(element.fields, split = ",")))])
+                return(item[which(names(item) %in%  unlist(strsplit(parsed$fields, split = ",")))])
                 
               }))
-              
+
             }
             return(.Object)
           }

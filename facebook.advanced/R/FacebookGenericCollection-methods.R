@@ -1,7 +1,7 @@
 setMethod("[",
           signature="FacebookGenericCollection",
           function(x,i,j,drop){
-
+            
             empty.set <- new(class(x))
             
             slot(empty.set, "fields") <- x@fields
@@ -33,7 +33,7 @@ setMethod("c",
             })
             
             empty.set@data <- (do.call(c, list(x@data,
-                                              do.call(c,lapply(optional.elems, slot, "data"))
+                                               do.call(c,lapply(optional.elems, slot, "data"))
             )
             ))
             
@@ -46,11 +46,23 @@ setMethod("c",
           }
 )
 
+#' TODO: better check for null
+#' @export
 as.data.frame.FacebookGenericCollection <- function (x, row.names = FALSE, optional = FALSE, ...) {
   df <- detailsDataToDF(x@data, x@fields)
+  
+  numeric.cols <- which(grepl("(total|count)", colnames(df), perl=TRUE))
+  logical.cols <- which(grepl("(has|can)", colnames(df), perl=TRUE))
+  datetime.cols <- which(grepl("time", colnames(df), perl=TRUE))
+  
+  df[,numeric.cols] <- as.numeric(df[,datetime.cols])
+  df[,datetime.cols] <- formatFbDate(df[,datetime.cols])
+  df[,logical.cols] <- as.logical(df[,logical.cols]) 
+  
   if(row.names == TRUE){
     row.names(df) <- x@id
   }
+  
   return(df)
 }
 setAs("FacebookGenericCollection", "data.frame", function(from) as.data.frame.FacebookGenericCollection(from))

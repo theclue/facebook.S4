@@ -32,7 +32,7 @@ facebook.permissions <- function(token){
   query <- "?ids=me&fields=permissions"
   content <- facebook.query(query = query, token = token)
   
-  permissions <- sapply(p$me$permissions$data, function(x) { if(x$status == "granted") return(x$permission) })
+  permissions <- sapply(content$me$permissions$data, function(x) { if(x$status == "granted") return(x$permission) })
   
   return(permissions)
   

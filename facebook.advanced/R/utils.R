@@ -1,3 +1,33 @@
+# detailsDataToDF <- function(json, fields = NULL){
+#   
+#   if(length(json) == 0 | is.null(fields)) return(NULL)
+#   
+#   # remove duplicates, then collate
+#   collate.fields <- paste0(unique(
+#     unlist(strsplit(fields, split = ","))),
+#     collapse = ","
+#   )
+#   
+#   do.call(rbind.fill,
+#           lapply(lapply(json, function(item) {
+#             do.call(data.frame,
+#                     list(lapply((item[which(names(item) %in%  unlist(strsplit(collate.fields, split = ",")))]), function(x){
+#                       if(!is.list(x) | (is.list(x) & length(x) > 0)) {
+#                         print(paste("prendo", names(x)))
+#                         print(length(x))
+#                         return(x)
+#                       } else {
+#                         print("salto")
+#                         return(NULL)
+#                       }
+#                     }), stringsAsFactors = FALSE)
+#             )
+#           }), function(l) {
+#             l
+#           })
+#   )
+# }
+
 detailsDataToDF <- function(json, fields = NULL){
   
   if(length(json) == 0 | is.null(fields)) return(NULL)
@@ -8,40 +38,14 @@ detailsDataToDF <- function(json, fields = NULL){
     collapse = ","
   )
   
-  do.call(rbind.fill,
-          lapply(lapply(json, function(item) {
-            do.call(data.frame,
-                    list(item[which(names(item) %in%  unlist(strsplit(collate.fields, split = ",")))],
-                         stringsAsFactors = FALSE)
-            )
-          }), function(l) {
-            l
-          })
+  do.call(rbind.fill, lapply(json, function(item) {
+    data.frame(t(unlist(
+      item[which(names(item) %in%  unlist(strsplit(collate.fields, split = ",")))]
+    )
+    ), stringsAsFactors = FALSE)
+  }
   )
-}
-
-
-summaryDataToDF <- function(json, fields = NULL){
-  if(length(json) == 0 | is.null(fields)) return(NULL)
-  
-  fields <- unique(
-    unlist(strsplit(fields, split = ",")))
-  
-  s <- do.call(rbind.fill,
-               lapply(lapply(json, function(item) {
-                 data.frame(
-                   likes.count = ifelse(is.list(item$likes),
-                                        item$likes$summary$total_count, 0),
-                   comments.count = ifelse(is.list(item$comments),
-                                           item$comments$summary$total_count, 0),
-                   shares.count = ifelse(!is.null(item$shares),
-                                         item$shares$count, 0)           
-                 )
-               }), function(l) {
-                 l
-               })
   )
-  return(s[,fields])
 }
 
 callAPI <- function(url, token){
@@ -88,8 +92,8 @@ parse.input.fields <- function(fields){
     collapse = ","
   ),
   fields = paste0(unique(
-    unlist(strsplit(gsub('\\.fields\\((.*?)\\)','', 
-                         gsub('\\.type\\((.*?)\\)','', fields, perl = TRUE)
+    unlist(strsplit(gsub('\\.(fields|type|summary|limit)\\((.*?)\\)','', 
+                         fields
                          , perl = TRUE), split = ","))),
     collapse = ","
   )

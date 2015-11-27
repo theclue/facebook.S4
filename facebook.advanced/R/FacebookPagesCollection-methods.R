@@ -4,7 +4,7 @@
 #'  
 #'  @description
 #'  \code{is.Pageset} checks if \code{x} is a valid collection of Facebook Pages built using \code{\link{FacebookPagesCollection}}
-is.Pageset <- function(x) is(x, "FacebookPagesCollection")
+is.PagesCollection <- function(x) is(x, "FacebookPagesCollection")
 
 #' @describeIn as.list Convert a collection of pages in a named list
 setMethod("as.list", signature(x = "FacebookPagesCollection"), as.list.FacebookGenericCollection)
