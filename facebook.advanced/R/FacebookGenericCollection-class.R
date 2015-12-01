@@ -1,7 +1,8 @@
 setClass("FacebookGenericCollection",
          slots = c(id = "character",
                    fields= "character",
-                   data="list"
+                   data="list",
+                   token="ANY"
          ),
          validity = function(object){
            # TBD
@@ -21,6 +22,12 @@ setMethod("initialize",
               .Object@id <- character(0)
               return(.Object)
             }
+            
+            if(is.null(token)){
+              return(.Object)
+            }
+            
+            .Object@token <- token
             
             elements.pagination.define <- getOption("facebook.pagination")
             
