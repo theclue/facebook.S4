@@ -5,6 +5,7 @@ setMethod("[",
             empty.set <- new(class(x))
             
             slot(empty.set, "fields") <- x@fields
+            slot(empty.set, "token") <- x@token
             
             slot(empty.set, "id") <- (function(idx){
               if(is.numeric(i)) return(x@id[i])
@@ -38,10 +39,13 @@ setMethod("c",
             ))
             
             # TODO: add dummy fields for subcollections without certain fields?
-            empty.set@fields<- unique(do.call(c, list(x@fields,
+            empty.set@fields <- unique(do.call(c, list(x@fields,
                                                       do.call(c,lapply(optional.elems, slot, "fields"))
             )
             ))
+            
+            empty.set@token <- x@token
+            
             return(empty.set)
           }
 )
