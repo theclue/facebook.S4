@@ -4,6 +4,7 @@
 #' 
 #' @export
 setClass("FacebookPostsCollection",
+         slots = c(feed = "logical"),
          contains = "FacebookGenericCollection",
          validity = function(object){
            
@@ -13,18 +14,29 @@ setClass("FacebookPostsCollection",
 
 setMethod("initialize",
           signature(.Object = "FacebookPostsCollection"),
-          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0)){
+          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), feed=NULL){
             
             # Validate parameters
             validObject(.Object)
             
-            fields <- (function(){ 
-              if(length(fields)>0){
-                return(c(fields, "comments.summary(true).limit(0),likes.summary(true).limit(0)"))
+            fields <- (function(f){ 
+              if(is(id, "FacebookPagesCollection")){
+                return(paste0(ifelse(!is.null(feed) & feed, "feed", "posts"), ".fields(", f, ")"))
               }
-            })()
+              else return(f)
+            })((function(){ 
+              if(length(fields)>0){
+                return(paste(fields, "comments.summary(true).limit(0),likes.summary(true).limit(0)", collapse=",", sep=","))
+              }
+            })())
             
-            return(callNextMethod(.Object, id, token, parameters, fields))
+            token <- (function(){ 
+              if(is.null(token) & is(id, "FacebookGenericCollection")){
+                return(id@token)
+              } else return(token)
+            })()
+
+            return(callNextMethod(.Object, id = id, token = token, parameters = parameters, fields = fields))
             
           }
 )

@@ -1,8 +1,9 @@
 #' @export
 FacebookPostsCollection <- function(id, 
-                            token, 
+                            token = NULL, 
                             parameters = list(), 
-                            fields = "id,from.fields(id,name),message,created_time,type,link,name"){
+                            fields = "id,from.fields(id,name),message,created_time,type,link,name",
+                            feed = TRUE){
   
-  return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = fields))
+  return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = fields, feed = feed))
 }
