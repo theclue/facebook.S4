@@ -12,21 +12,21 @@ setClass("FacebookGenericCollection",
 
 setMethod("initialize",
           signature(.Object = "FacebookGenericCollection"),
-          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0)){
+          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), n=NULL){
             
             # Validate parameters
             validObject(.Object)
-
+            
             # Create an empty object if not ids has been specified
             if(is.null(id) | is.null(token)){
               .Object@id <- character(0)
               return(.Object)
             }
-
+            
             if(is.null(token)){
               return(.Object)
             }
-
+            
             .Object@token <- token
             
             elements.pagination.define <- getOption("facebook.pagination")
@@ -34,7 +34,7 @@ setMethod("initialize",
             parsed <- parse.input.fields(fields)
             
             .Object@fields <- unlist(strsplit(parsed$fields, split = ","))
-
+            
             elements.v <- unique(unlist(strsplit((function(){
               if(is(id, "FacebookGenericCollection")) return(id@id)
               return(id)
@@ -67,77 +67,84 @@ setMethod("initialize",
                 ifelse(length(parameters), paste0("&", query.parameters), ""),
                 ifelse(length(fields), paste("&fields", parsed$url, sep="="), "")
               )
-
+              
               content <- callAPI(url=url, token=token)
               
               # If ID is an atomic list or a collection of the same class, just push out the results
               if(!is(id, "FacebookGenericCollection") | (class(.Object) == class(id))){
-              
-              .Object@id <- names(content)
-
-              .Object@data <- do.call(list, lapply(content, function(item){
-                return(item[which(names(item) %in%  unlist(strsplit(parsed$fields, split = ",")))])
-              }))
-              
+                
+                .Object@id <- names(content)
+                
+                .Object@data <- do.call(list, lapply(content, function(item){
+                  return(item[which(names(item) %in%  parsed$fields)])
+                }))
+                
               } else {
-              # Iterate the collection and clean the results
+                # Iterate the collection and clean the results
                 
-                .Object@data <- content
-                
-                # TODO 
-                n <- 0
                 if (n > 0) {
                   
-                  min.since <- ifelse(!is.null(since), as.Date(since, origin="1970-01-01"), as.Date('1970/01/01'))
+                  min.since <- ifelse(!is.null(parameters$since), as.Date(parameters$since, origin="1970-01-01"), as.Date('1970/01/01'))
                   
-                  container.ids <- character(0)
+                  all.elements <- lapply(lapply(content, function(sublist) {
+                    page <- 0
+                    p <- list()
+                    
+                    total.posts <- 0
+                    
+                    repeat {
+                      postdata <- NULL
+                      if(page == 0){
+                        postdata <- sublist[[1]]
+                      } else {
+                        postdata <- callAPI(url=next.url, token=token)
+                      }
+                      next.url <- postdata$paging$`next`
+                      
+                      min.time <- Inf
+                      
+                      if(length(postdata$data) > 0) {
+                        p <- do.call(c, list(p,lapply(postdata$data, function(s){
+                          ss <- list()
+                          s$parent.id <- sublist$id
+                          min.time <- min(min.time, formatFbDate(s$created_time, "date"))
+                          ss[[s$id]] <- s
+                          return(ss)
+                        })))
+                        
+                        page <- page + 1
+                        total.posts <- total.posts + length(postdata$data)
+                        
+                      }
+                      
+                      # unregarding of since() query parameter, FB Graph somethimes
+                      # brings back posts older than 'since', so here
+                      # I'm also making sure the function stops when that happens
+                      if(total.posts >= n |
+                         is.null(next.url) |
+                         ifelse(length(postdata$data) > 0, (("created_time" %in% parsed$fields) & (min.time < min.since)), FALSE)
+                      )
+                      {
+                        return(head(p, n))
+                      }
+                      
+                      # Graceful waiting before next call
+                      Sys.sleep(0.5)
+                      
+                    }
+                  }
                   
-                  all.elements <- lapply(content, function(sublist) {
-                                         page <- 0
-                                         p <- list()
-
-                                         total.posts <- 0
-
-                                         repeat {
-                                           postdata <- NULL
-                                           if(page == 0){
-                                             postdata <- sublist[[1]]
-                                           } else {
-                                             postdata <- callAPI(url=next.url, token=token)
-                                           }
-                                           next.url <- postdata$paging$`next`
-                                           
-                                           container.ids <- c(container.ids, sublist$id)
-                                           
-                                           if(length(postdata$data) > 0) {
-                                             p <- c(p, postdata$data)
-                                             
-                                           }
-                                           
-                                           # unregarding of since() query parameter, FB Graph somethimes
-                                           # brings back posts older than 'since', so here
-                                           # I'm also making sure the function stops when that happens
-                                           p.unlist <- unlist(p)
-                                           if(total.posts >= n |
-                                              is.null(next.url) |
-                                              ifelse(length(postdata$data) > 0, (min(formatFbDate(p.unlist[which(names(p.unlist))=="created_time"], "date")) < min.since), FALSE)
-                                           )
-                                           {
-                                             return(head(p, n))
-                                           }
-                                           
-                                           # Graceful waiting before next call
-                                           Sys.sleep(0.5)
-                                           
-                                         }
-                                       }
-                                       )
+                  ), function(cont){do.call(c,lapply(cont, function(cc) {cc}))})
                   
+                  names(all.elements) <- NULL
                   
+                  .Object@fields <- c(.Object@fields, "parent.id")
+                  .Object@data <- do.call(c, all.elements)
+                  .Object@id <- names(.Object@data)
                 }
                 
               }
-
+              
             }
             return(.Object)
           }

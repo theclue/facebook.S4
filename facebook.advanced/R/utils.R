@@ -32,15 +32,9 @@ detailsDataToDF <- function(json, fields = NULL){
   
   if(length(json) == 0 | is.null(fields)) return(NULL)
   
-  # remove duplicates, then collate
-  collate.fields <- paste0(unique(
-    unlist(strsplit(fields, split = ","))),
-    collapse = ","
-  )
-  
   do.call(rbind.fill, lapply(json, function(item) {
     data.frame(t(unlist(
-      item[which(names(item) %in%  unlist(strsplit(collate.fields, split = ",")))]
+      item[which(names(item) %in%  fields)]
     )
     ), stringsAsFactors = FALSE)
   }
@@ -91,11 +85,9 @@ parse.input.fields <- function(fields){
     unlist(strsplit(fields, split = ","))),
     collapse = ","
   ),
-  fields = paste0(unique(
+  fields = unique(
     unlist(strsplit(gsub('\\.(fields|type|summary|limit)\\((.*?)\\)','', 
                          sub("(posts|users|likes|comments|feed)\\.fields\\((.*)\\)", "\\2", fields)
-                         , perl = TRUE), split = ","))),
-    collapse = ","
-  )
+                         , perl = TRUE), split = ",")))
   )
 }

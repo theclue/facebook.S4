@@ -4,7 +4,6 @@
 #' 
 #' @export
 setClass("FacebookPostsCollection",
-         slots = c(feed = "logical"),
          contains = "FacebookGenericCollection",
          validity = function(object){
            
@@ -14,7 +13,7 @@ setClass("FacebookPostsCollection",
 
 setMethod("initialize",
           signature(.Object = "FacebookPostsCollection"),
-          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), feed=NULL){
+          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), feed=NULL, n = n){
             
             # Validate parameters
             validObject(.Object)
@@ -36,7 +35,7 @@ setMethod("initialize",
               } else return(token)
             })()
 
-            return(callNextMethod(.Object, id = id, token = token, parameters = parameters, fields = fields))
+            return(callNextMethod(.Object, id = id, token = token, parameters = parameters, fields = fields, n = n))
             
           }
 )
