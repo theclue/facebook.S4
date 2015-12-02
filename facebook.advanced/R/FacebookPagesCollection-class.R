@@ -1,10 +1,6 @@
 #' A collection of valid Facebook Pages.
 #'
-#' @slot pages character vector with the ids/names of the pages of the collection.
-#' @slot fields character vector with the content field of each page for the collection 
-#' @slot data named list representing the raw collection
-#'
-#' @family API Resources
+#' @family Facebook Collections
 #' @name FacebookPagesCollection-class
 #' @exportClass FacebookPagesCollection
 #'  

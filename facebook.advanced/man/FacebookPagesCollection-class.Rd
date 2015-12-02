@@ -7,16 +7,10 @@
 \description{
 A collection of valid Facebook Pages.
 }
-\section{Slots}{
-
-\describe{
-\item{\code{pages}}{character vector with the ids/names of the pages of the collection.}
-
-\item{\code{fields}}{character vector with the content field of each page for the collection}
-
-\item{\code{data}}{named list representing the raw collection}
-}}
 \author{
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+}
+\seealso{
+Other Facebook Collections: \code{\link{FacebookGenericCollection-class}}
 }
 

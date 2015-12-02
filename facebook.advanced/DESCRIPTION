@@ -15,12 +15,13 @@ Depends:
     plyr
 License: MIT
 Collate:
-    'generic-methods.R'
     'FacebookGenericCollection-class.R'
     'FacebookGenericCollection-methods.R'
+    'FacebookGenericCollection.R'
     'FacebookPagesCollection-class.R'
     'FacebookPagesCollection-methods.R'
     'FacebookPagesCollection.R'
+    'FacebookGenericCollection-class'
     'FacebookPostsCollection-class.R'
     'FacebookPostsCollection-methods.R'
     'FacebookPostsCollection.R'
@@ -40,6 +41,7 @@ Collate:
     'fb.Pages.class.R'
     'fb.Posts.class.R'
     'fbOAuth.R'
+    'generic-methods.R'
     'getInsights.R'
     'getNetwork.R'
     'getPages.R'

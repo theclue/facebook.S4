@@ -1,8 +1,25 @@
+#' A generic collection of Facebook items
+#' 
+#' @family Facebook Collections
+#' @name FacebookGenericCollection-class
+#' @exportClass FacebookGenericCollection
+#' 
+#' @slot id A character vector of the IDs of the item included in the Collection
+#' @slot fields A character vectorwith the content of any ID in the Collection. Ie \code{id, name, created_time}...
+#' @slot token Either a temporary access token created at
+#' \url{https://developers.facebook.com/tools/explorer} or the OAuth token 
+#' created with \code{fbOAuth} used to fill the Collection.
+#' @slot parent A character vector of the parent IDs of the item included in the Collection or \code{NA} if the items have not inherited a parent
+#'  
+#' @author Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
+#' 
+#' @keywords internal
 setClass("FacebookGenericCollection",
          slots = c(id = "character",
-                   fields= "character",
-                   data="list",
-                   token="ANY"
+                   fields = "character",
+                   data = "list",
+                   token = "ANY",
+                   parent = "character"
          ),
          validity = function(object){
            # TBD
@@ -79,8 +96,12 @@ setMethod("initialize",
                   return(item[which(names(item) %in%  parsed$fields)])
                 }))
                 
+                .Object@parent <- as.character(rep(NA, length(id)))
+                
               } else {
                 # Iterate the collection and clean the results
+                
+                all.parents <- character(0)
                 
                 if (n > 0) {
                   
@@ -106,7 +127,6 @@ setMethod("initialize",
                       if(length(postdata$data) > 0) {
                         p <- do.call(c, list(p,lapply(postdata$data, function(s){
                           ss <- list()
-                          s$parent.id <- sublist$id
                           min.time <- min(min.time, formatFbDate(s$created_time, "date"))
                           ss[[s$id]] <- s
                           return(ss)
@@ -116,7 +136,7 @@ setMethod("initialize",
                         total.posts <- total.posts + length(postdata$data)
                         
                       }
-                      
+
                       # unregarding of since() query parameter, FB Graph somethimes
                       # brings back posts older than 'since', so here
                       # I'm also making sure the function stops when that happens
@@ -125,6 +145,8 @@ setMethod("initialize",
                          ifelse(length(postdata$data) > 0, (("created_time" %in% parsed$fields) & (min.time < min.since)), FALSE)
                       )
                       {
+                        # Quick warkaround for parent assignment. I'm not very proud of it...
+                        all.parents <<- c(all.parents, as.character(rep(sublist$id, min(total.posts, n))))
                         return(head(p, n))
                       }
                       
@@ -137,8 +159,8 @@ setMethod("initialize",
                   ), function(cont){do.call(c,lapply(cont, function(cc) {cc}))})
                   
                   names(all.elements) <- NULL
-                  
-                  .Object@fields <- c(.Object@fields, "parent.id")
+
+                  .Object@parent <- all.parents
                   .Object@data <- do.call(c, all.elements)
                   .Object@id <- names(.Object@data)
                 }
