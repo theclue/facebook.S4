@@ -4,15 +4,14 @@
 #' to access Facebook's API to get information about users and posts,
 #' and collect public status updates that mention specific keywords.
 #'
-#' @seealso \code{\link{fbOAuth}}, \code{\link{facebook.users}}, 
-#' \code{\link{getPosts}}, \code{\link{searchFacebook}},
-#' \code{\link{updateStatus}}, \code{\link{facebook.friends}}, 
-#' \code{\link{getNetwork}}, \code{\link{getPages}}
-#' @name facebook.advanced
+#' @name facebook.advanced-package
 #' @aliases facebook.advanced
+#' 
+#' @seealso \code{\link{fbOAuth}}, \code{\link{FacebookUsersCollection}}, 
+#' \code{\link{FacebookPagesCollection}}, \code{\link{FacebookPostsCollection}},
+#' \code{\link{FacebookCommentsCollection}}
 #' @docType package
+#' @keywords package, facebook
 #' @author Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
-#' @author Pablo Barbera \email{pablo.barbera@@nyu.edu}
-#' @import httr rjson plyr httpuv
+#' @import httr rjson plyr httpuv magrittr
 NULL
-

@@ -7,6 +7,6 @@
 is.PagesCollection(x)
 }
 \description{
-\code{is.Pageset} checks if \code{x} is a valid collection of Facebook Pages built using \code{\link{FacebookPagesCollection}}
+\code{is.PagesCollrcyion} checks if \code{x} is a valid collection of Facebook Pages built using \code{\link{FacebookPagesCollection}},
 }
 

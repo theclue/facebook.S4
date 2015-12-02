@@ -21,8 +21,8 @@ Returns a list representation of various kinds of Facebook collections
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{FacebookPagesCollection}: Convert a collection of pages in a named list
+\item \code{FacebookPagesCollection}: Convert to convert from a Collection of Pages.
 
-\item \code{FacebookPostsCollection}: Convert a collection of posts in a named list
+\item \code{FacebookPostsCollection}: to convert from a Collection of Pages.
 }}
 

@@ -76,6 +76,6 @@ fb.posts.df <- as.data.frame(
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{FacebookPagesCollection}}, \code{\link{FacebooCommentsCollection}}, \code{\link{fbOAuth}}
+\code{\link{FacebookPagesCollection}}, \code{\link{FacebookCommentsCollection}}, \code{\link{fbOAuth}}
 }
 

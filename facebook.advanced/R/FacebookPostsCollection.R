@@ -24,7 +24,7 @@
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
 #' 
-#' @seealso \code{\link{FacebookPagesCollection}}, \code{\link{FacebooCommentsCollection}}, \code{\link{fbOAuth}}
+#' @seealso \code{\link{FacebookPagesCollection}}, \code{\link{FacebookCommentsCollection}}, \code{\link{fbOAuth}}
 #'
 #' @inheritParams FacebookGenericCollection
 #' 

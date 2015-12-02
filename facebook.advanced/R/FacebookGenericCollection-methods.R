@@ -50,7 +50,7 @@ setMethod("c",
           }
 )
 
-#' TODO: better check for null
+#' @noRd
 #' @export
 as.data.frame.FacebookGenericCollection <- function (x, row.names = FALSE, optional = FALSE, ...) {
   df <- detailsDataToDF(x@data, x@fields)
@@ -72,11 +72,13 @@ as.data.frame.FacebookGenericCollection <- function (x, row.names = FALSE, optio
 setAs("FacebookGenericCollection", "data.frame", function(from) as.data.frame.FacebookGenericCollection(from))
 setMethod("as.data.frame", signature(x = "FacebookGenericCollection", row.names = "logical", optional = "logical"), as.data.frame.FacebookGenericCollection)
 
+#' @noRd
+#' @export
 as.list.FacebookGenericCollection <- function (x, ...) 
 {
   optional.elems <- list(...)
   
-  # Only bind collections of the same kind
+  # Only bind Collections of the same types
   lapply(optional.elems, function(list.elem) {
     stopifnot(class(x) != class(list.elem))
   })

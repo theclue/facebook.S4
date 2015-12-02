@@ -7,6 +7,6 @@
 is.PostsCollection(x)
 }
 \description{
-\code{is.Postset} checks if \code{x} is a valid collection of Facebook Posts built using \code{\link{FacebookPostsCollection}}
+\code{is.PostsCollection} checks if \code{x} is a valid collection of Facebook Posts built using \code{\link{FacebookPostsCollection}}.
 }
 
