@@ -11,6 +11,7 @@ A collection of valid Facebook Pages.
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-Other Facebook Collections: \code{\link{FacebookGenericCollection-class}}
+Other Facebook Collections: \code{\link{FacebookGenericCollection-class}};
+  \code{\link{FacebookPostsCollection-class}}
 }
 

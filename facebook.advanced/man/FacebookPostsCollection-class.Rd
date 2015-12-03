@@ -7,4 +7,24 @@
 \description{
 A collection of valid Facebook Posts.
 }
+\section{Slots}{
+
+\describe{
+\item{\code{id}}{A character vector of the IDs of the item included in the Collection}
+
+\item{\code{fields}}{A character vectorwith the content of any ID in the Collection. Ie \code{id, name, created_time}...}
+
+\item{\code{token}}{Either a temporary access token created at
+\url{https://developers.facebook.com/tools/explorer} or the OAuth token
+created with \code{fbOAuth} used to fill the Collection.}
+
+\item{\code{parent}}{A character vector of the parent IDs of the item included in the Collection or \code{NA} if the items have not inherited a parent}
+}}
+\author{
+Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+}
+\seealso{
+Other Facebook Collections: \code{\link{FacebookGenericCollection-class}};
+  \code{\link{FacebookPagesCollection-class}}
+}
 

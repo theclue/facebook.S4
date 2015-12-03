@@ -24,7 +24,8 @@ created with \code{fbOAuth} used to fill the Collection.}
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-Other Facebook Collections: \code{\link{FacebookPagesCollection-class}}
+Other Facebook Collections: \code{\link{FacebookPagesCollection-class}};
+  \code{\link{FacebookPostsCollection-class}}
 }
 \keyword{internal}
 

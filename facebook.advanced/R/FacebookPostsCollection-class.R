@@ -2,6 +2,10 @@
 #' @name FacebookPostsCollection-class
 #' @exportClass FacebookPostsCollection
 #' 
+#' @template collection-slots
+#' 
+#' @author Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
+#' 
 #' @export
 setClass("FacebookPostsCollection",
          contains = "FacebookGenericCollection",
