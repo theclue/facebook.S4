@@ -2,11 +2,14 @@
 % Please edit documentation in R/FacebookPagesCollection-methods.R
 \name{is.PagesCollection}
 \alias{is.PagesCollection}
-\title{Checks if it's a valid collection}
+\title{Checks if the argument is a valid Collection of pages}
 \usage{
 is.PagesCollection(x)
 }
 \description{
-\code{is.PagesCollrcyion} checks if \code{x} is a valid collection of Facebook Pages built using \code{\link{FacebookPagesCollection}},
+\code{is.PagesCollection} checks if \code{x} is a valid collection of Facebook Pages built using \code{\link{FacebookPagesCollection}}.
+}
+\author{
+Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 

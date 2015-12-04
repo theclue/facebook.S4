@@ -1,3 +1,6 @@
+#' @include generic-methods.R
+#' 
+#' @title
 #' A generic collection of Facebook items
 #' 
 #' @name FacebookGenericCollection-class
@@ -55,11 +58,12 @@ setMethod("initialize",
             
             if(length(elements.chunks) > 1){
               
-              do.call(rbind,
-                      lapply(c, function(single.chunk) {
-                        new(class(.Object), id = id, token = token, parameters = parameters, fiels = fields, feed = feed)
+            all.chunks <- lapply(elements.chunks, function(single.chunk) {
+                        chunk.collection <- new(class(.Object), id = single.chunk, token = token, parameters = parameters, fields = fields, feed = feed)
                       })
-              )
+
+            # TODO why returning a fucking list?
+
             }
             else {
               query.parameters <- sub("&$", "",
@@ -78,7 +82,7 @@ setMethod("initialize",
                 ifelse(length(parameters), paste0("&", query.parameters), ""),
                 ifelse(length(fields), paste("&fields", parsed$url, sep="="), "")
               )
-              
+              #print(url)
               content <- callAPI(url=url, token=token)
               
               # If ID is an atomic list or a collection of the same class, just push out the results

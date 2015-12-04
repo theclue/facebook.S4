@@ -1,21 +1,19 @@
-#' @include FacebookGenericCollection.R
+#' @include FacebookPostsCollection.R
 #' 
 #' @title 
-#' Build a Collection of Facebook Posts
+#' Build a Collection of Facebook Post Comments
 #'
 #' @description
-#' Connect to Facebook Graph API, get information from a list of public Facebook posts and build a \code{FacebookPostsCollection-class}
+#' Connect to Facebook Graph API, get information from a list of public Facebook comments to posts and build a \code{FacebookPostsCollection-class}
 #' instance.
 #' 
 #' @details
-#' \code{FacebookPostsCollection} is the constructor for the \code{\link{FacebookPostsCollection-class}}.
-#' It returns data about posts but doesn't return lists of comments or likes (altough it will return a summary view of both).
+#' \code{FacebookCommentsCollection} is the constructor for the \code{\link{FacebookCommentsCollection-class}}.
+#' It returns data about comments but doesn't return lists of their own comments or likes (altough it could return a summary view of both).
 #' 
-#' You can actually get some informations about comments and likes using fields nesting (see below), but this is not actually
-#' recommended.
 #' 
-#' Consider using the twin functions \code{\link{FacebookCommentsCollection}}, \code{\link{FacebookLikesCollection}} to focuse on these nodes
-#' of data.
+#' Consider pass an instance of a Facecook Posts Collection build using the construction \code{\link{FacebookPostsCollection}},
+#' if you need to bind a comment to its parent post.
 #' 
 #' Due to the network-graph nature of Facebook data model,
 #' you can always specify fields details for each field eventually nesting \code{.fields()} clauses.
@@ -26,18 +24,15 @@
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
 #' 
-#' @seealso \code{\link{FacebookPagesCollection}}, \code{\link{FacebookCommentsCollection}}, \code{\link{fbOAuth}}
+#' @seealso \code{\link{FacebookLikessCollection}}, \code{\link{FacebookPostssCollection}}, \code{\link{fbOAuth}}
 #'
 #' @inheritParams FacebookGenericCollection
-#' 
-#' @param feed If \code{id} is a Collection and \code{feed} is set to If \code{TRUE}, the Collection will also include posts 
-#' eritten by others (not only by the owner of the Collection items). If \code{id} is not a collection, the parameter is ignored.
 #' 
 #' @param n If \code{id} is a Collection, then \code{n} is the maximum number of posts to be pulled for any element of the Collection in \code{id}.
 #' Otherwise, the parameter is ignored. It can be set to \code{Inf} to pull out any available public post and assume the default value from the value
 #' of \code{facebook.maxitems} global option if missing.
 #'
-#' @return A collection of posts in a \code{\link{FacebookPostsCollection-class}} object.
+#' @return A collection of comments in a \code{\link{FacebookCommentsCollection-class}} object.
 #'
 #' @examples \dontrun{
 #' ## See examples for fbOAuth to know how token was created.
@@ -46,30 +41,32 @@
 #' ## Getting information about two example Facebook Pages
 #'  fb.pages <- FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth)
 #'  
-#' ## Pull the latest 10 posts from each page
+#' ## Pull the latest 10 posts from each page in a post collection
 #'  fb.posts <- FacebookPostscollection(id = fb.pages, token = fb_oauth, n = 10)
 #'  
-#' ## Pull all the available posts from each page
+#' ## Pull all the available posts from each page in a post collection
 #'  fb.posts.inf <- FacebookPostscollection(id = fb.pages, token = fb_oauth, n = Inf)
-#'  
+#' 
+#' ## Pull all the available comments from each post of the first collection
+#'  fb.comments.inf <- FacebookPostscollection(id = fb.posts, token = fb_oauth)
+#'    
 #' ## Convert the collection to a data frame
-#' fb.posts.df <- as.data.frame(fb.posts)
+#' fb.comments <- as.data.frame(fb.comments)
 #' 
 #' # The same as before in a more compact fashion using the pipe operator
-#' # chaining from a Pages Collection
-#' fb.posts.pipe <- 
+#' # chaining from a Pages and then a Posts Collection
+#' fb.comments.pipe <- 
 #'  FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth) %>%
-#'    FacebookPostsCollection(n = 10)
+#'    FacebookPostscollection(n = 10) %>% FacebookCommentsCollection(n = Inf)
 #' }
 #'
 #' @family Facebook Collection Costructors
 #' @export
-FacebookPostsCollection <- function(id, 
+FacebookCommentsCollection <- function(id, 
                                     token = NULL, 
                                     parameters = list(), 
-                                    fields = c("id", "from.fields(id,name)", "message", "created_time", "type", "link,name"),
-                                    feed = TRUE,
+                                    fields = c("id", "from.fields(id,name)", "message", "created_time", "like_count"),
                                     n = getOption("facebook.maxitems")){
   
-  return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = fields, feed = feed, n = n))
+  return(new("FacebookCommentsCollection", id = id, token = token, parameters = parameters, fields = fields, n = n))
 }

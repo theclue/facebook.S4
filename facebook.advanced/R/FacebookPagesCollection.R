@@ -1,10 +1,22 @@
+#' @include FacebookGenericCollection.R
+#' 
 #' @title 
 #' Build a Collection of Facebook Pages
 #'
 #' @description
 #' Connect to Facebook Graph API, get information from a list of public Facebook pages and build a \code{\link{FacebookPagesCollection-class}}
 #' instance.
+#' 
+#' @details
+#' \code{FacebookPagessCollection} is the constructor for the \code{\link{FacebookPagesCollection-class}}.
+#' It returns data about pages but doesn't return lists of posts or the fanbase (altough it will return a summary view for the latters).
+#' 
+#' Due to the network-graph nature of Facebook data model,
+#' you can always specify fields details for each field eventually nesting \code{.fields()} clauses.
 #'
+#' For example, if you need only \code{id} and \code{source} for the \code{covern} node, this clause is valid among others:
+#' \code{cover.fields(id,source)}.
+#'  
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
 #' 
@@ -17,17 +29,22 @@
 #' @examples \dontrun{
 #' ## See examples for fbOAuth to know how token was created.
 #'  load("fb_oauth")
+#'  
 #' ## Getting information about 9th Circle Games' Facebook Page
-#'  fb.pages <- FacebookPagesCollection(id = "9thcirclegames", token = fb_oauth)
+#'  fb.pages <- FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth)
+#'  
+#' ## Getting informations from the same pages, but with a different set of fields
+#'  fb.pages.covers <- FacebookPagesCollection(id = fb.pages, fields = c("id", "name", "cover.fields(id,source,height,width)"))
+#'  
 #' ## Convert the collection to a data frame
-#' fb.pages.df <- as.data.frame(fb.pages)
+#'  fb.pages.df <- as.data.frame(fb.pages)
 #' }
 #'
 #' @export
 FacebookPagesCollection <- function(id, 
                             token, 
                             parameters = list(), 
-                            fields = "id,username,name,about,category,description,likes,link,talking_about_count"){
+                            fields = c("id", "username", "name", "about", "category", "description", "likes", "link", "talking_about_count")){
   
   return(new("FacebookPagesCollection", id = id, token = token, parameters = parameters, fields = fields))
 }

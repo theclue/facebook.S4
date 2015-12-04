@@ -18,4 +18,4 @@ BuildType: Package
 PackageUseDevtools: Yes
 PackagePath: facebook.advanced
 PackageInstallArgs: --no-multiarch --with-keep.source
-PackageRoxygenize: rd,namespace
+PackageRoxygenize: rd,collate,namespace

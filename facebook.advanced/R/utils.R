@@ -81,13 +81,14 @@ formatFbDate <- function(datestring, format="datetime") {
 
 parse.input.fields <- function(fields){
   # sub("[^(]*\\(([^()]*+(?:\\((?1)\\)[^()]*)*+)\\).*", "\\1", url, perl=T)
+  # sub("(posts|users|likes|comments|feed)\\.fields\\((.*)\\)", "\\2", fields)
   list(url = paste0(unique(
     unlist(strsplit(fields, split = ","))),
     collapse = ","
   ),
   fields = unique(
     unlist(strsplit(gsub('\\.(fields|type|summary|limit)\\((.*?)\\)','', 
-                         sub("(posts|users|likes|comments|feed)\\.fields\\((.*)\\)", "\\2", fields)
+                         sub("[^.]*+(?:\\.(?!fields\\()[^.]*)*+\\.fields\\(([^()]*+(?:\\((?1)\\)[^()]*)*+)\\)(?s:.*)", "\\1", fields, perl=T)
                          , perl = TRUE), split = ",")))
   )
 }

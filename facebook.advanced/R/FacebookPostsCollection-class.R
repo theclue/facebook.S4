@@ -1,4 +1,15 @@
-#' A collection of valid Facebook Posts.
+#' @include FacebookGenericCollection-class.R FacebookPagesCollection-class.R
+#' 
+#' @title 
+#' Class for representing a Collection of Facebook posts
+#'
+#' @description
+#' Connect to Facebook Graph API, get information from a list of public Facebook posts and build a \code{\link{FacebookPostsCollection-class}}
+#' instance.
+#' 
+#' Use the \code{\link{FacebookPostsCollection}} constructor for building a instance of this class, as it provides better
+#' sanity and validation checks.
+#' 
 #' @name FacebookPostsCollection-class
 #' @exportClass FacebookPostsCollection
 #' 
@@ -23,15 +34,17 @@ setMethod("initialize",
             validObject(.Object)
             
             fields <- (function(f){ 
-              if(is(id, "FacebookPagesCollection")){
-                return(paste0(ifelse(!is.null(feed) & feed, "feed", "posts"), ".fields(", f, ")"))
-              }
-              else return(f)
-            })((function(){ 
-              if(length(fields)>0){
-                return(paste(fields, "comments.summary(true).limit(0),likes.summary(true).limit(0)", collapse=",", sep=","))
-              }
-            })())
+              if(length(f) > 0){
+                e.fields <- paste(paste0(fields, collapse=","), "comments.summary(true).limit(0),likes.summary(true).limit(0)", sep=",")
+
+                if(is(id, "FacebookPagesCollection")){
+                  return(paste0(ifelse(!is.null(feed) & feed, "feed", "posts"), ".fields(", e.fields, ")"))
+                }
+                else {
+                  return(e.fields)
+                  }
+              } else return(NULL)
+            })(fields)
             
             token <- (function(){ 
               if(is.null(token) & is(id, "FacebookGenericCollection")){

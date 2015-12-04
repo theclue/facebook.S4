@@ -2,11 +2,14 @@
 % Please edit documentation in R/FacebookPostsCollection-methods.R
 \name{is.PostsCollection}
 \alias{is.PostsCollection}
-\title{Checks if it's a valid collection of posts}
+\title{Checks if the argument is a valid collection of posts}
 \usage{
 is.PostsCollection(x)
 }
 \description{
 \code{is.PostsCollection} checks if \code{x} is a valid collection of Facebook Posts built using \code{\link{FacebookPostsCollection}}.
+}
+\author{
+Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 

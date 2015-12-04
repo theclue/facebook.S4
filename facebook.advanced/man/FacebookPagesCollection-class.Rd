@@ -3,15 +3,15 @@
 \docType{class}
 \name{FacebookPagesCollection-class}
 \alias{FacebookPagesCollection-class}
-\title{A collection of valid Facebook Pages.}
+\title{Class for representing a Collection of Facebook pages}
 \description{
-A collection of valid Facebook Pages.
+Connect to Facebook Graph API, get information from a list of public Facebook pages and build a \code{FacebookPagesCollection-class}
+instance.
+
+Use the \code{\link{FacebookPagesCollection}} constructor for building a instance of this class, as it provides better
+sanity and validation checks.
 }
 \author{
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
-}
-\seealso{
-Other Facebook Collections: \code{\link{FacebookGenericCollection-class}};
-  \code{\link{FacebookPostsCollection-class}}
 }
 
