@@ -33,28 +33,6 @@ setMethod("initialize",
             # Validate parameters
             validObject(.Object)
             
-#             real.n <- (function(n, p.limit){
-#               if(n > p.limit) {
-#                 return(p.limit)
-#               }
-#               else {
-#                 return(n)
-#               }
-#             })(n, getOption("facebook.pagination"))
-            real.n <- getOption("facebook.pagination")
-
-            fields <- (function(f){ 
-              if(length(f) > 0){
-                
-                if(is(id, "FacebookPostsCollection")){
-                  return(paste0("comments.fields(", paste0(f, collapse=",", sep=""), ").limit(", real.n , ")", sep=""))
-                }
-                else {
-                  return(paste0(f, sep="", collapse=","))
-                  }
-              } else return(NULL)
-            })(fields)
-            
             token <- (function(){ 
               if(is.null(token) & is(id, "FacebookGenericCollection")){
                 return(id@token)

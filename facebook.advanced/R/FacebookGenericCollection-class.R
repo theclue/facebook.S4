@@ -26,7 +26,7 @@ setClass("FacebookGenericCollection",
 
 setMethod("initialize",
           signature(.Object = "FacebookGenericCollection"),
-          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), n=NULL){
+          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), n){
             
             # Validate parameters
             validObject(.Object)
@@ -36,11 +36,7 @@ setMethod("initialize",
               .Object@id <- character(0)
               return(.Object)
             }
-            
-            if(is.null(token)){
-              return(.Object)
-            }
-            
+
             .Object@token <- token
             
             elements.pagination.define <- getOption("facebook.pagination")
@@ -49,23 +45,32 @@ setMethod("initialize",
             
             .Object@fields <- unlist(strsplit(parsed$fields, split = ","))
             
-            elements.v <- unique(unlist(strsplit((function(){
-              if(is(id, "FacebookGenericCollection")) return(id@id)
+            elements.v <- (function(){
+              if(!is(id, "FacebookGenericCollection")) {
+                return(unique(unlist(strsplit(id, split = ","))))
+                }
               return(id)
-            })(), split = ",")))
-            elements.f <- rep(seq_len(ceiling(length(elements.v) / elements.pagination.define)),each = elements.pagination.define,length.out = length(elements.v))
+            })()
+            elements.f <- rep(seq_len(ceiling(length(elements.v) / getOption("facebook.pagination"))),each = getOption("facebook.pagination"),length.out = length(elements.v))
             elements.chunks <- split(elements.v, f = elements.f)
-            
+
             if(length(elements.chunks) > 1){
+              return(do.call(c, 
+                             unname(
+                               lapply(
+                                 elements.chunks, function(single.chunk) {
+                                   new(class(.Object), id = single.chunk, token = token, parameters = parameters, fields = fields, n = n)
+                                 })
+                             )
+              )
+              )
               
-            all.chunks <- lapply(elements.chunks, function(single.chunk) {
-                        chunk.collection <- new(class(.Object), id = single.chunk, token = token, parameters = parameters, fields = fields, feed = feed)
-                      })
-
-            # TODO why returning a fucking list?
-
             }
             else {
+              
+              ids.to.query <- paste0(ifelse(is(elements.v, "FacebookGenericCollection"), elements.v@id, elements.v), collapse=",")
+              print(ids.to.query)
+              
               query.parameters <- sub("&$", "",
                                       sub('([[:punct:]])\\1+', '\\1',
                                           do.call(paste, list(
@@ -78,16 +83,16 @@ setMethod("initialize",
                                       )
               )
               url <- paste0(
-                "https://graph.facebook.com/v", getOption("facebook.api"), "/?ids=", paste0(elements.v, collapse = ","),
+                "https://graph.facebook.com/v", getOption("facebook.api"), "/?ids=", ids.to.query,
                 ifelse(length(parameters), paste0("&", query.parameters), ""),
                 ifelse(length(fields), paste("&fields", parsed$url, sep="="), "")
               )
-              #print(url)
+              print(url)
               content <- callAPI(url=url, token=token)
               
               # If ID is an atomic list or a collection of the same class, just push out the results
-              if(!is(id, "FacebookGenericCollection") | (class(.Object) == class(id))){
-                
+              if(!is(element.v, "FacebookGenericCollection") | (is(element.v, class(.Object)))){
+
                 .Object@id <- names(content)
                 
                 .Object@data <- do.call(list, lapply(content, function(item){
@@ -97,10 +102,9 @@ setMethod("initialize",
                 .Object@parent <- as.character(rep(NA, length(id)))
                 
               } else {
-                # Iterate the collection and clean the results
-                
+                # If id is a collection, iterate it and clean the results
                 all.parents <- character(0)
-                
+
                 if (n > 0) {
                   
                   min.since <- ifelse(!is.null(parameters$since), as.Date(parameters$since, origin="1970-01-01"), as.Date('1970/01/01'))
@@ -122,8 +126,11 @@ setMethod("initialize",
                       
                       min.time <- Inf
                       
+                      # TODO: The problem here is that I'm always in the root of the collection, but I shouldn't
+                      
                       if(length(postdata$data) > 0) {
                         p <- do.call(c, list(p,lapply(postdata$data, function(s){
+                          print(s)
                           ss <- list()
                           min.time <- min(min.time, formatFbDate(s$created_time, "date"))
                           ss[[s$id]] <- s
@@ -134,8 +141,8 @@ setMethod("initialize",
                         total.posts <- total.posts + length(postdata$data)
                         
                       }
-
-                      # unregarding of since() query parameter, FB Graph somethimes
+                      
+                      # unregarding of since() query parameter, FB Graph sometimes
                       # brings back posts older than 'since', so here
                       # I'm also making sure the function stops when that happens
                       if(total.posts >= n |
@@ -157,7 +164,7 @@ setMethod("initialize",
                   ), function(cont){do.call(c,lapply(cont, function(cc) {cc}))})
                   
                   names(all.elements) <- NULL
-
+                  
                   .Object@parent <- all.parents
                   .Object@data <- do.call(c, all.elements)
                   .Object@id <- names(.Object@data)

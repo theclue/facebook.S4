@@ -20,3 +20,12 @@ setGeneric("as.data.frame")
 #' 
 #' @export 
 setGeneric("as.list")
+
+#' @title
+#'  Returns the number of items of a Facebook collections
+#' 
+#' @param x A valid collection of Facebook elements
+#' @rdname length
+#' 
+#' @export 
+setGeneric("length")

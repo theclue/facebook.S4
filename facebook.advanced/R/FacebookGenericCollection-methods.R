@@ -24,6 +24,13 @@ setMethod("[",
           }
 )
 
+setMethod("length",
+          signature="FacebookGenericCollection",
+          function(x){
+            return(length(x@id))
+          }
+)
+
 setMethod("c",
           signature(x = "FacebookGenericCollection"),
           function (x, ..., recursive = FALSE) 
