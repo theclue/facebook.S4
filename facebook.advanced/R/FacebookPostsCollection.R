@@ -71,5 +71,18 @@ FacebookPostsCollection <- function(id,
                                     feed = TRUE,
                                     n = getOption("facebook.maxitems")){
   
+  fields <- (function(f){ 
+    if(length(f) > 0){
+      e.fields <- paste(paste0(fields, collapse=","), "comments.summary(true).limit(0),likes.summary(true).limit(0)", sep=",")
+      
+      if(is(id, "FacebookPagesCollection")){
+        return(paste0(ifelse(!is.null(feed) & feed, "feed", "posts"), ".fields(", e.fields, ")"))
+      }
+      else {
+        return(e.fields)
+      }
+    } else return(NULL)
+  })(fields)
+  
   return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = fields, feed = feed, n = n))
 }
