@@ -45,12 +45,13 @@ setMethod("initialize",
             
             .Object@fields <- unlist(strsplit(parsed$fields, split = ","))
             
-            elements.v <- (function(){
+            elements.v <- (function(id){
               if(!is(id, "FacebookGenericCollection")) {
                 return(unique(unlist(strsplit(id, split = ","))))
                 }
               return(id)
-            })()
+            })(id)
+
             elements.f <- rep(seq_len(ceiling(length(elements.v) / getOption("facebook.pagination"))),each = getOption("facebook.pagination"),length.out = length(elements.v))
             elements.chunks <- split(elements.v, f = elements.f)
 
@@ -67,10 +68,6 @@ setMethod("initialize",
               
             }
             else {
-              
-              ids.to.query <- paste0(ifelse(is(elements.v, "FacebookGenericCollection"), elements.v@id, elements.v), collapse=",")
-              print(ids.to.query)
-              
               query.parameters <- sub("&$", "",
                                       sub('([[:punct:]])\\1+', '\\1',
                                           do.call(paste, list(
@@ -83,7 +80,7 @@ setMethod("initialize",
                                       )
               )
               url <- paste0(
-                "https://graph.facebook.com/v", getOption("facebook.api"), "/?ids=", ids.to.query,
+                "https://graph.facebook.com/v", getOption("facebook.api"), "/?ids=", paste0(elements.v, collapse=","),
                 ifelse(length(parameters), paste0("&", query.parameters), ""),
                 ifelse(length(fields), paste("&fields", parsed$url, sep="="), "")
               )
@@ -91,7 +88,7 @@ setMethod("initialize",
               content <- callAPI(url=url, token=token)
               
               # If ID is an atomic list or a collection of the same class, just push out the results
-              if(!is(element.v, "FacebookGenericCollection") | (is(element.v, class(.Object)))){
+              if(!is(elements.v, "FacebookGenericCollection") | (is(elements.v, class(.Object)))){
 
                 .Object@id <- names(content)
                 
@@ -130,9 +127,8 @@ setMethod("initialize",
                       
                       if(length(postdata$data) > 0) {
                         p <- do.call(c, list(p,lapply(postdata$data, function(s){
-                          print(s)
                           ss <- list()
-                          min.time <- min(min.time, formatFbDate(s$created_time, "date"))
+                          min.time <<- min(min.time, formatFbDate(s$created_time, "date"))
                           ss[[s$id]] <- s
                           return(ss)
                         })))

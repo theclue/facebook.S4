@@ -15,6 +15,11 @@ setMethod("[",
               return(x@id[x@id %in% as.character(i)])
             })(i)
             
+            slot(empty.set, "parent") <- (function(idx){
+              if(is.numeric(i)) return(x@id[i])
+              return(x@parent[x@parent %in% as.character(i)])
+            })(i)
+            
             slot(empty.set, "data") <- (function(idx){
               if(is.numeric(i)) return(x@data[i])
               return(x@data[x@data %in% as.character(i)])
@@ -28,6 +33,13 @@ setMethod("length",
           signature="FacebookGenericCollection",
           function(x){
             return(length(x@id))
+          }
+)
+
+setMethod("as.character",
+          signature="FacebookGenericCollection",
+          function(x){
+            return(paste0(x@id, collapse=","))
           }
 )
 
