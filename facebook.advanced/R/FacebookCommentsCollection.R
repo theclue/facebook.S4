@@ -63,25 +63,25 @@
 #' @family Facebook Collection Costructors
 #' @export
 FacebookCommentsCollection <- function(id, 
-                                    token = NULL, 
-                                    parameters = list(), 
-                                    fields = c("id", "from.fields(id,name)", "message", "created_time", "like_count"),
-                                    n = getOption("facebook.maxitems")){
+                                       token = NULL, 
+                                       parameters = list(), 
+                                       fields = c("id", "from.fields(id,name)", "message", "created_time", "like_count"),
+                                       n = getOption("facebook.maxitems")){
   
-  #             real.n <- (function(n, p.limit){
-  #               if(n > p.limit) {
-  #                 return(p.limit)
-  #               }
-  #               else {
-  #                 return(n)
-  #               }
-  #             })(n, getOption("facebook.pagination"))
+  real.n <- (function(n, p.limit){
+    if(n > p.limit) {
+      return(p.limit)
+    }
+    else {
+      return(n)
+    }
+  })(n, getOption("facebook.pagination"))
   
   fields <- (function(f){ 
     if(length(f) > 0){
       
       if(is(id, "FacebookPostsCollection")){
-        return(paste0("comments.summary(true).fields(", paste0(f, collapse=",", sep=""), ").limit(", getOption("facebook.pagination") , ")", sep=""))
+        return(paste0("comments.fields(", paste0(f, collapse=",", sep=""), ").limit(", real.n , ").summary(true)", sep=""))
       }
       else {
         return(paste0(f, sep="", collapse=","))

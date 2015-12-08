@@ -33,12 +33,6 @@ setMethod("initialize",
             # Validate parameters
             validObject(.Object)
             
-            token <- (function(){ 
-              if(is.null(token) & is(id, "FacebookGenericCollection")){
-                return(id@token)
-              } else return(token)
-            })()
-
             return(callNextMethod(.Object, id = id, token = token, parameters = parameters, fields = fields, n = n))
             
           }

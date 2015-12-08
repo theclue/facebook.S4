@@ -31,6 +31,12 @@ setMethod("initialize",
             # Validate parameters
             validObject(.Object)
             
+            token <- (function(){ 
+              if(is.null(token) & is(id, "FacebookGenericCollection")){
+                return(id@token)
+              } else return(token)
+            })()
+            
             # Create an empty object if not ids has been specified
             if(is.null(id) | is.null(token)){
               .Object@id <- character(0)
@@ -84,7 +90,7 @@ setMethod("initialize",
                 ifelse(length(parameters), paste0("&", query.parameters), ""),
                 ifelse(length(fields), paste("&fields", parsed$url, sep="="), "")
               )
-              print(url)
+              #print(url)
               content <- callAPI(url=url, token=token)
               
               # If ID is an atomic list or a collection of the same class, just push out the results
@@ -108,13 +114,14 @@ setMethod("initialize",
                   
                   all.elements <- lapply(lapply(content, function(sublist) {
                     page <- 0
-                    p <- list()
+                    page.results <- list()
                     
                     total.posts <- 0
                     
                     repeat {
                       postdata <- NULL
                       if(page == 0){
+                        
                         postdata <- sublist[[1]]
                       } else {
                         postdata <- callAPI(url=next.url, token=token)
@@ -122,11 +129,9 @@ setMethod("initialize",
                       next.url <- postdata$paging$`next`
                       
                       min.time <- Inf
-                      
-                      # TODO: The problem here is that I'm always in the root of the collection, but I shouldn't
-                      
+
                       if(length(postdata$data) > 0) {
-                        p <- do.call(c, list(p,lapply(postdata$data, function(s){
+                        page.results <- do.call(c, list(page.results,lapply(postdata$data, function(s){
                           ss <- list()
                           min.time <<- min(min.time, formatFbDate(s$created_time, "date"))
                           ss[[s$id]] <- s
@@ -135,7 +140,6 @@ setMethod("initialize",
                         
                         page <- page + 1
                         total.posts <- total.posts + length(postdata$data)
-                        
                       }
                       
                       # unregarding of since() query parameter, FB Graph sometimes
@@ -148,7 +152,7 @@ setMethod("initialize",
                       {
                         # Quick warkaround for parent assignment. I'm not very proud of it...
                         all.parents <<- c(all.parents, as.character(rep(sublist$id, min(total.posts, n))))
-                        return(head(p, n))
+                        return(head(page.results, n))
                       }
                       
                       # Graceful waiting before next call
