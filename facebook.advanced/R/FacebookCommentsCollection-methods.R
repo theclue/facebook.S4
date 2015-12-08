@@ -1,4 +1,4 @@
-#' @include FacebookGenericCollection-methods.R
+#' @include FacebookGenericCollection-methods.R FacebookCommentsCollection-class.R
 #'
 #' @title
 #' Checks if the argument is a valid collection of comments

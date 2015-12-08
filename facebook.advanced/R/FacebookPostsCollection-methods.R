@@ -1,4 +1,4 @@
-#' @include FacebookGenericCollection-methods.R
+#' @include FacebookGenericCollection-methods.R FacebookPostsCollection-class.R
 #' 
 #' @title
 #' Checks if the argument is a valid collection of posts

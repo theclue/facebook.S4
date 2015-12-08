@@ -23,12 +23,15 @@ sanity and validation checks.
 created with \code{fbOAuth} used to fill the Collection.}
 
 \item{\code{parent}}{A character vector of the parent IDs of the item included in the Collection or \code{NA} if the items have not inherited a parent}
+
+\item{\code{parent.type}}{A character string with the collection type of the parent ID, if available, or NA otherwise.}
 }}
 \author{
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
 Other Facebook Collections: \code{\link{FacebookGenericCollection-class}};
+  \code{\link{FacebookLikesCollection-class}};
   \code{\link{FacebookPostsCollection-class}}
 }
 

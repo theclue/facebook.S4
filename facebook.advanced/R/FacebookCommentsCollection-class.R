@@ -25,15 +25,3 @@ setClass("FacebookCommentsCollection",
            return(TRUE)
          }
 )
-
-setMethod("initialize",
-          signature(.Object = "FacebookCommentsCollection"),
-          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), feed=NULL, n = n){
-            
-            # Validate parameters
-            validObject(.Object)
-            
-            return(callNextMethod(.Object, id = id, token = token, parameters = parameters, fields = fields, n = n))
-            
-          }
-)

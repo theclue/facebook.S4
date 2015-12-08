@@ -11,7 +11,6 @@
 #' \code{FacebookCommentsCollection} is the constructor for the \code{\link{FacebookCommentsCollection-class}}.
 #' It returns data about comments but doesn't return lists of their own comments or likes (altough it could return a summary view of both).
 #' 
-#' 
 #' Consider pass an instance of a Facecook Posts Collection build using the construction \code{\link{FacebookPostsCollection}},
 #' if you need to bind a comment to its parent post.
 #' 
@@ -24,7 +23,7 @@
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
 #' 
-#' @seealso \code{\link{FacebookLikessCollection}}, \code{\link{FacebookPostssCollection}}, \code{\link{fbOAuth}}
+#' @seealso \code{\link{FacebookLikesCollection}}, \code{\link{FacebookPostssCollection}}, \code{\link{fbOAuth}}
 #'
 #' @inheritParams FacebookGenericCollection
 #' 

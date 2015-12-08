@@ -1,4 +1,4 @@
-#' @include FacebookGenericCollection-methods.R
+#' @include FacebookGenericCollection-methods.R FacebookPagesCollection-class.R
 #'
 #' @title
 #' Checks if the argument is a valid Collection of pages

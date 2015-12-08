@@ -12,11 +12,12 @@
 #' 
 #' @keywords internal
 setClass("FacebookGenericCollection",
-         slots = c(id = "character",
+         slots = c(id = "ANY",
                    fields = "character",
                    data = "list",
                    token = "ANY",
-                   parent = "character"
+                   parent = "character",
+                   parent.type = "character"
          ),
          validity = function(object){
            # TBD
@@ -31,7 +32,7 @@ setMethod("initialize",
             # Validate parameters
             validObject(.Object)
             
-            token <- (function(){ 
+            .Object@token <- (function(){ 
               if(is.null(token) & is(id, "FacebookGenericCollection")){
                 return(id@token)
               } else return(token)
@@ -43,13 +44,15 @@ setMethod("initialize",
               return(.Object)
             }
 
-            .Object@token <- token
-            
-            elements.pagination.define <- getOption("facebook.pagination")
-            
             parsed <- parse.input.fields(fields)
             
             .Object@fields <- unlist(strsplit(parsed$fields, split = ","))
+            
+            .Object@parent.type <- (function(){ 
+              if(is(id, "FacebookGenericCollection")){
+                return(class(id)[1])
+              } else return(NA)
+            })()
             
             elements.v <- (function(id){
               if(!is(id, "FacebookGenericCollection")) {
@@ -133,7 +136,8 @@ setMethod("initialize",
                       if(length(postdata$data) > 0) {
                         page.results <- do.call(c, list(page.results,lapply(postdata$data, function(s){
                           ss <- list()
-                          min.time <<- min(min.time, formatFbDate(s$created_time, "date"))
+                          
+                          min.time <<- min(min.time, ifelse(!is.null(s$created_time), formatFbDate(s$created_time, "date"), Inf))
                           ss[[s$id]] <- s
                           return(ss)
                         })))
