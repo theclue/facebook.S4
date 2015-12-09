@@ -71,10 +71,11 @@
 #' @family Facebook Collection Costructors
 #' @export
 FacebookLikesCollection <- function(id, 
-                                       token = NULL, 
-                                       parameters = list(), 
-                                       fields = c("id", "name", "profile_type"),
-                                       n = getOption("facebook.maxitems")){
+                                    token = NULL, 
+                                    parameters = list(), 
+                                    fields = c("id", "name", "profile_type"),
+                                    n = getOption("facebook.maxitems"),
+                                    metadata = FALSE){
   
   real.n <- (function(n, p.limit){
     if(n > p.limit) {
@@ -96,8 +97,8 @@ FacebookLikesCollection <- function(id,
       }
     } else return(NULL)
   })(fields)
-
-  likes <- new("FacebookLikesCollection", id = id, token = token, parameters = parameters, fields = fields, n = n)
+  
+  likes <- new("FacebookLikesCollection", id = id, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata)
   keys <- as.matrix(cbind(likes@id, likes@parent))
   colnames(keys) <- c("id", ifelse(is(id, "FacebookPostsCollection"), "post.id", "comment.id"))
   likes@id <- keys

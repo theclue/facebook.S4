@@ -6,7 +6,7 @@
 \usage{
 FacebookLikesCollection(id, token = NULL, parameters = list(),
   fields = c("id", "name", "profile_type"),
-  n = getOption("facebook.maxitems"))
+  n = getOption("facebook.maxitems"), metadata = FALSE)
 }
 \arguments{
 \item{id}{A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any of the supported types}
@@ -25,6 +25,9 @@ be set to \code{NULL}}
 \item{n}{If \code{id} is a Collection, then \code{n} is the maximum number of posts to be pulled for any element of the Collection in \code{id}.
 Otherwise, the parameter is ignored. It can be set to \code{Inf} to pull out any available public post and assume the default value from the value
 of \code{facebook.maxitems} global option if missing.}
+
+\item{metadata}{If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
+that setting this to \code{TRUE} will considerably slow down the query.}
 }
 \value{
 A collection of comments in a \code{\link{FacebookCommentsCollection-class}} object.

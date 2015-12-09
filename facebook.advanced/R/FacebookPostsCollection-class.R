@@ -28,12 +28,12 @@ setClass("FacebookPostsCollection",
 
 setMethod("initialize",
           signature(.Object = "FacebookPostsCollection"),
-          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), feed=NULL, n = n){
+          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), n, metadata){
             
             # Validate parameters
             validObject(.Object)
 
-            return(callNextMethod(.Object, id = id, token = token, parameters = parameters, fields = fields, n = n))
+            return(callNextMethod(.Object, id = id, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata))
             
           }
 )

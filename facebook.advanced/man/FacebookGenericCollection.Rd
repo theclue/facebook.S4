@@ -20,6 +20,9 @@ accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/us
 
 \item{fields}{A character vector or a comma-delimited string with the list of fields to get for each ID. If no value for a given fields is found, it will
 be set to \code{NULL}}
+
+\item{metadata}{If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
+that setting this to \code{TRUE} will considerably slow down the query.}
 }
 \value{
 A collection of elements in a \code{\link{FacebookGenericCollection-class}} object on on of its subclasses.

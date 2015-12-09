@@ -16,13 +16,23 @@ setMethod("[",
             })(i)
             
             slot(empty.set, "parent") <- (function(idx){
-              if(is.numeric(i)) return(x@id[i])
-              return(x@parent[x@parent %in% as.character(i)])
+              if(is.numeric(i)) return(x@parent[i])
+              return(x@parent[x@id %in% as.character(i)])
+            })(i)
+            
+            slot(empty.set, "parent.collection") <- (function(idx){
+              if(is.numeric(i)) return(x@parent.collection[i])
+              return(x@parent.collection[x@id %in% as.character(i)])
+            })(i)
+            
+            slot(empty.set, "type") <- (function(idx){
+              if(is.numeric(i)) return(x@type[i])
+              return(x@type[x@id %in% as.character(i)])
             })(i)
             
             slot(empty.set, "data") <- (function(idx){
               if(is.numeric(i)) return(x@data[i])
-              return(x@data[x@data %in% as.character(i)])
+              return(x@data[x@id %in% as.character(i)])
             })(i)
             
             return(empty.set)

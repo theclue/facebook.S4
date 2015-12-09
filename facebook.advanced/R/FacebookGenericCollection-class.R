@@ -17,7 +17,8 @@ setClass("FacebookGenericCollection",
                    data = "list",
                    token = "ANY",
                    parent = "character",
-                   parent.type = "character"
+                   parent.collection = "ANY",
+                   type = "factor"
          ),
          validity = function(object){
            # TBD
@@ -27,49 +28,59 @@ setClass("FacebookGenericCollection",
 
 setMethod("initialize",
           signature(.Object = "FacebookGenericCollection"),
-          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), n){
+          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), n, metadata){
             
             # Validate parameters
             validObject(.Object)
             
-            .Object@token <- (function(){ 
+            token <- (function(){ 
               if(is.null(token) & is(id, "FacebookGenericCollection")){
                 return(id@token)
               } else return(token)
             })()
-            
+
             # Create an empty object if not ids has been specified
             if(is.null(id) | is.null(token)){
               .Object@id <- character(0)
               return(.Object)
             }
-
+            
             parsed <- parse.input.fields(fields)
             
             .Object@fields <- unlist(strsplit(parsed$fields, split = ","))
             
-            .Object@parent.type <- (function(){ 
+            .Object@token <- token
+
+            .Object@parent.collection <- (function(){ 
               if(is(id, "FacebookGenericCollection")){
-                return(class(id)[1])
+                return(id)
               } else return(NA)
             })()
-            
+
+# TODO: support for getting metadata within collection
+# - make a query with id and type
+# - force the parent and parent collection
+#            
+#             if(metadata == TRUE & is(id, "FaceookGenericCollection")){
+#               new(class(.Object))
+#             }
+
             elements.v <- (function(id){
               if(!is(id, "FacebookGenericCollection")) {
                 return(unique(unlist(strsplit(id, split = ","))))
-                }
+              }
               return(id)
             })(id)
-
+            
             elements.f <- rep(seq_len(ceiling(length(elements.v) / getOption("facebook.pagination"))),each = getOption("facebook.pagination"),length.out = length(elements.v))
             elements.chunks <- split(elements.v, f = elements.f)
-
+            
             if(length(elements.chunks) > 1){
               return(do.call(c, 
                              unname(
                                lapply(
                                  elements.chunks, function(single.chunk) {
-                                   new(class(.Object), id = single.chunk, token = token, parameters = parameters, fields = fields, n = n)
+                                   new(class(.Object), id = single.chunk, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata)
                                  })
                              )
               )
@@ -89,16 +100,18 @@ setMethod("initialize",
                                       )
               )
               url <- paste0(
-                "https://graph.facebook.com/v", getOption("facebook.api"), "/?ids=", paste0(elements.v, collapse=","),
+                "https://graph.facebook.com/v", getOption("facebook.api"), "/",
+                "?metadata=", as.numeric(ifelse(is.null(metadata), FALSE, metadata)),
+                "&ids=", paste0(elements.v, collapse=","),
                 ifelse(length(parameters), paste0("&", query.parameters), ""),
                 ifelse(length(fields), paste("&fields", parsed$url, sep="="), "")
               )
-              #print(url)
+              print(url)
               content <- callAPI(url=url, token=token)
               
               # If ID is an atomic list or a collection of the same class, just push out the results
               if(!is(elements.v, "FacebookGenericCollection") | (is(elements.v, class(.Object)))){
-
+                
                 .Object@id <- names(content)
                 
                 .Object@data <- do.call(list, lapply(content, function(item){
@@ -106,11 +119,16 @@ setMethod("initialize",
                 }))
                 
                 .Object@parent <- as.character(rep(NA, length(id)))
+
+                .Object@type <- as.factor(unname(sapply(content, function(item){
+                  return(ifelse(is.null(item$metadata$type), as.character(NA), item$metadata$type))
+                })))
+                
                 
               } else {
                 # If id is a collection, iterate it and clean the results
                 all.parents <- character(0)
-
+                
                 if (n > 0) {
                   
                   min.since <- ifelse(!is.null(parameters$since), as.Date(parameters$since, origin="1970-01-01"), as.Date('1970/01/01'))
@@ -132,7 +150,7 @@ setMethod("initialize",
                       next.url <- postdata$paging$`next`
                       
                       min.time <- Inf
-
+                      
                       if(length(postdata$data) > 0) {
                         page.results <- do.call(c, list(page.results,lapply(postdata$data, function(s){
                           ss <- list()

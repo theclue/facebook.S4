@@ -24,7 +24,9 @@ created with \code{fbOAuth} used to fill the Collection.}
 
 \item{\code{parent}}{A character vector of the parent IDs of the item included in the Collection or \code{NA} if the items have not inherited a parent}
 
-\item{\code{parent.type}}{A character string with the collection type of the parent ID, if available, or NA otherwise.}
+\item{\code{parent.collection}}{The collection used to build this one, or NA if the collection was built from atomic IDs.}
+
+\item{\code{type}}{A factor vector with the type of each element of the collection. It's fed only if the collection is built with \code{metadata=TRUE}}
 }}
 \author{
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}

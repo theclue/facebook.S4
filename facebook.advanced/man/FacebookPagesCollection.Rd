@@ -6,7 +6,7 @@
 \usage{
 FacebookPagesCollection(id, token, parameters = list(), fields = c("id",
   "username", "name", "about", "category", "description", "likes", "link",
-  "talking_about_count"))
+  "talking_about_count"), metadata = FALSE)
 }
 \arguments{
 \item{id}{A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any of the supported types}
@@ -21,6 +21,9 @@ accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/us
 
 \item{fields}{A character vector or a comma-delimited string with the list of fields to get for each ID. If no value for a given fields is found, it will
 be set to \code{NULL}}
+
+\item{metadata}{If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
+that setting this to \code{TRUE} will considerably slow down the query.}
 }
 \value{
 A collection of pages in a \code{\link{FacebookPagesCollection-class}} object.

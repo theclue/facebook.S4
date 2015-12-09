@@ -69,7 +69,8 @@ FacebookPostsCollection <- function(id,
                                     parameters = list(), 
                                     fields = c("id", "from.fields(id,name)", "message", "created_time", "type", "link,name"),
                                     feed = TRUE,
-                                    n = getOption("facebook.maxitems")){
+                                    n = getOption("facebook.maxitems"),
+                                    metadata = FALSE){
   
   fields <- (function(f){ 
     if(length(f) > 0){
@@ -84,5 +85,5 @@ FacebookPostsCollection <- function(id,
     } else return(NULL)
   })(fields)
   
-  return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = fields, feed = feed, n = n))
+  return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata))
 }

@@ -17,9 +17,10 @@
 #' to the Facebook Graph API and an empty Collection is returned
 #' @param parameters A list of parameters to be added to the Facebook Graph API query. For more information on the
 #' accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/using-graph-api}
-#'
 #' @param fields A character vector or a comma-delimited string with the list of fields to get for each ID. If no value for a given fields is found, it will
 #' be set to \code{NULL}
+#' @param metadata If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
+#' that setting this to \code{TRUE} will considerably slow down the query.
 #'
 #' @return A collection of elements in a \code{\link{FacebookGenericCollection-class}} object on on of its subclasses.
 #' @keywords internal
@@ -28,5 +29,5 @@ FacebookGenericCollection <- function(id,
                             parameters = list(), 
                             fields = character(0)){
   
-  return(new("FacebookGenericCollection", id = id, token = token, parameters = parameters, fields = fields))
+  return(new("FacebookGenericCollection", id = id, token = token, parameters = parameters, fields = fields, metadata = FALSE))
 }
