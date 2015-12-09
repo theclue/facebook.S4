@@ -5,7 +5,7 @@
 \title{Build a generic Collection of Facebook data}
 \usage{
 FacebookGenericCollection(id, token, parameters = list(),
-  fields = character(0))
+  fields = character(0), .progress = create_progress_bar())
 }
 \arguments{
 \item{id}{A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any of the supported types}
@@ -20,6 +20,9 @@ accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/us
 
 \item{fields}{A character vector or a comma-delimited string with the list of fields to get for each ID. If no value for a given fields is found, it will
 be set to \code{NULL}}
+
+\item{.progress}{progress_bar object as defined in the plyr package.
+By default the \code{none} progress bar is used, which prints nothing to the console.}
 
 \item{metadata}{If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
 that setting this to \code{TRUE} will considerably slow down the query.}

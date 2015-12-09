@@ -28,12 +28,9 @@ setClass("FacebookPostsCollection",
 
 setMethod("initialize",
           signature(.Object = "FacebookPostsCollection"),
-          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), n, metadata){
+          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), n, metadata=FALSE, .progress = create_progress_bar()){
             
-            # Validate parameters
-            validObject(.Object)
-
-            return(callNextMethod(.Object, id = id, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata))
+            return(callNextMethod(.Object, id = id, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata, .progress = .progress))
             
           }
 )

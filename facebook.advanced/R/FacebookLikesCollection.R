@@ -75,7 +75,8 @@ FacebookLikesCollection <- function(id,
                                     parameters = list(), 
                                     fields = c("id", "name", "profile_type"),
                                     n = getOption("facebook.maxitems"),
-                                    metadata = FALSE){
+                                    metadata = FALSE,
+                                    .progress = create_progress_bar()){
   
   real.n <- (function(n, p.limit){
     if(n > p.limit) {
@@ -98,7 +99,7 @@ FacebookLikesCollection <- function(id,
     } else return(NULL)
   })(fields)
   
-  likes <- new("FacebookLikesCollection", id = id, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata)
+  likes <- new("FacebookLikesCollection", id = id, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata, .progress = .progress)
   keys <- as.matrix(cbind(likes@id, likes@parent))
   colnames(keys) <- c("id", ifelse(is(id, "FacebookPostsCollection"), "post.id", "comment.id"))
   likes@id <- keys

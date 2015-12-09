@@ -21,13 +21,16 @@
 #' be set to \code{NULL}
 #' @param metadata If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
 #' that setting this to \code{TRUE} will considerably slow down the query.
+#' @param .progress progress_bar object as defined in the plyr package.
+#' By default the \code{none} progress bar is used, which prints nothing to the console.
 #'
 #' @return A collection of elements in a \code{\link{FacebookGenericCollection-class}} object on on of its subclasses.
 #' @keywords internal
 FacebookGenericCollection <- function(id, 
                             token, 
                             parameters = list(), 
-                            fields = character(0)){
+                            fields = character(0),
+                            .progress = create_progress_bar()){
   
-  return(new("FacebookGenericCollection", id = id, token = token, parameters = parameters, fields = fields, metadata = FALSE))
+  return(new("FacebookGenericCollection", id = id, token = token, parameters = parameters, fields = fields, metadata = FALSE, .progress = .progress))
 }

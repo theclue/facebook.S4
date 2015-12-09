@@ -19,19 +19,16 @@ setClass("FacebookGenericCollection",
                    parent = "character",
                    parent.collection = "ANY",
                    type = "factor"
-         ),
-         validity = function(object){
-           # TBD
-           return(TRUE)
-         }
+         )
 )
 
 setMethod("initialize",
           signature(.Object = "FacebookGenericCollection"),
-          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), n, metadata){
+          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), n, metadata=FALSE, .progress = create_progress_bar()){
             
-            # Validate parameters
-            validObject(.Object)
+            if(metadata & is(id, "FacebookGenericCollection")){
+              stop("Cannot inherit metadata from a collection. If you need to pull metadata, <id> must be an atomic character vector.")
+            }
             
             token <- (function(){ 
               if(is.null(token) & is(id, "FacebookGenericCollection")){
@@ -57,34 +54,28 @@ setMethod("initialize",
               } else return(NA)
             })()
             
-            # TODO: support for getting metadata within collection
-            # - make a query with id and type
-            # - force the parent and parent collection
-            #            
-            #             if(metadata == TRUE & is(id, "FaceookGenericCollection")){
-            #               new(class(.Object), id = id, token = token, parameters = parameters, fields = c("id"), n = n, metadata = metadata)
-            #             }
-            
             elements.v <- (function(id){
               if(!is(id, "FacebookGenericCollection")) {
                 return(unique(unlist(strsplit(id, split = ","))))
-              } else if(metadata == TRUE & is(id, "FaceookGenericCollection")){
-                warning("Requesting metadata while building a collection from another one needs serialization. More queries to Facebook API have to be performed.")
-                indexes <- new(class(.Object), id = id, token = token, parameters = parameters, fields = c("id"), n = n, metadata = TRUE)
-                return(indexes@id)
+              } else {
+                return(id)
               }
-              return(id)
             })(id)
             
             elements.f <- rep(seq_len(ceiling(length(elements.v) / getOption("facebook.pagination"))),each = getOption("facebook.pagination"),length.out = length(elements.v))
             elements.chunks <- split(elements.v, f = elements.f)
             
             if(length(elements.chunks) > 1){
+              
+              # Init the progress bar
+              .progress$init(length(elements.chunks))
+              .progress$step()
+              
               return(do.call(c, 
                              unname(
                                lapply(
                                  elements.chunks, function(single.chunk) {
-                                   new(class(.Object), id = single.chunk, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata)
+                                   new(class(.Object), id = single.chunk, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata, .progress = .progress)
                                  })
                              )
               )
@@ -110,7 +101,7 @@ setMethod("initialize",
                 ifelse(length(parameters), paste0("&", query.parameters), ""),
                 ifelse(length(fields), paste("&fields", parsed$url, sep="="), "")
               )
-              print(url)
+              #print(url)
               content <- callAPI(url=url, token=token)
               
               # If ID is an atomic list or a collection of the same class, just push out the results
@@ -198,6 +189,8 @@ setMethod("initialize",
                 
               }
               
+              # Advance the progress bar
+              try(.progress$step(), silent=T) 
             }
             return(.Object)
           }

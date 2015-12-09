@@ -6,7 +6,8 @@
 \usage{
 FacebookPagesCollection(id, token, parameters = list(), fields = c("id",
   "username", "name", "about", "category", "description", "likes", "link",
-  "talking_about_count"), metadata = FALSE)
+  "talking_about_count"), metadata = FALSE,
+  .progress = create_progress_bar())
 }
 \arguments{
 \item{id}{A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any of the supported types}
@@ -24,6 +25,9 @@ be set to \code{NULL}}
 
 \item{metadata}{If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
 that setting this to \code{TRUE} will considerably slow down the query.}
+
+\item{.progress}{progress_bar object as defined in the plyr package.
+By default the \code{none} progress bar is used, which prints nothing to the console.}
 }
 \value{
 A collection of pages in a \code{\link{FacebookPagesCollection-class}} object.

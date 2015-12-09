@@ -6,7 +6,8 @@
 \usage{
 FacebookCommentsCollection(id, token = NULL, parameters = list(),
   fields = c("id", "from.fields(id,name)", "message", "created_time",
-  "like_count"), n = getOption("facebook.maxitems"), metadata = FALSE)
+  "like_count"), n = getOption("facebook.maxitems"), metadata = FALSE,
+  .progress = create_progress_bar())
 }
 \arguments{
 \item{id}{A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any of the supported types}
@@ -28,6 +29,9 @@ of \code{facebook.maxitems} global option if missing.}
 
 \item{metadata}{If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
 that setting this to \code{TRUE} will considerably slow down the query.}
+
+\item{.progress}{progress_bar object as defined in the plyr package.
+By default the \code{none} progress bar is used, which prints nothing to the console.}
 }
 \value{
 A collection of comments in a \code{\link{FacebookCommentsCollection-class}} object.

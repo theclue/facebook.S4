@@ -21,8 +21,7 @@ setMethod("[",
             })(i)
             
             slot(empty.set, "parent.collection") <- (function(idx){
-              if(is.numeric(i)) return(x@parent.collection[i])
-              return(x@parent.collection[x@id %in% as.character(i)])
+              return(x@parent.collection)
             })(i)
             
             slot(empty.set, "type") <- (function(idx){
@@ -67,7 +66,7 @@ setMethod("c",
               stopifnot(is(list.elem, class(x)))
             })
             
-
+            
             empty.set@data <- (do.call(c, list(x@data,
                                                do.call(c,lapply(optional.elems, slot, "data"))
             )
@@ -75,17 +74,27 @@ setMethod("c",
             
             # TODO: add dummy fields for subcollections without certain fields?
             empty.set@fields <- unique(do.call(c, list(x@fields,
-                                                      do.call(c,lapply(optional.elems, slot, "fields"))
+                                                       do.call(c,lapply(optional.elems, slot, "fields"))
             )
             ))
             
             empty.set@id <- (do.call(c, list(x@id,
-                                                       do.call(c,lapply(optional.elems, slot, "id"))
+                                             do.call(c,lapply(optional.elems, slot, "id"))
             )
             ))
             
             empty.set@parent <- (do.call(c, list(x@parent,
-                                                   do.call(c,lapply(optional.elems, slot, "parent"))
+                                                 do.call(c,lapply(optional.elems, slot, "parent"))
+            )
+            ))
+            
+            empty.set@type <- (do.call(c, list(x@type,
+                                               do.call(c,lapply(optional.elems, slot, "type"))
+            )
+            ))
+            
+            empty.set@parent.collection <- (do.call(c, list(x@parent.collection,
+                                                            do.call(c,lapply(optional.elems, slot, "parent.collection"))
             )
             ))
             
@@ -99,15 +108,15 @@ setMethod("c",
 #' @export
 as.data.frame.FacebookGenericCollection <- function (x, row.names = FALSE, optional = FALSE, ...) {
   df <- detailsDataToDF(x@data, x@fields)
-
+  
   numeric.cols <- which(grepl("(total|count)", colnames(df), perl=TRUE))
   logical.cols <- which(grepl("(has|can)", colnames(df), perl=TRUE))
   datetime.cols <- which(grepl("time", colnames(df), perl=TRUE))
-
+  
   for(n in names(df)[numeric.cols]){df[[n]] <- as.numeric(df[[n]])}
   for(n in names(df)[datetime.cols]){df[[n]] <- formatFbDate(df[[n]])}
   for(n in names(df)[logical.cols]){df[[n]] <- as.logical(df[[n]])}
-
+  
   if(row.names == TRUE){
     row.names(df) <- x@id
   }

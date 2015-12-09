@@ -45,7 +45,8 @@ FacebookPagesCollection <- function(id,
                             token, 
                             parameters = list(), 
                             fields = c("id", "username", "name", "about", "category", "description", "likes", "link", "talking_about_count"),
-                            metadata = FALSE){
-  
-  return(new("FacebookPagesCollection", id = id, token = token, parameters = parameters, fields = fields, metadata = metadata))
+                            metadata = FALSE,
+                            .progress = create_progress_bar()){
+
+  return(new("FacebookPagesCollection", id = id, token = token, parameters = parameters, fields = fields, metadata = metadata, .progress = .progress))
 }

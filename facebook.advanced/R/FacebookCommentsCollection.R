@@ -66,7 +66,8 @@ FacebookCommentsCollection <- function(id,
                                        parameters = list(), 
                                        fields = c("id", "from.fields(id,name)", "message", "created_time", "like_count"),
                                        n = getOption("facebook.maxitems"),
-                                       metadata = FALSE){
+                                       metadata = FALSE,
+                                       .progress = create_progress_bar()){
   
   real.n <- (function(n, p.limit){
     if(n > p.limit) {
@@ -89,5 +90,5 @@ FacebookCommentsCollection <- function(id,
     } else return(NULL)
   })(fields)
   
-  return(new("FacebookCommentsCollection", id = id, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata))
+  return(new("FacebookCommentsCollection", id = id, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata, .progress = .progress))
 }

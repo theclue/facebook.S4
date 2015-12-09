@@ -23,9 +23,4 @@
 #' 
 #' @export
 setClass("FacebookLikesCollection",
-         contains = "FacebookGenericCollection",
-         validity = function(object){
-           
-           return(TRUE)
-         }
-)
+         contains = "FacebookGenericCollection")
