@@ -14,7 +14,7 @@
 setClass("FacebookGenericCollection",
          slots = c(id = "ANY",
                    fields = "character",
-                   data = "list",
+                   data = "ANY",
                    token = "ANY",
                    parent = "character",
                    parent.collection = "ANY",

@@ -63,7 +63,9 @@ setMethod("c",
             
             # Only bind collections of the same kind
             lapply(optional.elems, function(list.elem) {
-              stopifnot(is(list.elem, class(x)))
+              if(!is(list.elem, class(x))){
+                stop(paste0("Cannot bind collection of different kinds. Found: ", class(list.elem), ". Expected: ", class(x)))
+              }
             })
             
             
@@ -88,15 +90,23 @@ setMethod("c",
             )
             ))
             
-            empty.set@type <- (do.call(c, list(x@type,
-                                               do.call(c,lapply(optional.elems, slot, "type"))
+            empty.set@type <- as.factor(do.call(c, list(x@type,
+                                                        do.call(c,lapply(optional.elems, function(x){ as.character(slot(x, "type"))}))
             )
             ))
             
-            empty.set@parent.collection <- (do.call(c, list(x@parent.collection,
-                                                            do.call(c,lapply(optional.elems, slot, "parent.collection"))
+            empty.set@parent.collection <- do.call(c, 
+                    list(unname(
+                      lapply(
+                        optional.elems, function(p) {
+                          print(class(p@parent.collection))
+                          p@parent.collection
+                        })
+                    )
+                    )
             )
-            ))
+            
+            
             
             empty.set@token <- x@token
             
