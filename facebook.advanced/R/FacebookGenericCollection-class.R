@@ -38,7 +38,7 @@ setMethod("initialize",
                 return(id@token)
               } else return(token)
             })()
-
+            
             # Create an empty object if not ids has been specified
             if(is.null(id) | is.null(token)){
               .Object@id <- character(0)
@@ -50,24 +50,28 @@ setMethod("initialize",
             .Object@fields <- unlist(strsplit(parsed$fields, split = ","))
             
             .Object@token <- token
-
+            
             .Object@parent.collection <- (function(){ 
               if(is(id, "FacebookGenericCollection")){
                 return(id)
               } else return(NA)
             })()
-
-# TODO: support for getting metadata within collection
-# - make a query with id and type
-# - force the parent and parent collection
-#            
-#             if(metadata == TRUE & is(id, "FaceookGenericCollection")){
-#               new(class(.Object))
-#             }
-
+            
+            # TODO: support for getting metadata within collection
+            # - make a query with id and type
+            # - force the parent and parent collection
+            #            
+            #             if(metadata == TRUE & is(id, "FaceookGenericCollection")){
+            #               new(class(.Object), id = id, token = token, parameters = parameters, fields = c("id"), n = n, metadata = metadata)
+            #             }
+            
             elements.v <- (function(id){
               if(!is(id, "FacebookGenericCollection")) {
                 return(unique(unlist(strsplit(id, split = ","))))
+              } else if(metadata == TRUE & is(id, "FaceookGenericCollection")){
+                warning("Requesting metadata while building a collection from another one needs serialization. More queries to Facebook API have to be performed.")
+                indexes <- new(class(.Object), id = id, token = token, parameters = parameters, fields = c("id"), n = n, metadata = TRUE)
+                return(indexes@id)
               }
               return(id)
             })(id)
@@ -119,7 +123,7 @@ setMethod("initialize",
                 }))
                 
                 .Object@parent <- as.character(rep(NA, length(id)))
-
+                
                 .Object@type <- as.factor(unname(sapply(content, function(item){
                   return(ifelse(is.null(item$metadata$type), as.character(NA), item$metadata$type))
                 })))
