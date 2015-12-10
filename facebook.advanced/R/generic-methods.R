@@ -29,3 +29,12 @@ setGeneric("as.list")
 #' 
 #' @export 
 setGeneric("length")
+
+#' @title
+#'  Returns a summarized rapresentation of a Facebook collection
+#' 
+#' @param x A valid collection of Facebook elements
+#' @rdname summary
+#' 
+#' @export 
+setGeneric("summary")

@@ -51,7 +51,7 @@ setMethod("initialize",
             .Object@parent.collection <- (function(){ 
               if(is(id, "FacebookGenericCollection")){
                 return(id)
-              } else return(NA)
+              } else return(NULL)
             })()
             
             elements.v <- (function(id){

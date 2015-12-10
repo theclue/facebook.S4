@@ -1,6 +1,35 @@
 #' @include generic-methods.R
 NULL
 
+setMethod("summary",
+          signature(object = "FacebookGenericCollection"),
+          function (object, ...) 
+          {
+            cat(paste0(rep_len("-", nchar(class(object))), collapse=""))
+            cat(paste0("\n", class(object), "\n"))
+            cat(paste0(rep_len("-", nchar(class(object))), collapse=""))
+            cat(paste0("\nLength: ", length(object), " element", ifelse(length(object) != 1, "s", "")))
+            cat(paste0("\nFields: ", paste(object@fields, collapse=", ")))
+            cat(paste0("\nParent Collection: ", 
+                       ifelse(!is.null(object@parent.collection), 
+                              paste0(class(object@parent.collection),
+                                     " (",
+                                     length(object@parent.collection),
+                                     " element", ifelse(length(object@parent.collection) != 1, "s", ""), ")"), "NA")
+            )
+            )
+            cat(paste0("\n", ifelse(length(object) > 5 , "First 5 IDs: ", "IDs: "), paste0(head(object@id, 5), collapse=", ")))
+            cat("\n\nFacebook Application ID:", ifelse(is.character(object@token), "NONE - A token from Graph API Explorer was used", object@token$app$key))
+            cat("\n\nContent Example (only the first 3 fields are shown):\n")
+            separator <- paste0(rep_len("-", sum(apply(head(as.data.frame(object),5)[,1:min(3, length(object@fields))], MARGIN=2, function(r) { max(nchar(as.character((r))))})) + 4), collapse="")
+            cat(paste0(separator, "\n"))
+            print(head(as.data.frame(object), 5)[,1:min(3, length(object@fields))])
+            cat(ifelse(length(object) > 5, paste0("\n (", length(object) - 5, " more element", ifelse(length(object) - 5 != 1, "s", ""), ")\n"), ""))
+            cat(paste0(separator, "\n"))
+            invisible(object)
+          }
+)
+
 setMethod("[",
           signature="FacebookGenericCollection",
           function(x,i,j,drop){
@@ -8,6 +37,7 @@ setMethod("[",
             empty.set <- new(class(x))
             
             slot(empty.set, "fields") <- x@fields
+            
             slot(empty.set, "token") <- x@token
             
             slot(empty.set, "id") <- (function(idx){
@@ -68,45 +98,42 @@ setMethod("c",
               }
             })
             
+            id <- (do.call(c, list(x@id,
+                                   do.call(c,lapply(optional.elems, slot, "id"))
+            )
+            ))
+            
+            empty.set@id <- id[!duplicated(id)]
             
             empty.set@data <- (do.call(c, list(x@data,
                                                do.call(c,lapply(optional.elems, slot, "data"))
             )
-            ))
+            ))[!duplicated(id)]
             
-            # TODO: add dummy fields for subcollections without certain fields?
             empty.set@fields <- unique(do.call(c, list(x@fields,
                                                        do.call(c,lapply(optional.elems, slot, "fields"))
-            )
-            ))
-            
-            empty.set@id <- (do.call(c, list(x@id,
-                                             do.call(c,lapply(optional.elems, slot, "id"))
             )
             ))
             
             empty.set@parent <- (do.call(c, list(x@parent,
                                                  do.call(c,lapply(optional.elems, slot, "parent"))
             )
-            ))
+            ))[!duplicated(id)]
             
             empty.set@type <- as.factor(do.call(c, list(x@type,
                                                         do.call(c,lapply(optional.elems, function(x){ as.character(slot(x, "type"))}))
             )
-            ))
+            ))[!duplicated(id)]
             
-            empty.set@parent.collection <- do.call(c, 
-                    list(unname(
-                      lapply(
-                        optional.elems, function(p) {
-                          print(class(p@parent.collection))
-                          p@parent.collection
-                        })
-                    )
-                    )
-            )
+            secondary.collection <-
+              lapply(
+                optional.elems, function(p) {
+                  p@parent.collection
+                })
             
+            # TODO: remove dupes while concatening collections
             
+            empty.set@parent.collection <- c(x@parent.collection, do.call(c, secondary.collection))
             
             empty.set@token <- x@token
             
