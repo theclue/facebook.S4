@@ -120,7 +120,7 @@ setMethod("c",
             )
             ))[!duplicated(id)]
             
-            empty.set@type <- as.factor(do.call(c, list(x@type,
+            empty.set@type <- (do.call(c, list(x@type,
                                                         do.call(c,lapply(optional.elems, function(x){ as.character(slot(x, "type"))}))
             )
             ))[!duplicated(id)]

@@ -1,7 +1,7 @@
-#' @include FacebookGenericCollection-class.R FacebookPagesCollection-class.R
+#' @include FacebookGenericCollection-class.R FacebookUsersCollection-class.R
 #' 
 #' @title 
-#' Class for representing a Collection of Facebook posts
+#' Class for representing a Collection of Facebook user's likes
 #'
 #' @description
 #' Connect to Facebook Graph API, get information from a list of public Facebook posts and build a \code{\link{FacebookPostsCollection-class}}

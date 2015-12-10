@@ -51,13 +51,10 @@ For example, if you need only \code{id} and \code{source} for the \code{covern} 
 
 Be careful when buinding this kind of collection starting from a \code{\link{FacebookPostsCollection}}, \code{\link{FacebookCommentsCollection}}
 or a \code{\link{FacebookLikesCollection}}.
-
 In Facebook one can publish, comment or like acting as a user or as a page. But since users and pages have different sets of fields
 and you won't know in advance if a (commenting) user is a page or not, the constructor of this collection would fail.
-To avoid this, if \code{id} is an instance of one of the aforementioned collection, an intermediate \code{\link{FacebookMixedCollection}}
-is built with
-this function will extract both. Parameters \code{users.fields} and \code{pages.fields}
-are used to drive which attributes to get.
+To avoid this, if \code{id} is an instance of one of the aforementioned collection, an pre-serialization query is performed
+to eventually discard all the pages and retain only valid users. Then, the real collection is built on this valid subset of user IDs.
 }
 \examples{
 \dontrun{

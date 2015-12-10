@@ -64,7 +64,7 @@
 #'
 #' @family Facebook Collection Costructors
 #' @export
-FacebookPostsCollection <- function(id, 
+FacebookUserLikessCollection <- function(id, 
                                     token = NULL, 
                                     parameters = list(), 
                                     fields = c("id", "from.fields(id,name)", "message", "created_time", "type", "link,name"),
@@ -77,7 +77,7 @@ FacebookPostsCollection <- function(id,
     if(length(f) > 0){
       e.fields <- paste(paste0(fields, collapse=","), "comments.summary(true).limit(0),likes.summary(true).limit(0)", sep=",")
       
-      if(is(id, "FacebookPagesCollection") | is(id, "FacebookUsersCollection")){
+      if(is(id, "FacebookPagesCollection")){
         return(paste0(ifelse(!is.null(feed) & feed, "feed", "posts"), ".fields(", e.fields, ")"))
       }
       else {

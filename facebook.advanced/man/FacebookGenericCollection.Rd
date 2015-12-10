@@ -5,7 +5,8 @@
 \title{Build a generic Collection of Facebook data}
 \usage{
 FacebookGenericCollection(id, token, parameters = list(),
-  fields = character(0), .progress = create_progress_bar())
+  fields = character(0), .progress = create_progress_bar(),
+  metadata = FALSE)
 }
 \arguments{
 \item{id}{A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any of the supported types}

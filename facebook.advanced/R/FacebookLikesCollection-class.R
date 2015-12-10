@@ -4,14 +4,14 @@
 #' Class for representing a Collection of Facebook likes
 #'
 #' @description
-#' Connect to Facebook Graph API, get information from a list of public Facebook comments and build a \code{\link{FacebookLikesCollection-class}}
+#' Connect to Facebook Graph API, get likes from a list of public Facebook posts or comments and build a \code{\link{FacebookLikesCollection-class}}
 #' instance.
 #' 
 #' Use the \code{\link{FacebookLikesCollection}} constructor for building a instance of this class, as it provides better
 #' sanity and validation checks.
 #' 
 #' @details 
-#' Although they are named the same in the Facebook jargon, posts/comments likes and users'likes are different entitites.
+#' Although they are named the same in the Facebook jargon, posts/comments likes and users'likes are different entities.
 #' This collection covers the first, while \code{\link{FacebookUsersLikesCollection-class}} the latter.
 #' 
 #' @name FacebookLikesCollection-class

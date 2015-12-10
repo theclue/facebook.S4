@@ -37,14 +37,12 @@
 #'	pages <- facebook.search(query="cats", type="page", token=fb_oauth, n=100)
 #' }
 #'
-
-facebook.search <- function(query, token, n=200, type="page", fields="id,name"){
+facebook.search <- function(query, token, n = getOption("facebook.maxitems"), type = "page"){
   
   fields <- ifelse(is.null(fields), "id,name", fields)
   
   limit <- ifelse(is.null(n), 200, n)
-  
-  parsed <- parse.input.fields(fields)
+
   
   query <- URLencode(
     paste0(
@@ -54,7 +52,7 @@ facebook.search <- function(query, token, n=200, type="page", fields="id,name"){
       type,
       "&limit=",
       limit,
-      "&fields=", parsed$url
+      "&fields=id"
     )
   )
   

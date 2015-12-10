@@ -30,7 +30,8 @@ FacebookGenericCollection <- function(id,
                             token, 
                             parameters = list(), 
                             fields = character(0),
-                            .progress = create_progress_bar()){
+                            .progress = create_progress_bar(),
+                            metadata = FALSE){
   
-  return(new("FacebookGenericCollection", id = id, token = token, parameters = parameters, fields = fields, metadata = FALSE, .progress = .progress))
+  return(new("FacebookGenericCollection", id = id, token = token, parameters = parameters, fields = fields, metadata = metadata, .progress = .progress))
 }

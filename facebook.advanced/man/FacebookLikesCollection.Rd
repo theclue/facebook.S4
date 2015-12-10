@@ -47,14 +47,14 @@ It returns data about likes to posts or comments but doesn't return the comments
 Since Facebook doesn't provide a key for a single like, the ID slot for this kind of collection is a matrix of two columns:
 the user ID of who put the like and the post/comment ID of where the like was put on. This identifies a unique key for the like.
 
-Consider pass an instance of a Facecook Posts Collection or a Facebook Comments Collection build using the construction \code{\link{FacebookPostsCollection}}
-or \code{\link{FacebookCommentsCollection}}, if you need to bind to parent posts/comments.
+Consider pass an instance of a Facecook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
+or \code{\link{FacebookCommentsCollection}}, if you need to bind each like to the belonging post/comment.
 
 Also, please note that this kind of collection cannot have mixed parents. You can eventually feed it with a FacebookPostsCollection
-or a FacebookCommentsCollection, but no both at the same time: comments' likes and posts' likes are distinct collections.
+or a FacebookCommentsCollection, but no both at the same time: likes to comments and likes to posts are distinct items, on Facebook Graph API.
 
 Due to the network-graph nature of Facebook data model,
-you can always specify fields details for each field eventually nesting \code{.fields()} clauses.
+you can always specify field details nesting \code{.fields()} clauses.
 
 For example, if you need only \code{id} and \code{name} for the \code{from} node, this clause is valid among others:
 \code{from.fields(id,name)}.
