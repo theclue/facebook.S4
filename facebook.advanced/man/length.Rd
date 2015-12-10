@@ -2,7 +2,7 @@
 % Please edit documentation in R/generic-methods.R
 \name{length}
 \alias{length}
-\title{Returns the number of items of a Facebook collections}
+\title{Returns the number of items of a Facebook collection}
 \usage{
 length(x)
 }
@@ -10,6 +10,6 @@ length(x)
 \item{x}{A valid collection of Facebook elements}
 }
 \description{
-Returns the number of items of a Facebook collections
+Returns the number of items of a Facebook collection
 }
 

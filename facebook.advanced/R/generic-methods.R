@@ -22,7 +22,7 @@ setGeneric("as.data.frame")
 setGeneric("as.list")
 
 #' @title
-#'  Returns the number of items of a Facebook collections
+#'  Returns the number of items of a Facebook collection
 #' 
 #' @param x A valid collection of Facebook elements
 #' @rdname length

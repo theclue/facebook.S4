@@ -8,7 +8,7 @@
 #' instance.
 #' 
 #' @details
-#' \code{FacebookPagessCollection} is the constructor for the \code{\link{FacebookPagesCollection-class}}.
+#' \code{FacebookPagesCollection} is the constructor for the \code{\link{FacebookPagesCollection-class}}.
 #' It returns data about pages but doesn't return lists of posts or the fanbase (altough it will return a summary view for the latters).
 #' 
 #' Due to the network-graph nature of Facebook data model,
