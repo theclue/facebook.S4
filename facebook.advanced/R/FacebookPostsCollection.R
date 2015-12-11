@@ -73,18 +73,16 @@ FacebookPostsCollection <- function(id,
                                     metadata = FALSE,
                                     .progress = create_progress_bar()){
   
-  fields <- (function(f){ 
-    if(length(f) > 0){
-      e.fields <- paste(paste0(fields, collapse=","), "comments.summary(true).limit(0),likes.summary(true).limit(0)", sep=",")
-      
-      if(is(id, "FacebookPagesCollection") | is(id, "FacebookUsersCollection")){
-        return(paste0(ifelse(!is.null(feed) & feed, "feed", "posts"), ".fields(", e.fields, ")"))
-      }
-      else {
-        return(e.fields)
-      }
-    } else return(NULL)
-  })(fields)
+  if(length(fields)==0){
+    message("You've specified no fields. Only the ID will be pulled into the collection.")
+    fields <- "id"
+  }
   
-  return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata, .progress = .progress))
+  e.fields <- paste(paste0(fields, collapse=","), "comments.summary(true).limit(0),likes.summary(true).limit(0)", sep=",")
+  
+  if(is(id, "FacebookPagesCollection") | is(id, "FacebookUsersCollection")){
+    return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = ifelse(feed, "feed", "posts"), ".fields(", e.fields, ")", n = n, metadata = metadata, .progress = .progress))
+  }
+  
+  return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = e.fields, n = n, metadata = metadata, .progress = .progress))
 }
