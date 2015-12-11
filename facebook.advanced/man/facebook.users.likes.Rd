@@ -4,7 +4,7 @@
 \alias{facebook.users.likes}
 \title{Pull all the public likes of Facebook users}
 \usage{
-facebook.users.likes(id, token, parameters = list(),
+facebook.users.likes(id, token = NULL, parameters = list(),
   n = getOption("facebook.maxitems"), .progress = create_progress_bar())
 }
 \arguments{

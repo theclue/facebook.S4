@@ -113,7 +113,7 @@ setMethod("initialize",
                 ifelse(length(parameters), paste0("&", query.parameters), ""),
                 ifelse(length(fields), paste("&fields", parsed$url, sep="="), "")
               )
-              #print(url)
+              print(url)
               content <- callAPI(url=url, token=token)
               
               # If ID is an atomic list or a collection of the same class, just push out the results

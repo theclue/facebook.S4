@@ -40,7 +40,7 @@
 #' }
 #'
 facebook.users.likes <- function(id, 
-                                 token,
+                                 token = NULL,
                                  parameters = list(),
                                  n = getOption("facebook.maxitems"), 
                                  .progress = create_progress_bar()){
@@ -52,6 +52,8 @@ facebook.users.likes <- function(id,
     stop("id must be a collection of any of the supported types.")
   }
   
-  return(new("FacebookGenericCollection", id = id@id, token = token, parameters = parameters, fields = "likes.fields(id)", n = n, metadata = TRUE, .progress = .progress))
+  likes.idx <- new("FacebookGenericCollection", id = id, token = token, parameters = parameters, fields = "likes.fields(id)", n = n, metadata = FALSE)
+  
+  return(new("FacebookGenericCollection", id = likes.idx@id, token = token, fields="id", parameters = parameters, metadata = TRUE, .progress = .progress))
   
 }
