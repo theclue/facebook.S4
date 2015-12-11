@@ -11,17 +11,18 @@
 #' \code{FacebookPostsCollection} is the constructor for the \code{\link{FacebookPostsCollection-class}}.
 #' It returns data about posts but doesn't return lists of comments or likes (altough it will return a summary view of both).
 #' 
-#' You can actually get some informations about comments and likes using fields nesting (see below), but this is not actually
-#' recommended.
-#' 
-#' Consider using the twin functions \code{\link{FacebookCommentsCollection}}, \code{\link{FacebookLikesCollection}} to focuse on these nodes
-#' of data.
+#' Consider using the twin functions \code{\link{FacebookCommentsCollection}}, \code{\link{FacebookLikesCollection}} to focus on these kinds
+#' of items.
 #' 
 #' Due to the network-graph nature of Facebook data model,
 #' you can always specify fields details for each field eventually nesting \code{.fields()} clauses.
 #' 
 #' For example, if you need only \code{id} and \code{name} for the \code{from} node, this clause is valid among others:
 #' \code{from.fields(id,name)}.
+#' 
+#' Assuming the senders granted the \code{user_posts} permission in the scope of the current application, you can pass 
+#' a collection of \code{FacebookPostsCollection} as \code{id} parameter. In this cases, a collection of sharedposts from the
+#' given posts will be fed.
 #'
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
@@ -34,7 +35,7 @@
 #' eritten by others (not only by the owner of the Collection items). If \code{id} is not a collection, the parameter is ignored.
 #' 
 #' @param n If \code{id} is a Collection, then \code{n} is the maximum number of posts to be pulled for any element of the Collection in \code{id}.
-#' Otherwise, the parameter is ignored. It can be set to \code{Inf} to pull out any available public post and assume the default value from the value
+#' Otherwise, the parameter is ignored. It can be set to \code{Inf} to pull out any available public post and assumes the default value from the value
 #' of \code{facebook.maxitems} global option if missing.
 #'
 #' @return A collection of posts in a \code{\link{FacebookPostsCollection-class}} object.
@@ -62,6 +63,9 @@
 #'    FacebookPostsCollection(n = 10)
 #' }
 #'
+#' ## Build a collection of sharedposts from a posts collection
+#'  fb.sharedposts <- FacebookPostscollection(id = fb.posts, token = fb_oauth, n = Inf)
+#'
 #' @family Facebook Collection Costructors
 #' @export
 FacebookPostsCollection <- function(id, 
@@ -81,7 +85,11 @@ FacebookPostsCollection <- function(id,
   e.fields <- paste(paste0(fields, collapse=","), "comments.summary(true).limit(0),likes.summary(true).limit(0)", sep=",")
   
   if(is(id, "FacebookPagesCollection") | is(id, "FacebookUsersCollection")){
-    return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = ifelse(feed, "feed", "posts"), ".fields(", e.fields, ")", n = n, metadata = metadata, .progress = .progress))
+    return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = parse0(ifelse(feed, "feed", "posts"), ".fields(", e.fields, ")"), n = n, metadata = metadata, .progress = .progress))
+  }
+  
+  if(is(id, "FacebookPostsCollection")){
+    return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = parse0("sharedposts.fields(", e.fields, ")"), n = n, metadata = metadata, .progress = .progress))
   }
   
   return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = e.fields, n = n, metadata = metadata, .progress = .progress))
