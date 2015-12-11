@@ -2,7 +2,7 @@
 % Please edit documentation in R/FacebookLikesCollection.R
 \name{FacebookLikesCollection}
 \alias{FacebookLikesCollection}
-\title{Build a Collection of Facebook Post Comments}
+\title{Build a Collection of Facebook Likes to posts and comments}
 \usage{
 FacebookLikesCollection(id, token = NULL, parameters = list(),
   fields = c("id", "name", "profile_type"),
@@ -23,8 +23,8 @@ accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/us
 \item{fields}{A character vector or a comma-delimited string with the list of fields to get for each ID. If no value for a given fields is found, it will
 be set to \code{NULL}}
 
-\item{n}{If \code{id} is a Collection, then \code{n} is the maximum number of posts to be pulled for any element of the Collection in \code{id}.
-Otherwise, the parameter is ignored. It can be set to \code{Inf} to pull out any available public post and assume the default value from the value
+\item{n}{A numerical value with is the maximum number of likes to be pulled for any element of the Collection in \code{id}.
+It can be set to \code{Inf} to pull out all the available likes and assumes the default value from the value
 of \code{facebook.maxitems} global option if missing.}
 
 \item{metadata}{If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
@@ -34,21 +34,21 @@ that setting this to \code{TRUE} will considerably slow down the query.}
 By default the \code{none} progress bar is used, which prints nothing to the console.}
 }
 \value{
-A collection of comments in a \code{\link{FacebookCommentsCollection-class}} object.
+A collection of likes in a \code{\link{FacebookLikesCollection-class}} object.
 }
 \description{
-Connect to Facebook Graph API, get information from a list of public Facebook likes to posts or comments and build a \code{FacebookLikesCollection-class}
+Connect to Facebook Graph API, get information from a list of likes to public posts or comments and build a \code{FacebookLikesCollection-class}
 instance.
 }
 \details{
 \code{FacebookLikesCollection} is the constructor for the \code{\link{FacebookLikesCollection-class}}.
 It returns data about likes to posts or comments but doesn't return the comments or posts themselves.
 
-Since Facebook doesn't provide a key for a single like, the ID slot for this kind of collection is a matrix of two columns:
-the user ID of who put the like and the post/comment ID of where the like was put on. This identifies a unique key for the like.
+Since Facebook doesn't provide a key for a single like, the ID slot for this kind of collection is not enough to uniquely identify a like on Facebook.
+The \code{id} (the user who put the like) coupled with the \code{parent} (the place where she put the like) identifies a unique key for the like.
 
-Consider pass an instance of a Facecook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
-or \code{\link{FacebookCommentsCollection}}, if you need to bind each like to the belonging post/comment.
+As a consequences, you cannot build a like collection starting from atomic IDs, but you must pass an instance of a Facecook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
+or \code{\link{FacebookCommentsCollection}} as \code{id} parameter.
 
 Also, please note that this kind of collection cannot have mixed parents. You can eventually feed it with a FacebookPostsCollection
 or a FacebookCommentsCollection, but no both at the same time: likes to comments and likes to posts are distinct items, on Facebook Graph API.
@@ -95,7 +95,8 @@ Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 \seealso{
 \code{\link{FacebookCommentssCollection}}, \code{\link{FacebookPostssCollection}}, \code{\link{FacebookUsersLikesCollection}}, \code{\link{fbOAuth}}
 
-Other Facebook Collection Costructors: \code{\link{FacebookCommentsCollection}};
-  \code{\link{FacebookPostsCollection}}
+Other Facebook.Collection.Costructors: \code{\link{FacebookCommentsCollection}};
+  \code{\link{FacebookPostsCollection}};
+  \code{\link{FacebookUserLikessCollection}}
 }
 

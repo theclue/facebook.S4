@@ -4,7 +4,8 @@
 \alias{facebook.search}
 \title{Perform a search on Facebook}
 \usage{
-facebook.search(query, token, n = 200, type = "page", fields = "id,name")
+facebook.search(query, token, n = getOption("facebook.maxitems"),
+  type = "page")
 }
 \arguments{
 \item{query}{comma-delimited string or string vector containing keywords to search.

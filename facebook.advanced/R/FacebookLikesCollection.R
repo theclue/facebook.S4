@@ -12,9 +12,9 @@
 #' It returns data about likes to posts or comments but doesn't return the comments or posts themselves.
 #' 
 #' Since Facebook doesn't provide a key for a single like, the ID slot for this kind of collection is not enough to uniquely identify a like on Facebook.
-#' The \code{id} (the user who put the like) coupled with the \{parent} (the place where she put the like) identifies a unique key for the like.
+#' The \code{id} (the user who put the like) coupled with the \code{parent} (the place where she put the like) identifies a unique key for the like.
 #' 
-#' As a conseguences, you cannot build a like collection starting from atomic IDs, but you must pass an instance of a Facecook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
+#' As a consequences, you cannot build a like collection starting from atomic IDs, but you must pass an instance of a Facecook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
 #' or \code{\link{FacebookCommentsCollection}} as \code{id} parameter.
 #' 
 #' Also, please note that this kind of collection cannot have mixed parents. You can eventually feed it with a FacebookPostsCollection

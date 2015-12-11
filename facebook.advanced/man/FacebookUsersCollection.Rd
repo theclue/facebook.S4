@@ -30,7 +30,7 @@ that setting this to \code{TRUE} will considerably slow down the query.}
 By default the \code{none} progress bar is used, which prints nothing to the console.}
 }
 \value{
-A collection of pages in a \code{\link{FacebookPagesCollection-class}} object.
+A collection of users in a \code{\link{FacebookUsersCollection-class}} object.
 }
 \description{
 Connect to Facebook Graph API, get public information from a list of Facebook users and build a \code{\link{FacebookUsersCollection-class}}
@@ -49,12 +49,12 @@ you can always specify fields details for each field eventually nesting \code{.f
 For example, if you need only \code{id} and \code{source} for the \code{covern} node, this clause is valid among others:
 \code{cover.fields(id,source)}.
 
-Be careful when buinding this kind of collection starting from a \code{\link{FacebookPostsCollection}}, \code{\link{FacebookCommentsCollection}}
+Be careful when binding this kind of collection starting from a \code{\link{FacebookPostsCollection}}, \code{\link{FacebookCommentsCollection}}
 or a \code{\link{FacebookLikesCollection}}.
-In Facebook one can publish, comment or like acting as a user or as a page. But since users and pages have different sets of fields
-and you won't know in advance if a (commenting) user is a page or not, the constructor of this collection would fail.
+In Facebook, one can publish, comment or like acting as a user or as a page. But since users and pages have different sets of fields
+and you won't know in advance if a (commenting) user is a page or not, the constructor of this collection would fail due to inconsitent fields.
 To avoid this, if \code{id} is an instance of one of the aforementioned collection, an pre-serialization query is performed
-to eventually discard all the pages and retain only valid users. Then, the real collection is built on this valid subset of user IDs.
+to eventually discard all the pages and retain only valid users. Then, the real collection is built on this valid subset of user IDs only.
 }
 \examples{
 \dontrun{
@@ -78,6 +78,6 @@ to eventually discard all the pages and retain only valid users. Then, the real 
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{FacebookPostset}}, \code{\link{FacebooCommentset}}, \code{\link{fbOAuth}}
+\code{\link{FacebookPostsCollections}}, \code{\link{FacebookCommentsCollection}}, \code{\link{FacebookLikesCollection}}, \code{\link{fbOAuth}}
 }
 

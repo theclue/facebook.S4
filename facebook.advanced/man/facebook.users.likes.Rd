@@ -2,39 +2,41 @@
 % Please edit documentation in R/facebook.users.likes.R
 \name{facebook.users.likes}
 \alias{facebook.users.likes}
-\title{Extract list of likes from Facebook users}
+\title{Pull all the public likes of Facebook users}
 \usage{
-facebook.users.likes(users, token, n = 500,
-  fields = "category,name,id,created_time",
-  .progress = create_progress_bar())
+facebook.users.likes(id, token, parameters = list(),
+  n = getOption("facebook.maxitems"), .progress = create_progress_bar())
 }
 \arguments{
-\item{users}{A vector or comma-delimited string with IDs or screen names.}
+\item{id}{A character vector or a comma-delimited string of users/pages IDs or an existing \code{\link{FacebookUsersCollection}} or \code{\link{FacebookPagesCollection}}}
 
 \item{token}{Either a temporary access token created at
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
-created with \code{fbOAuth}.}
+created with \code{\link{fbOAuth}}. If \code{NULL} and \code{id} is a Collection, get that one instead. Otherwise, no query is performed
+to the Facebook Graph API and an empty Collection is returned}
 
-\item{n}{Maximum number of likes to return for each user.}
-
-\item{fields}{vector or comma-separated string of fields to get}
+\item{parameters}{A list of parameters to be added to the Facebook Graph API query. For more information on the
+accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/using-graph-api}}
 
 \item{.progress}{progress_bar object as defined in the plyr package.
-By default the \code{none} progress bar is used, which prints
-nothing to the console.}
+By default the \code{none} progress bar is used, which prints nothing to the console.}
+}
+\value{
+A collection of mixed likes in a \code{\link{FacebookGenericCollection-class}} object with the \code{id} and the \code{type} for
+contained element.
 }
 \description{
-\code{facebook.users.likes} retrieves information about the likes from a list of Facebook IDs and/or names.
+\code{facebook.users.likes} pull information about the likes from a list of Facebook IDs and/or names of users or pages and push them into a
+\code{\link{FacebookGenericCollection-class}} instance.
 }
 \details{
-This is a tiny wrapper around the generic \code{\link{facebook.get}} and
-requires the use of an OAuth token with the following
-permissions: user_likes, friends_likes
-
-This function requires the use of a OAuth token with user_likes
+This function requires the use of a OAuth token with \code{user_likes}
 permission granted. After the introduction of version 2.0 of the Graph API,
 only likes from users who are using the application that you used to generate the
 token to query the API will be returned.
+
+Only the \code{id} and the \code{type} is returned in a mixed collection.
+Then, a proper collection for each type must be built accordingly.
 }
 \examples{
 \dontrun{
@@ -46,6 +48,6 @@ token to query the API will be returned.
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{facebook.friends}}, \code{\link{fbOAuth}}
+\code{\link{facebook.friends}}, \code{\link{facebook.search}}, \code{\link{fbOAuth}}
 }
 

@@ -3,10 +3,10 @@
 \docType{class}
 \name{FacebookGenericCollection-class}
 \alias{FacebookGenericCollection-class}
-\title{A generic collection of Facebook items}
+\title{A generic collection of Facebook elements}
 \description{
 Connect to Facebook Graph API, get public information from a list of Facebook elements of any kind and build a \code{FacebookUsersCollection-class}
-instance
+instance.
 }
 \details{
 This collection should not be built directly, as it performs no sanity check on its content.
@@ -27,17 +27,17 @@ but it's not guaranteed to work and it probably won't, actually.
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
 created with \code{fbOAuth} used to fill the Collection.}
 
-\item{\code{parent}}{A character vector of the parent IDs of the item included in the Collection or \code{NA} if the items have not inherited a parent}
+\item{\code{parent}}{A character vector of the parent IDs of the items included in the Collection or \code{NA} if the items have not inherited a parent}
 
 \item{\code{parent.collection}}{The collection used to build this one, or NA if the collection was built from atomic IDs.}
 
-\item{\code{type}}{A factor vector with the type of each element of the collection. It's fed only if the collection is built with \code{metadata=TRUE}}
+\item{\code{type}}{A character vector with the type of each element of the collection. It's set only if the collection is built with \code{metadata=TRUE}}
 }}
 \author{
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-Other Facebook Collections: \code{\link{FacebookCommentsCollection-class}};
+Other Facebook.Collections: \code{\link{FacebookCommentsCollection-class}};
   \code{\link{FacebookLikesCollection-class}};
   \code{\link{FacebookPostsCollection-class}}
 }

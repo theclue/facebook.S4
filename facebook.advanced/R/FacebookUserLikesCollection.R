@@ -33,7 +33,7 @@
 #' @param feed If \code{id} is a Collection and \code{feed} is set to If \code{TRUE}, the Collection will also include posts 
 #' eritten by others (not only by the owner of the Collection items). If \code{id} is not a collection, the parameter is ignored.
 #' 
-#' @param n If \code{id} is a Collection, then \code{n} is the maximum number of posts to be pulled for any element of the Collection in \code{id}.
+#' @param n If \code{id} is a Collection, then \code{n} is the maximum number of posts to be pulled for each element of the Collection in \code{id}.
 #' Otherwise, the parameter is ignored. It can be set to \code{Inf} to pull out any available public post and assume the default value from the value
 #' of \code{facebook.maxitems} global option if missing.
 #'
