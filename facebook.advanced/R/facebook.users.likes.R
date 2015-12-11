@@ -31,7 +31,7 @@
 #' @param .progress progress_bar object as defined in the plyr package.
 #' By default the \code{none} progress bar is used, which prints nothing to the console.
 #'
-#' @return A collection of mixed likes in a \code{\link{FacebookGenericCollection-class}} object with the \code{id} and the \code{type} for
+#' @return A collection of mixed likes in a \code{\link{FacebookMixedCollection-class}} object with the \code{id} and the \code{type} for
 #' contained element.
 #'
 #' @examples \dontrun{
@@ -49,11 +49,11 @@ facebook.users.likes <- function(id,
     if(is(id, "FacebookGenericCollection")){
       stop(paste0("you cannot build a likes collection from a ", class(id), "."))
     }
-    stop("id must be a collection of any of the supported types.")
+    stop("id must be a collection of one of the supported types.")
   }
   
-  likes.idx <- new("FacebookGenericCollection", id = id, token = token, parameters = parameters, fields = "likes.fields(id)", n = n, metadata = FALSE)
+  likes.idx <- new("FacebookMixedCollection", id = id, token = token, parameters = parameters, fields = "likes.fields(id)", n = n, metadata = FALSE)
   
-  return(new("FacebookGenericCollection", id = likes.idx@id, token = token, fields="id", parameters = parameters, metadata = TRUE, .progress = .progress))
+  return(new("FacebookMixedCollection", id = likes.idx@id, token = token, fields="id", parameters = parameters, metadata = TRUE, .progress = .progress))
   
 }

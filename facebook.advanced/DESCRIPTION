@@ -29,6 +29,7 @@ Collate:
     'FacebookLikesCollection-class.R'
     'FacebookLikesCollection-methods.R'
     'FacebookLikesCollection.R'
+    'FacebookMixedCollection-class.R'
     'FacebookPagesCollection-class.R'
     'FacebookPagesCollection-methods.R'
     'FacebookPagesCollection.R'

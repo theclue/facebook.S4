@@ -8,7 +8,7 @@
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
 #' 
-#' @seealso \code{\link{FacebookPostset}}, \code{\link{FacebooCommentset}}, \code{\link{fbOAuth}}
+#' @seealso \code{\link{FacebookPostsCollection}}, \code{\link{FacebookCommentsCollection}}, \code{\link{fbOAuth}}
 #'
 #' @param id A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any of the supported types
 #' @param token Either a temporary access token created at

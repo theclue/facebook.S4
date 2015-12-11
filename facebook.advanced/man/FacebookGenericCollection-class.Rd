@@ -41,4 +41,5 @@ Other Facebook.Collections: \code{\link{FacebookCommentsCollection-class}};
   \code{\link{FacebookLikesCollection-class}};
   \code{\link{FacebookPostsCollection-class}}
 }
+\keyword{internal}
 

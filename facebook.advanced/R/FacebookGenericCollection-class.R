@@ -22,7 +22,7 @@
 #' 
 #' @author Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
 #' 
-#' @export
+#' @keywords internal
 setClass("FacebookGenericCollection",
          slots = c(id = "ANY",
                    fields = "character",
@@ -113,11 +113,11 @@ setMethod("initialize",
                 ifelse(length(parameters), paste0("&", query.parameters), ""),
                 ifelse(length(fields), paste("&fields", parsed$url, sep="="), "")
               )
-              print(url)
+              #print(url)
               content <- callAPI(url=url, token=token)
               
               # If ID is an atomic list or a collection of the same class, just push out the results
-              if(!is(elements.v, "FacebookGenericCollection") | (is(elements.v, class(.Object)))){
+              if(is(elements.v, "character") | (is(elements.v, class(.Object)))){
                 
                 .Object@id <- names(content)
                 
@@ -130,7 +130,6 @@ setMethod("initialize",
                 .Object@type <- (unname(sapply(content, function(item){
                   return(ifelse(is.null(item$metadata$type), as.character(NA), item$metadata$type))
                 })))
-                
                 
               } else {
                 # If id is a collection, iterate it and clean the results

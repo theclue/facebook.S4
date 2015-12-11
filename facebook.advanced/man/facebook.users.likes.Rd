@@ -22,7 +22,7 @@ accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/us
 By default the \code{none} progress bar is used, which prints nothing to the console.}
 }
 \value{
-A collection of mixed likes in a \code{\link{FacebookGenericCollection-class}} object with the \code{id} and the \code{type} for
+A collection of mixed likes in a \code{\link{FacebookMixedCollection-class}} object with the \code{id} and the \code{type} for
 contained element.
 }
 \description{
