@@ -1,6 +1,4 @@
-.gitignore
 ^Makefile$
-.travis.yml
 appveyor.yml
 man-roxygen
 ^.*\.Rproj$
@@ -18,3 +16,15 @@ README.Rmd
 vignettes/figure
 NEWS.md
 ^CONDUCT\.md$
+.httr-oauth
+^.*\.kdev4$
+^\.kdev4
+^\.DS_Store$
+^README.md$
+^README\.html$
+^README_files/*
+^\.git
+^aclocal\.m4$
+^configure\.ac$
+^\.gitignore$
+^\.travis\.yml$

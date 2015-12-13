@@ -1,11 +1,32 @@
-_test
+# Various dust:
 .DS_Store
-.Rapp.history
-.Rproj.user
-tmp/
-.RData
-.Rhistory
 .httr-oauth
-inst/doc
-*.Rds
-vignettes/*.R
+
+# KDevelop project files:
+*.kdev4
+.kdev4
+
+# LaTeX/knitr:
+*.aux
+*.log
+*.out
+cache-knitr/
+cache/
+
+# backup files:
+*~
+*.backup
+*.bak
+
+# R/RStudio files:
+*.Rproj
+.Rproj.user
+.Rhistory
+.RData
+.Rapp.history
+
+# Example code in package build process:
+*-Ex.R
+
+# Previewing README
+README.html
