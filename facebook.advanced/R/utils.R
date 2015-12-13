@@ -88,7 +88,7 @@ parse.input.fields <- function(fields){
   ),
   fields = unique(
     unlist(strsplit(gsub('\\.(fields|type|summary|limit)\\((.*?)\\)','', 
-                         sub("[^.]*+(?:\\.(?!fields\\()[^.]*)*+(?<=\\bsharedposts\\bposts|\\bcomments|\\busers|\\blikes|\\bfeed)\\.fields\\(([^()]*+(?:\\((?1)\\)[^()]*)*+)\\)(?s:.*)", "\\1", fields, perl=T)
+                         sub("[^.]*+(?:\\.(?!fields\\()[^.]*)*+(?<=\\bsharedposts|\\bposts|\\bcomments|\\busers|\\blikes|\\bfeed)\\.fields\\(([^()]*+(?:\\((?1)\\)[^()]*)*+)\\)(?s:.*)", "\\1", fields, perl=T)
                          , perl = TRUE), split = ",")))
   )
 }

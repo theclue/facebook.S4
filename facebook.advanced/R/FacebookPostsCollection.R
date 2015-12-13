@@ -85,11 +85,11 @@ FacebookPostsCollection <- function(id,
   e.fields <- paste(paste0(fields, collapse=","), "comments.summary(true).limit(0),likes.summary(true).limit(0)", sep=",")
   
   if(is(id, "FacebookPagesCollection") | is(id, "FacebookUsersCollection")){
-    return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = parse0(ifelse(feed, "feed", "posts"), ".fields(", e.fields, ")"), n = n, metadata = metadata, .progress = .progress))
+    return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = paste0(ifelse(feed, "feed", "posts"), ".fields(", e.fields, ")"), n = n, metadata = metadata, .progress = .progress))
   }
   
   if(is(id, "FacebookPostsCollection")){
-    return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = parse0("sharedposts.fields(", e.fields, ")"), n = n, metadata = metadata, .progress = .progress))
+    return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = paste0("sharedposts.fields(", e.fields, ")"), n = n, metadata = metadata, .progress = .progress))
   }
   
   return(new("FacebookPostsCollection", id = id, token = token, parameters = parameters, fields = e.fields, n = n, metadata = metadata, .progress = .progress))

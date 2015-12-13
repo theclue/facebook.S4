@@ -116,8 +116,8 @@ setMethod("initialize",
               #print(url)
               content <- callAPI(url=url, token=token)
               
-              # If ID is an atomic list or a collection of the same class, just push out the results
-              if(is(elements.v, "character") | (is(elements.v, class(.Object)))){
+              # If ID is an atomic list, just push out the results
+              if(!is(elements.v, "FacebookGenericCollection")){
                 
                 .Object@id <- names(content)
                 
@@ -136,7 +136,7 @@ setMethod("initialize",
                 all.parents <- character(0)
                 
                 if (n > 0) {
-                  
+
                   min.since <- ifelse(!is.null(parameters$since), as.Date(parameters$since, origin="1970-01-01"), as.Date('1970/01/01'))
                   
                   all.elements <- lapply(lapply(content, function(sublist) {
@@ -153,11 +153,19 @@ setMethod("initialize",
                       } else {
                         postdata <- callAPI(url=next.url, token=token)
                       }
-                      next.url <- postdata$paging$`next`
+                      
+                      next.url <- (function(p){
+                        if(is(p, "list")) {
+                          return(p$paging$`next`)
+                        }
+                        return(NULL)
+                      })(postdata)
                       
                       min.time <- Inf
                       
-                      if(length(postdata$data) > 0) {
+                      length.data <- ifelse(is(postdata, "list"), length(postdata$data), 0)
+                      
+                      if(length.data > 0) {
                         page.results <- do.call(c, list(page.results,lapply(postdata$data, function(s){
                           ss <- list()
                           
@@ -175,7 +183,7 @@ setMethod("initialize",
                       # I'm also making sure the function stops when that happens
                       if(total.posts >= n |
                          is.null(next.url) |
-                         ifelse(length(postdata$data) > 0, (("created_time" %in% parsed$fields) & (min.time < min.since)), FALSE)
+                         ifelse(length.data > 0, (("created_time" %in% parsed$fields) & (min.time < min.since)), FALSE)
                       )
                       {
                         # Quick warkaround for parent assignment. I'm not very proud of it...
