@@ -44,9 +44,26 @@
 FacebookPagesCollection <- function(id, 
                             token, 
                             parameters = list(), 
-                            fields = c("id", "username", "name", "about", "category", "description", "likes", "link", "talking_about_count"),
+                            fields = c("id", 
+                                       "username", 
+                                       "name", 
+                                       "about", 
+                                       "category", 
+                                       "description", 
+                                       "likes", "link", 
+                                       "talking_about_count"),
                             metadata = FALSE,
                             .progress = create_progress_bar()){
+  
+  if(is(id, "FacebookPagesCollection")){
+    the.pages <- new("FacebookPagesCollection", id = id@id, token = token, parameters = parameters, fields = fields, metadata = metadata, .progress = .progress)
+    the.pages@parent.collection <- id
+    return(the.pages)
+  }
+  
+  if(is(id, "FacebookGenericCollection")){
+    stop(paste0("you cannot build a pages collection from a ", class(id), "."))
+  }
 
   return(new("FacebookPagesCollection", id = id, token = token, parameters = parameters, fields = fields, metadata = metadata, .progress = .progress))
 }

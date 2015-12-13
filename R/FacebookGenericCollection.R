@@ -20,7 +20,7 @@
 #' @param fields A character vector or a comma-delimited string with the list of fields to get for each ID. If no value for a given fields is found, it will
 #' be set to \code{NULL}
 #' @param metadata If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
-#' that setting this to \code{TRUE} will considerably slow down the query.
+#' that setting this to \code{TRUE} could considerably slow down the execution time, as more queries are needed.
 #' @param .progress progress_bar object as defined in the plyr package.
 #' By default the \code{none} progress bar is used, which prints nothing to the console.
 #'
