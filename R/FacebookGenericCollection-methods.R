@@ -116,27 +116,31 @@ setMethod("c",
             )
             ))
             
-            empty.set@id <- id[!duplicated(id)]
+            parent <- (do.call(c, list(x@parent,
+                                       do.call(c,lapply(optional.elems, slot, "parent"))
+            )
+            ))
+            
+            duplicated.idx <- duplicated(matrix(c(id,parent), ncol=2))
+            
+            empty.set@id <- id[!duplicated.idx]
             
             empty.set@data <- (do.call(c, list(x@data,
                                                do.call(c,lapply(optional.elems, slot, "data"))
             )
-            ))[!duplicated(id)]
+            ))[!duplicated.idx]
             
             empty.set@fields <- unique(do.call(c, list(x@fields,
                                                        do.call(c,lapply(optional.elems, slot, "fields"))
             )
             ))
             
-            empty.set@parent <- (do.call(c, list(x@parent,
-                                                 do.call(c,lapply(optional.elems, slot, "parent"))
-            )
-            ))[!duplicated(id)]
+            empty.set@parent <- parent[!duplicated.idx]
             
             empty.set@type <- (do.call(c, list(x@type,
                                                do.call(c,lapply(optional.elems, function(x){ as.character(slot(x, "type"))}))
             )
-            ))[!duplicated(id)]
+            ))[!duplicated.idx]
             
             secondary.collection <-
               lapply(
