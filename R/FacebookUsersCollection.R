@@ -101,7 +101,7 @@ FacebookUsersCollection <- function(id,
   if(is(id, "FacebookPostsCollection") | is(id, "FacebookCommentsCollection") | is(id, "FacebookLikesCollection")){
     indexes.df <- as.data.frame(id)
    if(!("from.id" %in% colnames(indexes.df))){
-     stop(paste0("you cannot build a Users Collection from a ", class(id), " if the latter has not the 'form.id' field inside."))
+     stop(paste0("you cannot build a Users Collection from a ", class(id), " if the latter has not the 'from.id' field inside."))
    } else {
      users.id <- FacebookGenericCollection(id = indexes.df$from.id, token = token, parameters = parameters, fields="id", metadata = TRUE)
      users <- new("FacebookUsersCollection", id = unique(users.id[which(users.id@type=="user")]@id), token = token, parameters = parameters, fields = e.fields, n = n, metadata = metadata, .progress = .progress)

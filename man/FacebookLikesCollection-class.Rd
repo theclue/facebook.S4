@@ -38,6 +38,7 @@ Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 \seealso{
 Other Facebook Collections: \code{\link{FacebookCommentsCollection-class}};
   \code{\link{FacebookGenericCollection-class}};
+  \code{\link{FacebookPostsCollection-class}},
   \code{\link{FacebookPostsCollection-class}}
 }
 

@@ -19,12 +19,7 @@
 #' 
 #' @export
 setClass("FacebookPostsCollection",
-         contains = "FacebookGenericCollection",
-         validity = function(object){
-           
-           return(TRUE)
-         }
-)
+         contains = "FacebookGenericCollection")
 
 setMethod("initialize",
           signature(.Object = "FacebookPostsCollection"),

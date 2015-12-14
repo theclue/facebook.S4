@@ -23,8 +23,8 @@ accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/us
 \item{fields}{A character vector or a comma-delimited string with the list of fields to get for each ID. If no value for a given fields is found, it will
 be set to \code{NULL}}
 
-\item{feed}{If \code{id} is a Collection and \code{feed} is set to If \code{TRUE}, the Collection will also include posts
-eritten by others (not only by the owner of the Collection items). If \code{id} is not a collection, the parameter is ignored.}
+\item{feed}{If \code{id} is a Collection and \code{feed} is set to If \code{TRUE}, the collection will also include posts
+written by others (not only by the owner of the collection items themselves). If \code{id} is not a collection, the parameter is ignored.}
 
 \item{n}{If \code{id} is a Collection, then \code{n} is the maximum number of posts to be pulled for any element of the Collection in \code{id}.
 Otherwise, the parameter is ignored. It can be set to \code{Inf} to pull out any available public post and assumes the default value from the value
@@ -40,7 +40,7 @@ By default the \code{none} progress bar is used, which prints nothing to the con
 A collection of posts in a \code{\link{FacebookPostsCollection-class}} object.
 }
 \description{
-Connect to Facebook Graph API, get information from a list of public Facebook posts and build a \code{FacebookPostsCollection-class}
+Connect to Facebook Graph API, get information from a list of public Facebook posts and build a \code{\link{FacebookPostsCollection-class}}
 instance.
 }
 \details{
@@ -82,10 +82,10 @@ fb.posts.df <- as.data.frame(fb.posts)
 fb.posts.pipe <-
  FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth) \%>\%
    FacebookPostsCollection(n = 10)
-}
 
 ## Build a collection of sharedposts from a posts collection
  fb.sharedposts <- FacebookPostsCollection(id = fb.posts, token = fb_oauth, n = Inf)
+}
 }
 \author{
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
@@ -94,6 +94,7 @@ Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 \code{\link{FacebookPagesCollection}}, \code{\link{FacebookCommentsCollection}}, \code{\link{fbOAuth}}
 
 Other Facebook Collection Costructors: \code{\link{FacebookCommentsCollection}};
+  \code{\link{FacebookConversationsCollection}};
   \code{\link{FacebookLikesCollection}}
 }
 

@@ -1,10 +1,10 @@
-#' @include FacebookGenericCollection.R
+#' @include FacebookGenericCollection.R FacebookPagesCollection.R FacebookUsersCollection.R
 #' 
 #' @title 
 #' Build a Collection of Facebook Posts
 #'
 #' @description
-#' Connect to Facebook Graph API, get information from a list of public Facebook posts and build a \code{FacebookPostsCollection-class}
+#' Connect to Facebook Graph API, get information from a list of public Facebook posts and build a \code{\link{FacebookPostsCollection-class}}
 #' instance.
 #' 
 #' @details
@@ -31,8 +31,8 @@
 #'
 #' @inheritParams FacebookGenericCollection
 #' 
-#' @param feed If \code{id} is a Collection and \code{feed} is set to If \code{TRUE}, the Collection will also include posts 
-#' eritten by others (not only by the owner of the Collection items). If \code{id} is not a collection, the parameter is ignored.
+#' @param feed If \code{id} is a Collection and \code{feed} is set to If \code{TRUE}, the collection will also include posts 
+#' written by others (not only by the owner of the collection items themselves). If \code{id} is not a collection, the parameter is ignored.
 #' 
 #' @param n If \code{id} is a Collection, then \code{n} is the maximum number of posts to be pulled for any element of the Collection in \code{id}.
 #' Otherwise, the parameter is ignored. It can be set to \code{Inf} to pull out any available public post and assumes the default value from the value
@@ -61,11 +61,11 @@
 #' fb.posts.pipe <- 
 #'  FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth) %>%
 #'    FacebookPostsCollection(n = 10)
-#' }
-#'
+#'    
 #' ## Build a collection of sharedposts from a posts collection
 #'  fb.sharedposts <- FacebookPostsCollection(id = fb.posts, token = fb_oauth, n = Inf)
-#'
+#' }
+
 #' @family Facebook Collection Costructors
 #' @export
 FacebookPostsCollection <- function(id, 

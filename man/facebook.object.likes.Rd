@@ -18,6 +18,9 @@ to the Facebook Graph API and an empty Collection is returned}
 \item{parameters}{A list of parameters to be added to the Facebook Graph API query. For more information on the
 accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/using-graph-api}}
 
+\item{n}{An integer value with the maximum number of participants to be pulled for each conversation in \code{id}. It can be set to \code{Inf}
+to pull out any participant of a given conversation and assumes the default value to \code{facebook.maxitems} global option if missing.}
+
 \item{.progress}{progress_bar object as defined in the plyr package.
 By default the \code{none} progress bar is used, which prints nothing to the console.}
 }
@@ -26,8 +29,8 @@ A collection of mixed likes in a \code{\link{FacebookMixedCollection-class}} obj
 each element included.
 }
 \description{
-\code{facebook.object.likes} pull information about the likes from a list of Facebook IDs and/or names of users or pages and push them into a
-\code{\link{FacebookGenericCollection-class}} instance.
+\code{facebook.object.likes} pulls information about the likes from a list of Facebook IDs and/or names of users or pages and push them into a
+\code{\link{FacebookMixedCollection-class}} instance.
 }
 \details{
 This function requires the use of a OAuth token with \code{user_likes}

@@ -96,6 +96,7 @@ Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 \code{\link{FacebookCommentssCollection}}, \code{\link{FacebookPostssCollection}}, \code{\link{FacebookUsersLikesCollection}}, \code{\link{fbOAuth}}
 
 Other Facebook Collection Costructors: \code{\link{FacebookCommentsCollection}};
+  \code{\link{FacebookConversationsCollection}};
   \code{\link{FacebookPostsCollection}}
 }
 
