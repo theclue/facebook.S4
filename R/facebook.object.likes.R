@@ -1,11 +1,11 @@
-#' @rdname facebook.users.likes
+#' @rdname facebook.object.likes
 #' @export
 #'
 #' @title 
-#' Pull all the public likes of Facebook users
+#' Pull all the public likes of Facebook users or pages
 #'
 #' @description
-#' \code{facebook.users.likes} pull information about the likes from a list of Facebook IDs and/or names of users or pages and push them into a
+#' \code{facebook.object.likes} pull information about the likes from a list of Facebook IDs and/or names of users or pages and push them into a
 #' \code{\link{FacebookGenericCollection-class}} instance.
 #' 
 #' @details
@@ -19,9 +19,10 @@
 #'
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
+#' 
 #' @seealso \code{\link{facebook.friends}}, \code{\link{facebook.search}}, \code{\link{fbOAuth}}
 #'
-#' @param id A character vector or a comma-delimited string of users/pages IDs or an existing \code{\link{FacebookUsersCollection}} or \code{\link{FacebookPagesCollection}}
+#' @param id An existing \code{\link{FacebookUsersCollection}} or \code{\link{FacebookPagesCollection}}
 #' @param token Either a temporary access token created at
 #' \url{https://developers.facebook.com/tools/explorer} or the OAuth token 
 #' created with \code{\link{fbOAuth}}. If \code{NULL} and \code{id} is a Collection, get that one instead. Otherwise, no query is performed
@@ -32,14 +33,24 @@
 #' By default the \code{none} progress bar is used, which prints nothing to the console.
 #'
 #' @return A collection of mixed likes in a \code{\link{FacebookMixedCollection-class}} object with the \code{id} and the \code{type} for
-#' contained element.
+#' each element included.
 #'
 #' @examples \dontrun{
+#' ## See examples for fbOAuth to know how token was created.
 #'  load("fb_oauth")
-#'  me.likes <- facebook.users.likes(users="me", token=fb_oauth)
-#' }
-#'
-facebook.users.likes <- function(id, 
+#'  
+#' ## Returns the id and the type of the current user's likes
+#'  me.likes <- facebook.users.likes(id = "me", token = fb_oauth)
+#'  
+#' ## Do the same, but starting from a users collection
+#'  me.likes <- FacebookUsersCollection(id="me", fb_oauth) %>% facebook.users.likes()
+#'  
+#' ## Build a pages collection from all the pages (and ONLY the pages)
+#' ## the current user likes
+#'  me.likes.pages <- me.likes %>% FacebookPagesCollection()
+#'}
+#' 
+facebook.object.likes <- function(id, 
                                  token = NULL,
                                  parameters = list(),
                                  n = getOption("facebook.maxitems"), 
@@ -53,7 +64,10 @@ facebook.users.likes <- function(id,
   }
   
   likes.idx <- new("FacebookMixedCollection", id = id, token = token, parameters = parameters, fields = "likes.fields(id)", n = n, metadata = FALSE)
+
+  the.likes <- new("FacebookMixedCollection", id = likes.idx@id, token = likes.idx@token, fields="id", parameters = parameters, metadata = TRUE, .progress = .progress)
+  the.likes@parent.collection <- id
   
-  return(new("FacebookMixedCollection", id = likes.idx@id, token = token, fields="id", parameters = parameters, metadata = TRUE, .progress = .progress))
+  return(the.likes)
   
 }

@@ -66,7 +66,7 @@ Create App as mentioned above.
  \item{Click "Get Token" -> "Get Access Token"}
  \item{In the popup navigate to "Extended Permissions" and select "Insights"}
  \item{Confirm}
- \item{Go back to R and run fbOAuth \strong{without} this permission. }
+ \item{Go back to R and run fbOAuth \strong{without} this permission set.}
 }
 
 -> See third step for possible messages concerning token creation.
@@ -85,7 +85,7 @@ Create App as mentioned above.
 }
 }
 \author{
-Pablo Barbera \email{pablo.barbera@nyu.edu}
+Pablo Barbera \email{pablo.barbera@nyu.edu},
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{

@@ -4,10 +4,10 @@
 \alias{FacebookUsersCollection}
 \title{Build a Collection of Facebook Users}
 \usage{
-FacebookUsersCollection(id, token, parameters = list(), fields = c("id",
-  "name", "first_name", "last_name", "gender", "locale",
-  "picture.fields(url).type(large)"), metadata = FALSE,
-  .progress = create_progress_bar())
+FacebookUsersCollection(id, token = NULL, parameters = list(),
+  fields = c("id", "name", "first_name", "last_name", "gender", "locale",
+  "picture.fields(url).type(large)"), n = getOption("facebook.maxitems"),
+  metadata = FALSE, .progress = create_progress_bar())
 }
 \arguments{
 \item{id}{A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any of the supported types}
@@ -23,8 +23,12 @@ accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/us
 \item{fields}{A character vector or a comma-delimited string with the list of fields to get for each ID. If no value for a given fields is found, it will
 be set to \code{NULL}}
 
+\item{n}{If \code{id} is a Collection, then \code{n} is the maximum number of posts to be pulled for any element of the Collection in \code{id}.
+Otherwise, the parameter is ignored. It can be set to \code{Inf} to pull out any available public post and assume the default value from the value
+of \code{facebook.maxitems} global option if missing.}
+
 \item{metadata}{If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
-that setting this to \code{TRUE} will considerably slow down the query.}
+that setting this to \code{TRUE} could considerably slow down the execution time, as more queries are needed.}
 
 \item{.progress}{progress_bar object as defined in the plyr package.
 By default the \code{none} progress bar is used, which prints nothing to the console.}
@@ -46,15 +50,19 @@ for extended permissions.
 Due to the network-graph nature of Facebook data model,
 you can always specify fields details for each field eventually nesting \code{.fields()} clauses.
 
-For example, if you need only \code{id} and \code{source} for the \code{covern} node, this clause is valid among others:
+For example, if you need only \code{id} and \code{source} for the \code{cover} node, this clause is valid among others:
 \code{cover.fields(id,source)}.
+
+You \emph{can} pass another \code{\link{FacebookUsersCollection}} as \code{id}. In such cases, a collection with the \strong{friends}
+of the given users is pulled (assuming they give the \code{user_friends} permission to the App).
 
 Be careful when binding this kind of collection starting from a \code{\link{FacebookPostsCollection}}, \code{\link{FacebookCommentsCollection}}
 or a \code{\link{FacebookLikesCollection}}.
 In Facebook, one can publish, comment or like acting as a user or as a page. But since users and pages have different sets of fields
 and you won't know in advance if a (commenting) user is a page or not, the constructor of this collection would fail due to inconsitent fields.
-To avoid this, if \code{id} is an instance of one of the aforementioned collection, an pre-serialization query is performed
-to eventually discard all the pages and retain only valid users. Then, the real collection is built on this valid subset of user IDs only.
+To avoid this, if \code{id} is an instance of one of the aforementioned collections, an pre-serialization query is performed
+to eventually filter out the pages and retain only the users. Finally, the real collection is built on this valid subset of user IDs only.
+This requires more queries and, usually, more time.
 }
 \examples{
 \dontrun{

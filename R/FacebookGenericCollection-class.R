@@ -36,7 +36,14 @@ setClass("FacebookGenericCollection",
 
 setMethod("initialize",
           signature(.Object = "FacebookGenericCollection"),
-          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), n, metadata=FALSE, .progress = create_progress_bar()){
+          definition=function(.Object, 
+                              id = NULL,
+                              token = NULL,
+                              parameters = list(),
+                              fields = character(0),
+                              n = getOption("facebook.maxitems"),
+                              metadata = FALSE,
+                              .progress = create_progress_bar()){
             
             if(metadata & is(id, "FacebookGenericCollection")){
               stop("Cannot inherit metadata from a collection. If you need to pull metadata, <id> must be an atomic character vector.")
@@ -44,6 +51,7 @@ setMethod("initialize",
             
             token <- (function(){ 
               if(is.null(token) & is(id, "FacebookGenericCollection")){
+                if(getOption("facebook.verbose")) message("No token specified. The token of the input collection will be used instead.")
                 return(id@token)
               } else return(token)
             })()
@@ -113,7 +121,9 @@ setMethod("initialize",
                 ifelse(length(parameters), paste0("&", query.parameters), ""),
                 ifelse(length(fields), paste("&fields", parsed$url, sep="="), "")
               )
-              #print(url)
+              
+              if(getOption("facebook.verbose")) message("Query URL: ", url)
+              
               content <- callAPI(url=url, token=token)
               
               # If ID is an atomic list, just push out the results
@@ -124,8 +134,8 @@ setMethod("initialize",
                 .Object@data <- do.call(list, lapply(content, function(item){
                   return(item[which(names(item) %in%  parsed$fields)])
                 }))
-                
-                .Object@parent <- as.character(rep(NA, length(id)))
+
+                .Object@parent <- as.character(rep(NA, length(elements.v)))
                 
                 .Object@type <- (unname(sapply(content, function(item){
                   return(ifelse(is.null(item$metadata$type), as.character(NA), item$metadata$type))
@@ -188,6 +198,7 @@ setMethod("initialize",
                       {
                         # Quick warkaround for parent assignment. I'm not very proud of it...
                         all.parents <<- c(all.parents, as.character(rep(sublist$id, min(total.posts, n))))
+                        
                         return(head(page.results, n))
                       }
                       
@@ -211,6 +222,7 @@ setMethod("initialize",
               # Advance the progress bar
               try(.progress$step(), silent=T) 
             }
+           
             return(.Object)
           }
 )

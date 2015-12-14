@@ -42,21 +42,48 @@
 #'
 #' @export
 FacebookPagesCollection <- function(id, 
-                            token, 
-                            parameters = list(), 
-                            fields = c("id", 
-                                       "username", 
-                                       "name", 
-                                       "about", 
-                                       "category", 
-                                       "description", 
-                                       "likes", "link", 
-                                       "talking_about_count"),
-                            metadata = FALSE,
-                            .progress = create_progress_bar()){
+                                    token = NULL, 
+                                    parameters = list(), 
+                                    fields = c("id", 
+                                               "username", 
+                                               "name", 
+                                               "about", 
+                                               "category", 
+                                               "description", 
+                                               "likes", 
+                                               "link", 
+                                               "talking_about_count"),
+                                    metadata = FALSE,
+                                    .progress = create_progress_bar()){
   
-  if(is(id, "FacebookPagesCollection")){
-    the.pages <- new("FacebookPagesCollection", id = id@id, token = token, parameters = parameters, fields = fields, metadata = metadata, .progress = .progress)
+  if(length(fields)==0){
+    message("You've specified no fields. Only the ID will be pulled into the collection.")
+    fields <- "id"
+  }
+  
+  if(is(id, "FacebookPagesCollection") | is(id, "FacebookMixedCollection")){
+    token <- (function(){
+      if(is.null(token)) {
+        return(id@token)
+      }
+      return(token)
+    })()
+    
+    id.pages <- (function(){
+      if(is(id, "FacebookMixedCollection")){
+        return(id[which(id@type=="page")]@id)
+      }
+      return(id@id)
+    })()
+
+    the.pages <- new("FacebookPagesCollection",
+                     id = id.pages,
+                     token = token,
+                     parameters = parameters,
+                     fields = fields,
+                     metadata = metadata,
+                     .progress = .progress)
+    
     the.pages@parent.collection <- id
     return(the.pages)
   }
@@ -64,6 +91,12 @@ FacebookPagesCollection <- function(id,
   if(is(id, "FacebookGenericCollection")){
     stop(paste0("you cannot build a pages collection from a ", class(id), "."))
   }
-
-  return(new("FacebookPagesCollection", id = id, token = token, parameters = parameters, fields = fields, metadata = metadata, .progress = .progress))
+  
+  return(new("FacebookPagesCollection",
+             id = id,
+             token = token,
+             parameters = parameters,
+             fields = fields,
+             metadata = metadata,
+             .progress = .progress))
 }

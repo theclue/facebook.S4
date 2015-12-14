@@ -26,7 +26,7 @@ be set to \code{NULL}}
 By default the \code{none} progress bar is used, which prints nothing to the console.}
 
 \item{metadata}{If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
-that setting this to \code{TRUE} will considerably slow down the query.}
+that setting this to \code{TRUE} could considerably slow down the execution time, as more queries are needed.}
 }
 \value{
 A collection of elements in a \code{\link{FacebookGenericCollection-class}} object on on of its subclasses.

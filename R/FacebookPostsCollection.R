@@ -64,7 +64,7 @@
 #' }
 #'
 #' ## Build a collection of sharedposts from a posts collection
-#'  fb.sharedposts <- FacebookPostscollection(id = fb.posts, token = fb_oauth, n = Inf)
+#'  fb.sharedposts <- FacebookPostsCollection(id = fb.posts, token = fb_oauth, n = Inf)
 #'
 #' @family Facebook Collection Costructors
 #' @export

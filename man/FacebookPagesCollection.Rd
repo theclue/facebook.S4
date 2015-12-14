@@ -4,9 +4,9 @@
 \alias{FacebookPagesCollection}
 \title{Build a Collection of Facebook Pages}
 \usage{
-FacebookPagesCollection(id, token, parameters = list(), fields = c("id",
-  "username", "name", "about", "category", "description", "likes", "link",
-  "talking_about_count"), metadata = FALSE,
+FacebookPagesCollection(id, token = NULL, parameters = list(),
+  fields = c("id", "username", "name", "about", "category", "description",
+  "likes", "link", "talking_about_count"), metadata = FALSE,
   .progress = create_progress_bar())
 }
 \arguments{
@@ -24,7 +24,7 @@ accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/us
 be set to \code{NULL}}
 
 \item{metadata}{If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
-that setting this to \code{TRUE} will considerably slow down the query.}
+that setting this to \code{TRUE} could considerably slow down the execution time, as more queries are needed.}
 
 \item{.progress}{progress_bar object as defined in the plyr package.
 By default the \code{none} progress bar is used, which prints nothing to the console.}

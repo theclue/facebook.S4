@@ -28,7 +28,7 @@ It can be set to \code{Inf} to pull out all the available likes and assumes the 
 of \code{facebook.maxitems} global option if missing.}
 
 \item{metadata}{If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
-that setting this to \code{TRUE} will considerably slow down the query.}
+that setting this to \code{TRUE} could considerably slow down the execution time, as more queries are needed.}
 
 \item{.progress}{progress_bar object as defined in the plyr package.
 By default the \code{none} progress bar is used, which prints nothing to the console.}
