@@ -154,12 +154,15 @@ setMethod("initialize",
                     page.results <- list()
                     
                     total.posts <- 0
-                    
+
                     repeat {
                       postdata <- NULL
                       if(page == 0){
                         
-                        postdata <- sublist[[1]]
+                        postdata <- sublist[[which((names(sublist) != "id") & 
+                                                     (names(sublist) != "paging") &  
+                                                     (names(sublist) != "metadata"))
+                                             ]]
                       } else {
                         postdata <- callAPI(url=next.url, token=token)
                       }
