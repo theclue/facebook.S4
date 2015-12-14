@@ -99,7 +99,6 @@ setMethod("c",
           signature(x = "FacebookGenericCollection"),
           function (x, ..., recursive = FALSE) 
           {
-            
             optional.elems <- list(...)
             
             empty.set <- new(class(x), fields = x@fields)
@@ -121,7 +120,7 @@ setMethod("c",
             )
             ))
             
-            duplicated.idx <- duplicated(matrix(c(id,parent), ncol=2))
+            duplicated.idx <- duplicated(id)
             
             empty.set@id <- id[!duplicated.idx]
             
@@ -148,10 +147,14 @@ setMethod("c",
                   p@parent.collection
                 })
             
-            # TODO: remove dupes while concatening collections
-            
-            empty.set@parent.collection <- c(x@parent.collection, do.call(c, secondary.collection))
-            
+            # TODO: Workaround because I cannot unlist this stupid secondary.collection
+            empty.set@parent.collection <- (function(){
+              if(length(secondary.collection) == 0){
+                return(x@parent.collection)
+              }
+              return(c(x@parent.collection, do.call(c, secondary.collection)))
+            })()
+
             empty.set@token <- x@token
             
             return(empty.set)

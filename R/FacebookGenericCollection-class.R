@@ -157,7 +157,14 @@ setMethod("initialize",
 
                     repeat {
                       postdata <- NULL
+
                       if(page == 0){
+                        
+                        if(length(which((names(sublist) != "id") & 
+                                 (names(sublist) != "paging") &  
+                                 (names(sublist) != "metadata"))) == 0){
+                          return(page.results)
+                        }
                         
                         postdata <- sublist[[which((names(sublist) != "id") & 
                                                      (names(sublist) != "paging") &  
