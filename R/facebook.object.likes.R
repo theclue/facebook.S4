@@ -5,8 +5,8 @@
 #' Pull all the public likes of Facebook users or pages
 #'
 #' @description
-#' \code{facebook.object.likes} pull information about the likes from a list of Facebook IDs and/or names of users or pages and push them into a
-#' \code{\link{FacebookGenericCollection-class}} instance.
+#' \code{facebook.object.likes} pulls information about the likes from a list of Facebook IDs and/or names of users or pages and push them into a
+#' \code{\link{FacebookMixedCollection-class}} instance.
 #' 
 #' @details
 #' This function requires the use of a OAuth token with \code{user_likes}
@@ -29,6 +29,8 @@
 #' to the Facebook Graph API and an empty Collection is returned
 #' @param parameters A list of parameters to be added to the Facebook Graph API query. For more information on the
 #' accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/using-graph-api}
+#' @param n An integer value with the maximum number of participants to be pulled for each conversation in \code{id}. It can be set to \code{Inf} 
+#' to pull out any participant of a given conversation and assumes the default value to \code{facebook.maxitems} global option if missing. 
 #' @param .progress progress_bar object as defined in the plyr package.
 #' By default the \code{none} progress bar is used, which prints nothing to the console.
 #'
@@ -63,9 +65,31 @@ facebook.object.likes <- function(id,
     stop("id must be a collection of one of the supported types.")
   }
   
-  likes.idx <- new("FacebookMixedCollection", id = id, token = token, parameters = parameters, fields = "likes.fields(id)", n = n, metadata = FALSE)
+  real.n <- (function(n, p.limit){
+    if(n > p.limit) {
+      return(p.limit)
+    }
+    else {
+      return(n)
+    }
+  })(n, getOption("facebook.pagination"))
+  
+  likes.idx <- new("FacebookMixedCollection",
+                   id = id,
+                   token = token,
+                   parameters = parameters,
+                   fields = paste0("likes.fields(id).limit(", real.n , ")", sep=""),
+                   n = n,
+                   metadata = FALSE)
 
-  the.likes <- new("FacebookMixedCollection", id = likes.idx@id, token = likes.idx@token, fields="id", parameters = parameters, metadata = TRUE, .progress = .progress)
+  the.likes <- new("FacebookMixedCollection",
+                   id = likes.idx@id,
+                   token = likes.idx@token,
+                   fields="id",
+                   parameters = parameters,
+                   metadata = TRUE,
+                   .progress = .progress)
+  
   the.likes@parent.collection <- id
   
   return(the.likes)
