@@ -52,7 +52,7 @@
 #' ## the current user likes
 #'  me.likes.pages <- me.likes %>% FacebookPagesCollection()
 #'}
-#' 
+#'
 facebook.participants <- function(id, 
                                  token = NULL,
                                  parameters = list(),
@@ -86,15 +86,19 @@ facebook.participants <- function(id,
                           .progress = .progress)
 
   the.participants <- new("FacebookMixedCollection",
-                          id = participants.idx@id,
+                          id = unique(participants.idx@id),
                           token = participants.idx@token,
                           fields="id",
                           parameters = parameters,
-                          metadata = TRUE,
-                          .progress = .progress)
+                          metadata = TRUE)
   
-  the.participants@parent.collection <- id
+  participants.idx@type <- join(data.frame(id=participants.idx@id, 
+                                              stringsAsFactors = FALSE),
+                                data.frame(id=the.participants@id, 
+                                              type=the.participants@type, 
+                                              stringsAsFactors = FALSE), 
+                                by = "id")$type
   
-  return(the.participants)
+  return(participants.idx)
   
 }

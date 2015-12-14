@@ -83,15 +83,19 @@ facebook.object.likes <- function(id,
                    metadata = FALSE)
 
   the.likes <- new("FacebookMixedCollection",
-                   id = likes.idx@id,
+                   id = unique(likes.idx@id),
                    token = likes.idx@token,
                    fields="id",
                    parameters = parameters,
                    metadata = TRUE,
                    .progress = .progress)
   
-  the.likes@parent.collection <- id
+  likes.idx@type <- join(data.frame(id=likes.idx@id, 
+                                           stringsAsFactors = FALSE),
+                                data.frame(id=the.likes@id, 
+                                           type=the.likes@type, 
+                                           stringsAsFactors = FALSE), 
+                                by = "id")$type
   
-  return(the.likes)
-  
+  return(likes.idx)
 }
