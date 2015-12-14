@@ -14,13 +14,21 @@
 #' Due to the network-graph nature of Facebook data model,
 #' you can always specify fields details for each field eventually nesting \code{.fields()} clauses.
 #'
-#' For example, if you need only \code{id} and \code{source} for the \code{covern} node, this clause is valid among others:
+#' For example, if you need only \code{id} and \code{source} for the \code{cover} node, this clause is valid among others:
 #' \code{cover.fields(id,source)}.
+#' 
+#' These collections can be passed as parameter in \code{id} instead of a character vector:
+#' \itemize{
+#'  \item{\code{FacebookPagesCollection-class} will build a collection with 
+#'  the same elements as the source collection.}
+#'  \item{\code{\link{FacebookMixedCollection-class}} will build a collection with 
+#'  only the page elements of the source collection.}
+#' }
 #'  
 #' @author
-#' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
+#' Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 #' 
-#' @seealso \code{\link{FacebookPostset}}, \code{\link{FacebooCommentset}}, \code{\link{fbOAuth}}
+#' @seealso \code{\link{FacebookPostsCollection}}, \code{\link{FacebookCommentsCollection}}, \code{\link{fbOAuth}}
 #'
 #' @inheritParams FacebookGenericCollection
 #'

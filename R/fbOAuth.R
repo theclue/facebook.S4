@@ -42,16 +42,16 @@
 #' specify the exact permissions granted to your app. As this is (to our knowledge) currently not
 #' possible through the R based authentication process, please follow these steps:
 #' 
-##' Create App as mentioned above.
-##' \itemize{
-##'  \item{Open the "Graph API Explorer": \url{https://developers.facebook.com/tools/explorer/}}
-##'  \item{Select your app in the upper right corner}
-##'  \item{Click "Get Token" -> "Get Access Token"}
-##'  \item{In the popup navigate to "Extended Permissions" and select "Insights"}
-##'  \item{Confirm}
-##'  \item{Go back to R and run fbOAuth \strong{without} this permission set.}
-##' }
-##'
+#' Create App as mentioned above.
+#' \itemize{
+#'  \item{Open the "Graph API Explorer": \url{https://developers.facebook.com/tools/explorer/}}
+#'  \item{Select your app in the upper right corner}
+#'  \item{Click "Get Token" -> "Get Access Token"}
+#'  \item{In the popup navigate to "Extended Permissions" and select "Insights"}
+#'  \item{Confirm}
+#'  \item{Go back to R and run fbOAuth \strong{without} this permission set.}
+#' }
+#'
 #' -> See third step for possible messages concerning token creation.
 #'
 #' @author

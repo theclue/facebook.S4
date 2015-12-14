@@ -10,21 +10,22 @@ FacebookPagesCollection(id, token = NULL, parameters = list(),
   .progress = create_progress_bar())
 }
 \arguments{
-\item{id}{A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any of the supported types}
+\item{id}{A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any
+of the supported types (see below).}
 
 \item{token}{Either a temporary access token created at
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
-created with \code{\link{fbOAuth}}. If \code{NULL} and \code{id} is a Collection, get that one instead. Otherwise, no query is performed
-to the Facebook Graph API and an empty Collection is returned}
+created with \code{\link{fbOAuth}}. If \code{NULL} and \code{id} is a collection, get that one instead. Otherwise, no query is performed
+to the Facebook Graph API and an empty Collection is returned.}
 
 \item{parameters}{A list of parameters to be added to the Facebook Graph API query. For more information on the
-accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/using-graph-api}}
+accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/using-graph-api}.}
 
-\item{fields}{A character vector or a comma-delimited string with the list of fields to get for each ID. If no value for a given fields is found, it will
-be set to \code{NULL}}
+\item{fields}{A character vector with the fields to get for each ID. If no value for a given fields is found, it will
+be set to \code{NULL}.}
 
-\item{metadata}{If set to \code{TRUE}, the medatata from each ID is pulled with the data and the \code{type} slot is fed. Please note
-that setting this to \code{TRUE} could considerably slow down the execution time, as more queries are needed.}
+\item{metadata}{If set to \code{TRUE}, the medatata for each ID is pulled with the data and the \code{type} slot is fed accordingly.
+Please note that setting this to \code{TRUE} could considerably slow down the execution time, as more queries are needed.}
 
 \item{.progress}{progress_bar object as defined in the plyr package.
 By default the \code{none} progress bar is used, which prints nothing to the console.}
@@ -43,8 +44,16 @@ It returns data about pages but doesn't return lists of posts or the fanbase (al
 Due to the network-graph nature of Facebook data model,
 you can always specify fields details for each field eventually nesting \code{.fields()} clauses.
 
-For example, if you need only \code{id} and \code{source} for the \code{covern} node, this clause is valid among others:
+For example, if you need only \code{id} and \code{source} for the \code{cover} node, this clause is valid among others:
 \code{cover.fields(id,source)}.
+
+These collections can be passed as parameter in \code{id} instead of a character vector:
+\itemize{
+ \item{\code{FacebookPagesCollection-class} will build a collection with
+ the same elements as the source collection.}
+ \item{\code{\link{FacebookMixedCollection-class}} will build a collection with
+ only the page elements of the source collection.}
+}
 }
 \examples{
 \dontrun{
@@ -62,9 +71,9 @@ For example, if you need only \code{id} and \code{source} for the \code{covern} 
 }
 }
 \author{
-Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{FacebookPostset}}, \code{\link{FacebooCommentset}}, \code{\link{fbOAuth}}
+\code{\link{FacebookPostsCollection}}, \code{\link{FacebookCommentsCollection}}, \code{\link{fbOAuth}}
 }
 
