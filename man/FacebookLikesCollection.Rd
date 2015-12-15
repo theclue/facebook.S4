@@ -15,24 +15,27 @@ of the supported types (see below).}
 
 \item{token}{Either a temporary access token created at
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
-created with \code{\link{fbOAuth}}. If \code{NULL} and \code{id} is a collection, get that one instead. Otherwise, no query is performed
-to the Facebook Graph API and an empty Collection is returned.}
+created with \code{\link{fbOAuth}}. If token \code{NULL} and \code{id} is a collection,
+use the token of the source collection. Otherwise, no query is performed
+to the Facebook Graph API and an empty collection is returned.}
 
 \item{parameters}{A list of parameters to be added to the Facebook Graph API query. For more information on the
 accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/using-graph-api}.}
 
-\item{fields}{A character vector with the fields to get for each ID. If no value for a given fields is found, it will
-be set to \code{NULL}.}
+\item{fields}{A character vector with the fields to get for each \code{id}. If no value
+for a given field is found, it will be set to \code{NULL}.}
 
-\item{n}{A numerical value with is the maximum number of likes to be pulled for any element of the Collection in \code{id}.
-It can be set to \code{Inf} to pull out all the available likes and assumes the default value from the value
-of \code{facebook.maxitems} global option if missing.}
+\item{n}{If \code{id} is an iterable collection, then \code{n} is the maximum number of likes to be pulled for each element of the source collection
+in \code{id}. It can be set to \code{Inf} to pull out any available public like and assumes the default value from the value
+of \code{facebook.maxitems} global option if missing. If \code{id} is not a collection or cannot be iterated, the parameter is ignored.}
 
-\item{metadata}{If set to \code{TRUE}, the medatata for each ID is pulled with the data and the \code{type} slot is fed accordingly.
-Please note that setting this to \code{TRUE} could considerably slow down the execution time, as more queries are needed.}
+\item{metadata}{If set to \code{TRUE}, the medatata for each ID is pulled with the data
+and the \code{type} slot is fed accordingly.
+Please note that setting this to \code{TRUE} could considerably
+slow down the execution time, as more queries are needed.}
 
 \item{.progress}{progress_bar object as defined in the plyr package.
-By default the \code{none} progress bar is used, which prints nothing to the console.}
+By default the \code{none} progress bar is used, which prints nothing to the console. See \link[plyr]{create_progress_bar} for details.}
 }
 \value{
 A collection of likes in a \code{\link{FacebookLikesCollection-class}} object.
@@ -45,20 +48,35 @@ instance.
 \code{FacebookLikesCollection} is the constructor for the \code{\link{FacebookLikesCollection-class}}.
 It returns data about likes to posts or comments but doesn't return the comments or posts themselves.
 
-Since Facebook doesn't provide a key for a single like, the ID slot for this kind of collection is not enough to uniquely identify a like on Facebook.
+Since Facebook doesn't provide a key for a single like, the ID slot for this kind of collection doesn't uniquely identify a like on Facebook.
 The \code{id} (the user who put the like) coupled with the \code{parent} (the place where she put the like) identifies a unique key for the like.
 
-As a consequences, you cannot build a like collection starting from atomic IDs, but you must pass an instance of a Facecook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
+As a consequence, you cannot build a like collection starting from atomic IDs, but you must pass an instance of a Facecook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
 or \code{\link{FacebookCommentsCollection}} as \code{id} parameter.
-
-Also, please note that this kind of collection cannot have mixed parents. You can eventually feed it with a FacebookPostsCollection
-or a FacebookCommentsCollection, but no both at the same time: likes to comments and likes to posts are distinct items, on Facebook Graph API.
+}
+\section{Nesting fields}{
 
 Due to the network-graph nature of Facebook data model,
-you can always specify field details nesting \code{.fields()} clauses.
+you can specify fields details for each field nesting \code{.fields()} clauses.
 
-For example, if you need only \code{id} and \code{name} for the \code{from} node, this clause is valid among others:
-\code{from.fields(id,name)}.
+For example, if you need only \code{id} and \code{source} for the \code{cover} field, this is valid among others:
+\code{cover.fields(id,source)}.
+
+Following the same philosophy, if you need only \code{id} and \code{name} for the \code{from} node
+you can use \code{from.fields(id,name)}.
+}
+
+\section{Valid sources}{
+
+Instead of a character vector, one of these collections can also be passed as parameter in \code{id}:
+\itemize{
+ \item{\code{\link{FacebookPostsCollection-class}} will build a collection with
+ all the likes to the posts of the source collection}
+ \item{\code{\link{FacebookCommentsCollection-class}} will build a collection with
+ all the likes to the comments of the source collection}
+ \item{\code{\link{FacebookUsersCollection-class}} will build a collection with
+ the posts written on the walls of the users in the source collection.}
+}
 }
 \examples{
 \dontrun{
@@ -66,7 +84,9 @@ For example, if you need only \code{id} and \code{name} for the \code{from} node
  load("fb_oauth")
 
 ## Getting information about two example Facebook Pages
- fb.pages <- FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth)
+ fb.pages <- FacebookPagesCollection(id = c("9thcirclegames",
+                                            "NathanNeverSergioBonelliEditore"),
+                                     token = fb_oauth)
 
 ## Pull the latest 10 posts from each page in a pages collection
  fb.posts <- FacebookPostscollection(id = fb.pages, token = fb_oauth, n = 10)
@@ -86,18 +106,28 @@ fb.posts.likes.df <- as.data.frame(fb.posts.likes)
 # The same as before in a more compact fashion using the pipe operator
 # chaining from a Pages then to a Posts Collection and finally building a Likes Collection
 fb.posts.likes.pipe <-
- FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth) \%>\%
-   FacebookPostscollection(n = 10) \%>\% FacebookLikesCollection(n = Inf)
+ FacebookPagesCollection(id = c("9thcirclegames",
+                                "NathanNeverSergioBonelliEditore"),
+                         token = fb_oauth) \%>\%
+     FacebookPostscollection(n = 10) \%>\%
+     FacebookLikesCollection(n = Inf)
 }
 }
 \author{
-Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{FacebookCommentssCollection}}, \code{\link{FacebookPostssCollection}}, \code{\link{FacebookUsersLikesCollection}}, \code{\link{fbOAuth}}
+\code{\link{FacebookCommentsCollection}},
+\code{\link{FacebookPostsCollection}},
+\code{\link{facebook.object.likes}},
+\code{\link{fbOAuth}}
 
-Other Facebook Collection Costructors: \code{\link{FacebookCommentsCollection}};
+Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}};
+  \code{\link{FacebookCommentsCollection}};
   \code{\link{FacebookConversationsCollection}};
-  \code{\link{FacebookPostsCollection}}
+  \code{\link{FacebookMessagesCollection}};
+  \code{\link{FacebookPagesCollection}};
+  \code{\link{FacebookPostsCollection}};
+  \code{\link{FacebookUsersCollection}}
 }
 

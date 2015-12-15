@@ -3,15 +3,14 @@
 \docType{class}
 \name{FacebookUsersCollection-class}
 \alias{FacebookUsersCollection-class}
-\title{Class for representing a Collection of Facebook users}
+\title{Class for representing a collection of Facebook users}
 \description{
-Connect to Facebook Graph API, get public information from a list of Facebook users  nd build a \code{FacebookUsersCollection-class}
-instance.
+This class is used to collect Facebook pages in a convenient structure.
 
 Use the \code{\link{FacebookUsersCollection}} constructor for building a instance of this class, as it provides better
 sanity and validation checks.
 }
 \author{
-Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
 

@@ -1,19 +1,17 @@
 #' @include FacebookGenericCollection-class.R FacebookUsersCollection-class.R FacebookPagesCollection-class.R
 #' 
 #' @title 
-#' Class for representing a Collection of Facebook inbox conversations of users or pages
+#' Class for representing a collection of Facebook inbox conversations of users or pages
 #'
 #' @description
-#' Connect to Facebook Graph API, get information from a list of inbox conversations and build a \code{FacebookConversationsCollection-class}
-#' instance. Then, a \code{\link{FacebookMessagesCollection-class}} can be built to pull out the message of each conversation.
+#' This class is used to collect Facebook inbox conversations in a convenient structure.
 #' 
-#' 
-#' @name FacebookPostsCollection-class
-#' @exportClass FacebookPostsCollection
+#' @name FacebookConversationsCollection-class
+#' @exportClass FacebookConversationsCollection
 #' 
 #' @template collection-slots
 #' 
-#' @author Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
+#' @author Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 #' 
 #' @export
 setClass("FacebookConversationsCollection",

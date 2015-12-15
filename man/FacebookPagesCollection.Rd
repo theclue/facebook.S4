@@ -2,7 +2,7 @@
 % Please edit documentation in R/FacebookPagesCollection.R
 \name{FacebookPagesCollection}
 \alias{FacebookPagesCollection}
-\title{Build a Collection of Facebook Pages}
+\title{Build a collection of Facebook Pages}
 \usage{
 FacebookPagesCollection(id, token = NULL, parameters = list(),
   fields = c("id", "username", "name", "about", "category", "description",
@@ -15,20 +15,23 @@ of the supported types (see below).}
 
 \item{token}{Either a temporary access token created at
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
-created with \code{\link{fbOAuth}}. If \code{NULL} and \code{id} is a collection, get that one instead. Otherwise, no query is performed
-to the Facebook Graph API and an empty Collection is returned.}
+created with \code{\link{fbOAuth}}. If token \code{NULL} and \code{id} is a collection,
+use the token of the source collection. Otherwise, no query is performed
+to the Facebook Graph API and an empty collection is returned.}
 
 \item{parameters}{A list of parameters to be added to the Facebook Graph API query. For more information on the
 accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/using-graph-api}.}
 
-\item{fields}{A character vector with the fields to get for each ID. If no value for a given fields is found, it will
-be set to \code{NULL}.}
+\item{fields}{A character vector with the fields to get for each \code{id}. If no value
+for a given field is found, it will be set to \code{NULL}.}
 
-\item{metadata}{If set to \code{TRUE}, the medatata for each ID is pulled with the data and the \code{type} slot is fed accordingly.
-Please note that setting this to \code{TRUE} could considerably slow down the execution time, as more queries are needed.}
+\item{metadata}{If set to \code{TRUE}, the medatata for each ID is pulled with the data
+and the \code{type} slot is fed accordingly.
+Please note that setting this to \code{TRUE} could considerably
+slow down the execution time, as more queries are needed.}
 
 \item{.progress}{progress_bar object as defined in the plyr package.
-By default the \code{none} progress bar is used, which prints nothing to the console.}
+By default the \code{none} progress bar is used, which prints nothing to the console. See \link[plyr]{create_progress_bar} for details.}
 }
 \value{
 A collection of pages in a \code{\link{FacebookPagesCollection-class}} object.
@@ -39,17 +42,25 @@ instance.
 }
 \details{
 \code{FacebookPagesCollection} is the constructor for the \code{\link{FacebookPagesCollection-class}}.
-It returns data about pages but doesn't return lists of posts or the fanbase (altough it will return a summary view for the latters).
+It returns data about pages but doesn't return lists of posts or the fanbase (altough it will return a summary view for the latter).
+}
+\section{Nesting fields}{
 
 Due to the network-graph nature of Facebook data model,
-you can always specify fields details for each field eventually nesting \code{.fields()} clauses.
+you can specify fields details for each field nesting \code{.fields()} clauses.
 
-For example, if you need only \code{id} and \code{source} for the \code{cover} node, this clause is valid among others:
+For example, if you need only \code{id} and \code{source} for the \code{cover} field, this is valid among others:
 \code{cover.fields(id,source)}.
 
-These collections can be passed as parameter in \code{id} instead of a character vector:
+Following the same philosophy, if you need only \code{id} and \code{name} for the \code{from} node
+you can use \code{from.fields(id,name)}.
+}
+
+\section{Valid sources}{
+
+Instead of a character vector, one of these collections can also be passed as parameter in \code{id}:
 \itemize{
- \item{\code{FacebookPagesCollection-class} will build a collection with
+ \item{\code{\link{FacebookPagesCollection-class}} will build a collection with
  the same elements as the source collection.}
  \item{\code{\link{FacebookMixedCollection-class}} will build a collection with
  only the page elements of the source collection.}
@@ -61,13 +72,24 @@ These collections can be passed as parameter in \code{id} instead of a character
  load("fb_oauth")
 
 ## Getting information about 9th Circle Games' Facebook Page
- fb.pages <- FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth)
+fb.pages <- FacebookPagesCollection(id = c("9thcirclegames",
+                                           "NathanNeverSergioBonelliEditore"),
+                                    token = fb_oauth)
 
 ## Getting informations from the same pages, but with a different set of fields
- fb.pages.covers <- FacebookPagesCollection(id = fb.pages, fields = c("id", "name", "cover.fields(id,source,height,width)"))
+ fb.pages.covers <- FacebookPagesCollection(id = fb.pages,
+                                            fields = c("id",
+                                                       "name",
+                                                       "cover.fields(id,source,height,width)")
+                                            )
 
 ## Convert the collection to a data frame
  fb.pages.df <- as.data.frame(fb.pages)
+
+## Build a collection of the pages the current user likes
+ likes.pages <- FacebookUsersCollection("me", fb_token, fields = "") \%>\%
+   facebook.object.likes() \%>\%
+   FacebookPagesCollection()
 }
 }
 \author{
@@ -75,5 +97,13 @@ Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
 \seealso{
 \code{\link{FacebookPostsCollection}}, \code{\link{FacebookCommentsCollection}}, \code{\link{fbOAuth}}
+
+Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}};
+  \code{\link{FacebookCommentsCollection}};
+  \code{\link{FacebookConversationsCollection}};
+  \code{\link{FacebookLikesCollection}};
+  \code{\link{FacebookMessagesCollection}};
+  \code{\link{FacebookPostsCollection}};
+  \code{\link{FacebookUsersCollection}}
 }
 

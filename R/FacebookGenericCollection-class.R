@@ -11,6 +11,7 @@
 #' This collection should not be built directly, as it performs no sanity check on its content.
 #' However, among all the available collections, it's the only one that can have mixed content inside, so
 #' many commodity endpoint functions like \code{\link{facebook.search}} fill this as return value.
+#' But, for the same reasons, it cannot hold fields different from id.
 #' 
 #' If you exactly know what you're doing you \emph{could} eventually build an instance of this class to perform generic queries to Graph API,
 #' but it's not guaranteed to work and it probably won't, actually.
@@ -20,7 +21,7 @@
 #' 
 #' @template collection-slots
 #' 
-#' @author Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
+#' @author Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 #' 
 #' @keywords internal
 setClass("FacebookGenericCollection",
@@ -182,6 +183,7 @@ setMethod("initialize",
                       })(postdata)
                       
                       min.time <- Inf
+                      valid.posts <- 0
                       
                       length.data <- ifelse(is(postdata, "list"), length(postdata$data), 0)
                       
@@ -190,12 +192,17 @@ setMethod("initialize",
                           ss <- list()
                           
                           min.time <<- min(min.time, ifelse(!is.null(s$created_time), formatFbDate(s$created_time, "date"), Inf))
+
+                          if(min.time < min.since){
+                            return(NULL)
+                          }
+                          
+                          valid.posts <<- valid.posts + 1
                           ss[[s$id]] <- s
                           return(ss)
                         })))
-                        
                         page <- page + 1
-                        total.posts <- total.posts + length(postdata$data)
+                        total.posts <- total.posts + valid.posts
                       }
                       
                       # unregarding of since() query parameter, FB Graph sometimes

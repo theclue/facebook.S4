@@ -1,11 +1,10 @@
 #' @include FacebookGenericCollection-class.R FacebookUsersCollection-class.R
 #' 
 #' @title 
-#' Class for representing a Collection of Facebook user's likes
+#' Class for representing a collection of Facebook posts
 #'
 #' @description
-#' Connect to Facebook Graph API, get information from a list of public Facebook posts and build a \code{\link{FacebookPostsCollection-class}}
-#' instance.
+#' This class is used to collect Facebook posts in a convenient structure.
 #' 
 #' Use the \code{\link{FacebookPostsCollection}} constructor for building a instance of this class, as it provides better
 #' sanity and validation checks.
@@ -15,17 +14,8 @@
 #' 
 #' @template collection-slots
 #' 
-#' @author Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
+#' @author Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 #' 
 #' @export
 setClass("FacebookPostsCollection",
          contains = "FacebookGenericCollection")
-
-setMethod("initialize",
-          signature(.Object = "FacebookPostsCollection"),
-          definition=function(.Object, id=NULL, token=NULL, parameters=list(), fields=character(0), n, metadata=FALSE, .progress = create_progress_bar()){
-            
-            return(callNextMethod(.Object, id = id, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata, .progress = .progress))
-            
-          }
-)

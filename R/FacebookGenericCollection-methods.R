@@ -18,27 +18,37 @@ setMethod("summary",
                                      " element", ifelse(length(object@parent.collection) != 1, "s", ""), ")"), "NA")
             )
             )
-            cat(paste0("\n", ifelse(length(object) > 5 , "First 5 IDs: ", "IDs: "), paste0(head(object@id, 5), collapse=", ")))
-            cat("\n\nFacebook Application ID:", ifelse(is.character(object@token), "NONE - A token from Graph API Explorer was used", object@token$app$key))
-            cat("\n\nContent Example (only the first 3 fields are shown):\n")
+            cat(paste0("\n", ifelse(length(object) > 5 , "First 5 IDs: ", "IDs: "), ifelse(length(object) > 0, paste0(head(object@id, 5), collapse=", "), "NONE")))
+            cat(paste0("\n", ifelse(length(object) > 5 , "First 5 Parents: ", "Parents: "), ifelse(length(object) > 0,  paste0(head(object@parent, 5), collapse=", "), "NONE")))
             
-            separator <- (function(){
-              if(length(object@fields) > 1) {
-                return(paste0(rep_len("-", sum(apply(head(as.data.frame(object),5)[,1:min(3, length(object@fields))], MARGIN=2, function(r) { max(nchar(as.character((r))))})) + 4), collapse=""))
-              }
-              return(paste0(rep_len("-", max(nchar(head(as.data.frame(object),5)[,1])) + 2), collapse = ""))
-            })()
-            
-            cat(paste0(separator, "\n"))
-            if(length(object@fields) > 1) {
-              print(head(as.data.frame(object), 5)[,1:min(3, length(object@fields))])
-            } else {
-              snap <- as.data.frame(head(as.data.frame(object), 5)[,1])
-              colnames(snap) <- object@fields
-              print(snap)
+            if(all(is.na(object@parent)) & is(object@parent.collection, "FacebookGenericCollection")){
+              cat("\n\n(Parent informations not available due to many-to-many relationship with", class(object@parent.collection), ")")
             }
-            cat(ifelse(length(object) > 5, paste0("\n (", length(object) - 5, " more element", ifelse(length(object) - 5 != 1, "s", ""), ")\n"), ""))
-            cat(paste0(separator, "\n"))
+            
+            cat("\n\nFacebook Application ID:", ifelse(is.character(object@token), "NONE - A token from Graph API Explorer was used", object@token$app$key))
+            
+            if(length(object) > 0){
+              cat("\n\nContent Example (only the first 3 fields are shown):\n")
+              separator <- (function(){
+                if(length(object@fields) > 1) {
+                  return(paste0(rep_len("-", sum(apply(head(as.data.frame(object),5)[,1:min(3, length(object@fields))], MARGIN=2, function(r) { max(nchar(as.character((r))))})) + 4), collapse=""))
+                }
+                return(paste0(rep_len("-", max(nchar(head(as.data.frame(object),5)[,1])) + 2), collapse = ""))
+              })()
+              
+              cat(paste0(separator, "\n"))
+              if(length(object@fields) > 1) {
+                print(head(as.data.frame(object), 5)[,1:min(3, length(object@fields))])
+              } else {
+                snap <- as.data.frame(head(as.data.frame(object), 5)[,1])
+                colnames(snap) <- object@fields
+                print(snap)
+              }
+              cat(ifelse(length(object) > 5, paste0("\n (", length(object) - 5, " more element", ifelse(length(object) - 5 != 1, "s", ""), ")\n"), ""))
+              cat(paste0(separator, "\n"))
+            } else {
+              cat("\n\n### The collection is empty.")
+            }
             invisible(object)
           }
 )
@@ -154,7 +164,7 @@ setMethod("c",
               }
               return(c(x@parent.collection, do.call(c, secondary.collection)))
             })()
-
+            
             empty.set@token <- x@token
             
             return(empty.set)

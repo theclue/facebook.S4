@@ -32,8 +32,8 @@ test_that("facebook.S4.pages", {
   
   # Unused fields when id is not a collection
   expect_null(pages@parent.collection)
-  expect_equal(pages@parent, rep(as.character(NA, length(pages))))
-  expect_equal(pages@type, rep(as.character(NA, length(pages))))
+  expect_equal(pages@parent, rep(as.character(NA), length(pages)))
+  expect_equal(pages@type, rep(as.character(NA), length(pages)))
   
   # Replicate the collection
   replicate <- FacebookPagesCollection(pages)
@@ -49,6 +49,12 @@ test_that("facebook.S4.pages", {
   
   # Build from mixed
   likes.pages <- FacebookPagesCollection(facebook.object.likes(FacebookUsersCollection("me", fb_token, fields = "")))
+  
+  expect_is(likes.pages@parent.collection, "FacebookMixedCollection")
+  expect_is(likes.pages@parent.collection@parent.collection, "FacebookUsersCollection")
+  
+  expect_equal(length(likes.pages@parent.collection), length(likes.pages))
+  expect_identical(likes.pages@id, likes.pages@parent.collection@id)
   
   # Errors
   expect_error(FacebookPagesCollection(FacebookUsersCollection("me", fb_token)))

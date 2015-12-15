@@ -2,7 +2,7 @@
 % Please edit documentation in R/FacebookUsersCollection.R
 \name{FacebookUsersCollection}
 \alias{FacebookUsersCollection}
-\title{Build a Collection of Facebook Users}
+\title{Build a Collection of Facebook users}
 \usage{
 FacebookUsersCollection(id, token = NULL, parameters = list(),
   fields = c("id", "name", "first_name", "last_name", "gender", "locale",
@@ -15,52 +15,80 @@ of the supported types (see below).}
 
 \item{token}{Either a temporary access token created at
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
-created with \code{\link{fbOAuth}}. If \code{NULL} and \code{id} is a collection, get that one instead. Otherwise, no query is performed
-to the Facebook Graph API and an empty Collection is returned.}
+created with \code{\link{fbOAuth}}. If token \code{NULL} and \code{id} is a collection,
+use the token of the source collection. Otherwise, no query is performed
+to the Facebook Graph API and an empty collection is returned.}
 
 \item{parameters}{A list of parameters to be added to the Facebook Graph API query. For more information on the
 accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/using-graph-api}.}
 
-\item{fields}{A character vector with the fields to get for each ID. If no value for a given fields is found, it will
-be set to \code{NULL}.}
+\item{fields}{A character vector with the fields to get for each \code{id}. If no value
+for a given field is found, it will be set to \code{NULL}.}
 
-\item{n}{If \code{id} is a Collection, then \code{n} is the maximum number of posts to be pulled for any element of the Collection in \code{id}.
-Otherwise, the parameter is ignored. It can be set to \code{Inf} to pull out any available public post and assume the default value from the value
-of \code{facebook.maxitems} global option if missing.}
+\item{n}{If \code{id} is an iterable collection, then \code{n} is the maximum number of users to be pulled for each element of the source collection
+ in \code{id}. It can be set to \code{Inf} to pull out any accessible user and assumes the default value from the value
+of \code{facebook.maxitems} global option if missing. If \code{id} is not a collection or cannot be iterated, the parameter is ignored.}
 
-\item{metadata}{If set to \code{TRUE}, the medatata for each ID is pulled with the data and the \code{type} slot is fed accordingly.
-Please note that setting this to \code{TRUE} could considerably slow down the execution time, as more queries are needed.}
+\item{metadata}{If set to \code{TRUE}, the medatata for each ID is pulled with the data
+and the \code{type} slot is fed accordingly.
+Please note that setting this to \code{TRUE} could considerably
+slow down the execution time, as more queries are needed.}
 
 \item{.progress}{progress_bar object as defined in the plyr package.
-By default the \code{none} progress bar is used, which prints nothing to the console.}
+By default the \code{none} progress bar is used, which prints nothing to the console. See \link[plyr]{create_progress_bar} for details.}
 }
 \value{
 A collection of users in a \code{\link{FacebookUsersCollection-class}} object.
 }
 \description{
-Connect to Facebook Graph API, get public information from a list of Facebook users and build a \code{\link{FacebookUsersCollection-class}}
-instance.
+Connect to Facebook Graph API, get public information from a list of Facebook users
+and build a \code{\link{FacebookUsersCollection-class}} instance.
 }
 \details{
-\code{FacebookUsersCollection} is the constructor for the \code{\link{FacebookUsersCollection-class}} and it returns public data about users.
+\code{FacebookUsersCollection} is the constructor for the \code{\link{FacebookUsersCollection-class}}.
+It returns data about users.
 
 After version 2.0 of the Facebook API, only id, name, and picture are available
-through the API as public informations. All the remaining fields will be missing unless the Application eventually asks
-for extended permissions.
+through the API as public informations. All the remaining fields will be missing unless the Application asks
+for specific permissions.
+}
+\section{Nesting fields}{
 
 Due to the network-graph nature of Facebook data model,
-you can always specify fields details for each field eventually nesting \code{.fields()} clauses.
+you can specify fields details for each field nesting \code{.fields()} clauses.
 
-For example, if you need only \code{id} and \code{source} for the \code{cover} node, this clause is valid among others:
+For example, if you need only \code{id} and \code{source} for the \code{cover} field, this is valid among others:
 \code{cover.fields(id,source)}.
 
-You \emph{can} pass another \code{\link{FacebookUsersCollection}} as \code{id}. In such cases, a collection with the \strong{friends}
-of the given users is pulled (assuming they give the \code{user_friends} permission to the App).
+Following the same philosophy, if you need only \code{id} and \code{name} for the \code{from} node
+you can use \code{from.fields(id,name)}.
+}
+
+\section{Valid sources}{
+
+Instead of a character vector, one of these collections can also be passed as parameter in \code{id}:
+\itemize{
+ \item{\code{\link{FacebookUsersCollection-class}} will build a collection with
+ the friends of the users of the source collection. It assumes these users
+ have granted the \code{user_friends} permission to the current application.}
+ \item{\code{\link{FacebookPostsCollection-class}} will build a collection from
+ the authors of the posts of the source collection.}
+ \item{\code{\link{FacebookCommentsCollection-class}} will build a collection from
+ the authors of the comments of the source collection.}
+ \item{\code{\link{FacebookLikesCollection-class}} will build a collection from
+ the authors of the likes of the source collection.}
+ \item{\code{\link{FacebookUsersCollection-class}} will build a collection with
+ the posts written on the walls of the users in the source collection.}
+ \item{\code{\link{FacebookMixedCollection-class}} will build a collection with
+ only the user elements of the source collection.}
+}
 
 Be careful when binding this kind of collection starting from a \code{\link{FacebookPostsCollection}}, \code{\link{FacebookCommentsCollection}}
 or a \code{\link{FacebookLikesCollection}}.
+
 In Facebook, one can publish, comment or like acting as a user or as a page. But since users and pages have different sets of fields
-and you won't know in advance if a (commenting) user is a page or not, the constructor of this collection would fail due to inconsitent fields.
+and you won't know in advance if the author is a page or not, the constructor of this collection would fail due to inconsitent fields.
+
 To avoid this, if \code{id} is an instance of one of the aforementioned collections, an pre-serialization query is performed
 to eventually filter out the pages and retain only the users. Finally, the real collection is built on this valid subset of user IDs only.
 This requires more queries and, usually, more time.
@@ -71,10 +99,15 @@ This requires more queries and, usually, more time.
  load("fb_oauth")
 
 ## Getting information about 9th Circle Games' Facebook Page
- fb.pages <- FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth)
+ fb.pages <- FacebookPagesCollection(id = c("9thcirclegames",
+                                            "NathanNeverSergioBonelliEditore"),
+                                     token = fb_oauth)
 
 ## Getting the commenters of the latest 10 posts
- fb.comments <- fb.pages \%>\% FacebookPostsCollection(n = 10) \%>\% FacebookCommentsCollection(fields=c("id, "from.fields(id,name)"), n = Inf)
+ fb.comments <- fb.pages \%>\% FacebookPostsCollection(n = 10) \%>\%
+     FacebookCommentsCollection(fields=c("id",
+                                         "from.fields(id,name)"),
+                                n = Inf)
 
 ## Build a collection of users from who actually commented those posts
  fb.commenting.users <- fb.comments -> FacebookUsersCollection()
@@ -87,6 +120,17 @@ This requires more queries and, usually, more time.
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{FacebookPostsCollections}}, \code{\link{FacebookCommentsCollection}}, \code{\link{FacebookLikesCollection}}, \code{\link{fbOAuth}}
+\code{\link{FacebookPostsCollections}},
+\code{\link{FacebookCommentsCollection}},
+\code{\link{FacebookLikesCollection}},
+\code{\link{facebook.search}}
+
+Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}};
+  \code{\link{FacebookCommentsCollection}};
+  \code{\link{FacebookConversationsCollection}};
+  \code{\link{FacebookLikesCollection}};
+  \code{\link{FacebookMessagesCollection}};
+  \code{\link{FacebookPagesCollection}};
+  \code{\link{FacebookPostsCollection}}
 }
 

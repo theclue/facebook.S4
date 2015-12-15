@@ -5,40 +5,46 @@
 \alias{FacebookLikesCollection-class}
 \title{Class for representing a Collection of Facebook likes}
 \description{
-Connect to Facebook Graph API, get likes from a list of public Facebook posts or comments and build a \code{\link{FacebookLikesCollection-class}}
-instance.
+This class is used to collect Facebook posts in a convenient structure.
 
 Use the \code{\link{FacebookLikesCollection}} constructor for building a instance of this class, as it provides better
 sanity and validation checks.
 }
 \details{
-Although they are named the same in the Facebook jargon, posts/comments likes and users'likes are different entities.
-This collection covers the first, while \code{\link{FacebookUsersLikesCollection-class}} the latter.
+Although they are named the same in the Facebook jargon, likes to posts or comments are different to users' likes.
+This collection covers the first, while the \code{\link{facebook.object.likes}} the latter.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{id}}{A character vector of the IDs of the item included in the Collection}
+\item{\code{id}}{A character vector with the \code{id} of the items included in the collection}
 
-\item{\code{fields}}{A character vectorwith the content of any ID in the Collection. Ie \code{id, name, created_time}...}
+\item{\code{fields}}{A character vector with the fields included for each ID in the collection. Ie. \code{id, name, created_time}...}
 
 \item{\code{token}}{Either a temporary access token created at
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
-created with \code{fbOAuth} used to fill the Collection.}
+created with \code{fbOAuth} used to fill the collection.}
 
-\item{\code{parent}}{A character vector of the parent IDs of the items included in the Collection or \code{NA} if the items have not inherited a parent}
+\item{\code{parent}}{A character vector of the parent \code{id} of the items included in the collection or \code{NA} if the items have
+no valid inheritance}
 
-\item{\code{parent.collection}}{The collection used to build this one, or NA if the collection was built from atomic IDs.}
+\item{\code{parent.collection}}{The collection used to build this one, or \code{NA} if the collection was built from a character vectors of \code{ids}.}
 
-\item{\code{type}}{A character vector with the type of each element of the collection. It's set only if the collection is built with \code{metadata=TRUE}}
+\item{\code{type}}{A character vector with the type of each element of the collection. It's set only if the collection has been built with \code{metadata=TRUE}}
 }}
 \author{
-Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
 \seealso{
-Other Facebook Collections: \code{\link{FacebookCommentsCollection-class}};
+\code{\link{facebook.object.likes}}
+
+Other Facebook Collections: \code{\link{FacebookAlbumsCollection-class}};
+  \code{\link{FacebookCommentsCollection-class}};
+  \code{\link{FacebookConversationsCollection-class}};
   \code{\link{FacebookGenericCollection-class}};
-  \code{\link{FacebookPostsCollection-class}},
+  \code{\link{FacebookMixedCollection-class}};
+  \code{\link{FacebookMsssagesCollection-class}};
+  \code{\link{FacebookPagesCollection-class}};
   \code{\link{FacebookPostsCollection-class}}
 }
 

@@ -1,11 +1,10 @@
 #' @include FacebookGenericCollection-class.R FacebookPostsCollection-class.R
 #' 
 #' @title 
-#' Class for representing a Collection of Facebook comments
+#' Class for representing a collection of Facebook comments
 #'
 #' @description
-#' Connect to Facebook Graph API, get information from a list of public Facebook comments and build a \code{FacebookCommentsCollection-class}
-#' instance.
+#' This class is used to collect Facebook comments in a convenient structure.
 #' 
 #' Use the \code{\link{FacebookCommentsCollection}} constructor for building a instance of this class, as it provides better
 #' sanity and validation checks.
@@ -15,13 +14,8 @@
 #' 
 #' @template collection-slots
 #' 
-#' @author Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
+#' @author Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 #' 
 #' @export
 setClass("FacebookCommentsCollection",
-         contains = "FacebookGenericCollection",
-         validity = function(object){
-           
-           return(TRUE)
-         }
-)
+         contains = "FacebookGenericCollection")

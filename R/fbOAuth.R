@@ -56,7 +56,7 @@
 #'
 #' @author
 #' Pablo Barbera \email{pablo.barbera@@nyu.edu},
-#' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
+#' Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 #' 
 #' @seealso \code{\link{facebook.search}}, \code{\link{FacebookPagesCollection}}, \code{\link{FacebookPostsCollection}}
 #'
@@ -86,6 +86,7 @@
 #' 	me <- FacebookUsersCollection("me", token=token)
 #' }
 #'
+#' @importFrom httr oauth_endpoints oauth_app oauth2.0_token GET
 fbOAuth <- function(app_id, app_secret, permissions="public_profile,user_friends", cache=TRUE)
 {
   

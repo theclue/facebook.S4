@@ -12,7 +12,7 @@ that model and mimic the graph organization and network relations
 between different elements.
 }
 \author{
-Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
 \seealso{
 \code{\link{fbOAuth}}, \code{\link{FacebookUsersCollection}},

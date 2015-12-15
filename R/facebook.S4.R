@@ -13,6 +13,6 @@
 #' \code{\link{FacebookCommentsCollection}}
 #' @docType package
 #' @keywords package facebook
-#' @author Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
-#' @import httr rjson plyr httpuv magrittr
+#' @author Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
+#' @import methods
 NULL

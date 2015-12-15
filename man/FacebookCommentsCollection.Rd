@@ -2,11 +2,11 @@
 % Please edit documentation in R/FacebookCommentsCollection.R
 \name{FacebookCommentsCollection}
 \alias{FacebookCommentsCollection}
-\title{Build a Collection of Facebook Post Comments}
+\title{Build a collection of Facebook comments to posts}
 \usage{
 FacebookCommentsCollection(id, token = NULL, parameters = list(),
-  fields = c("id", "from.fields(id,name)", "message", "created_time",
-  "like_count"), n = getOption("facebook.maxitems"), metadata = FALSE,
+  fields = c("id", "from.fields(id,name)", "message", "created_time"),
+  n = getOption("facebook.maxitems"), metadata = FALSE,
   .progress = create_progress_bar())
 }
 \arguments{
@@ -15,44 +15,61 @@ of the supported types (see below).}
 
 \item{token}{Either a temporary access token created at
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
-created with \code{\link{fbOAuth}}. If \code{NULL} and \code{id} is a collection, get that one instead. Otherwise, no query is performed
-to the Facebook Graph API and an empty Collection is returned.}
+created with \code{\link{fbOAuth}}. If token \code{NULL} and \code{id} is a collection,
+use the token of the source collection. Otherwise, no query is performed
+to the Facebook Graph API and an empty collection is returned.}
 
 \item{parameters}{A list of parameters to be added to the Facebook Graph API query. For more information on the
 accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/using-graph-api}.}
 
-\item{fields}{A character vector with the fields to get for each ID. If no value for a given fields is found, it will
-be set to \code{NULL}.}
+\item{fields}{A character vector with the fields to get for each \code{id}. If no value
+for a given field is found, it will be set to \code{NULL}.}
 
-\item{n}{If \code{id} is a Collection, then \code{n} is the maximum number of posts to be pulled for any element of the Collection in \code{id}.
-Otherwise, the parameter is ignored. It can be set to \code{Inf} to pull out any available public post and assume the default value from the value
-of \code{facebook.maxitems} global option if missing.}
+\item{n}{If \code{id} is an iterable collection, then \code{n} is the maximum number of comments to be pulled for each element of the source collection
+in \code{id}. It can be set to \code{Inf} to pull out any available comment and assumes the default value from the value
+of \code{facebook.maxitems} global option if missing. If \code{id} is not a collection or cannot be iterated, the parameter is ignored.}
 
-\item{metadata}{If set to \code{TRUE}, the medatata for each ID is pulled with the data and the \code{type} slot is fed accordingly.
-Please note that setting this to \code{TRUE} could considerably slow down the execution time, as more queries are needed.}
+\item{metadata}{If set to \code{TRUE}, the medatata for each ID is pulled with the data
+and the \code{type} slot is fed accordingly.
+Please note that setting this to \code{TRUE} could considerably
+slow down the execution time, as more queries are needed.}
 
 \item{.progress}{progress_bar object as defined in the plyr package.
-By default the \code{none} progress bar is used, which prints nothing to the console.}
+By default the \code{none} progress bar is used, which prints nothing to the console. See \link[plyr]{create_progress_bar} for details.}
 }
 \value{
 A collection of comments in a \code{\link{FacebookCommentsCollection-class}} object.
 }
 \description{
-Connect to Facebook Graph API, get information from a list of public Facebook comments to posts and build a \code{FacebookPostsCollection-class}
+Connect to Facebook Graph API, get information from a list of Facebook comments to posts and build a \code{FacebookPostsCollection-class}
 instance.
 }
 \details{
 \code{FacebookCommentsCollection} is the constructor for the \code{\link{FacebookCommentsCollection-class}}.
-It returns data about comments but doesn't return lists of their own comments or likes (altough it could return a summary view of both).
-
-Consider pass an instance of a Facecook Posts Collection build using the construction \code{\link{FacebookPostsCollection}},
-if you need to bind a comment to its parent post.
+It returns data about comments but doesn't return lists of their own comments or likes,
+altough it \strong{does} return an approximate total count for both (depending on the privacy settings of the users).
+}
+\section{Nesting fields}{
 
 Due to the network-graph nature of Facebook data model,
-you can always specify fields details for each field eventually nesting \code{.fields()} clauses.
+you can specify fields details for each field nesting \code{.fields()} clauses.
 
-For example, if you need only \code{id} and \code{name} for the \code{from} node, this clause is valid among others:
-\code{from.fields(id,name)}.
+For example, if you need only \code{id} and \code{source} for the \code{cover} field, this is valid among others:
+\code{cover.fields(id,source)}.
+
+Following the same philosophy, if you need only \code{id} and \code{name} for the \code{from} node
+you can use \code{from.fields(id,name)}.
+}
+
+\section{Valid sources}{
+
+Instead of a character vector, one of these collections can also be passed as parameter in \code{id}:
+\itemize{
+ \item{\code{\link{FacebookPostsCollection-class}} will build a collection with
+ the comments to the posts in the source collection.}
+ \item{\code{\link{FacebookCommentsCollection-class}} will build a collection with
+ the replies to the comments in the source collection.}
+}
 }
 \examples{
 \dontrun{
@@ -60,7 +77,9 @@ For example, if you need only \code{id} and \code{name} for the \code{from} node
  load("fb_oauth")
 
 ## Getting information about two example Facebook Pages
- fb.pages <- FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth)
+ fb.pages <- FacebookPagesCollection(id = c("9thcirclegames",
+                                            "NathanNeverSergioBonelliEditore"),
+                                     token = fb_oauth)
 
 ## Pull the latest 10 posts from each page in a post collection
  fb.posts <- FacebookPostscollection(id = fb.pages, token = fb_oauth, n = 10)
@@ -75,20 +94,27 @@ For example, if you need only \code{id} and \code{name} for the \code{from} node
 fb.comments <- as.data.frame(fb.comments)
 
 # The same as before in a more compact fashion using the pipe operator
-# chaining from a Pages and then a Posts Collection
+# chaining first from a pages and then a posts collection
 fb.comments.pipe <-
- FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth) \%>\%
-   FacebookPostscollection(n = 10) \%>\% FacebookCommentsCollection(n = Inf)
+ FacebookPagesCollection(id = c("9thcirclegames",
+                                "NathanNeverSergioBonelliEditore"),
+                         token = fb_oauth) \%>\%
+   FacebookPostscollection(n = 10) \%>\%
+   FacebookCommentsCollection(n = Inf)
 }
 }
 \author{
-Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
 \seealso{
 \code{\link{FacebookLikesCollection}}, \code{\link{FacebookPostsCollection}}, \code{\link{fbOAuth}}
 
-Other Facebook Collection Costructors: \code{\link{FacebookConversationsCollection}};
+Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}};
+  \code{\link{FacebookConversationsCollection}};
   \code{\link{FacebookLikesCollection}};
-  \code{\link{FacebookPostsCollection}}
+  \code{\link{FacebookMessagesCollection}};
+  \code{\link{FacebookPagesCollection}};
+  \code{\link{FacebookPostsCollection}};
+  \code{\link{FacebookUsersCollection}}
 }
 

@@ -1,7 +1,8 @@
 #' @include FacebookGenericCollection.R
+#' @export
 #' 
 #' @title 
-#' Build a Collection of Facebook Pages
+#' Build a collection of Facebook Pages
 #'
 #' @description
 #' Connect to Facebook Graph API, get information from a list of public Facebook pages and build a \code{\link{FacebookPagesCollection-class}}
@@ -9,17 +10,14 @@
 #' 
 #' @details
 #' \code{FacebookPagesCollection} is the constructor for the \code{\link{FacebookPagesCollection-class}}.
-#' It returns data about pages but doesn't return lists of posts or the fanbase (altough it will return a summary view for the latters).
+#' It returns data about pages but doesn't return lists of posts or the fanbase (altough it will return a summary view for the latter).
 #' 
-#' Due to the network-graph nature of Facebook data model,
-#' you can always specify fields details for each field eventually nesting \code{.fields()} clauses.
-#'
-#' For example, if you need only \code{id} and \code{source} for the \code{cover} node, this clause is valid among others:
-#' \code{cover.fields(id,source)}.
+#' @template nesting-fields
 #' 
-#' These collections can be passed as parameter in \code{id} instead of a character vector:
+#' @section Valid sources:
+#' Instead of a character vector, one of these collections can also be passed as parameter in \code{id}:
 #' \itemize{
-#'  \item{\code{FacebookPagesCollection-class} will build a collection with 
+#'  \item{\code{\link{FacebookPagesCollection-class}} will build a collection with 
 #'  the same elements as the source collection.}
 #'  \item{\code{\link{FacebookMixedCollection-class}} will build a collection with 
 #'  only the page elements of the source collection.}
@@ -39,16 +37,28 @@
 #'  load("fb_oauth")
 #'  
 #' ## Getting information about 9th Circle Games' Facebook Page
-#'  fb.pages <- FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth)
-#'  
+#' fb.pages <- FacebookPagesCollection(id = c("9thcirclegames", 
+#'                                            "NathanNeverSergioBonelliEditore"),
+#'                                     token = fb_oauth)
+#' 
 #' ## Getting informations from the same pages, but with a different set of fields
-#'  fb.pages.covers <- FacebookPagesCollection(id = fb.pages, fields = c("id", "name", "cover.fields(id,source,height,width)"))
+#'  fb.pages.covers <- FacebookPagesCollection(id = fb.pages,
+#'                                             fields = c("id",
+#'                                                        "name",
+#'                                                        "cover.fields(id,source,height,width)")
+#'                                             )
 #'  
 #' ## Convert the collection to a data frame
 #'  fb.pages.df <- as.data.frame(fb.pages)
+#'  
+#' ## Build a collection of the pages the current user likes
+#'  likes.pages <- FacebookUsersCollection("me", fb_token, fields = "") %>%
+#'    facebook.object.likes() %>% 
+#'    FacebookPagesCollection()
 #' }
 #'
-#' @export
+#' @family Facebook Collection Costructors
+#' @importFrom plyr create_progress_bar progress_none
 FacebookPagesCollection <- function(id, 
                                     token = NULL, 
                                     parameters = list(), 
@@ -65,7 +75,7 @@ FacebookPagesCollection <- function(id,
                                     .progress = create_progress_bar()){
   
   if(length(fields)==0){
-    message("You've specified no fields. Only the ID will be pulled into the collection.")
+    message("You've specified no fields. Only the IDs will be pulled into the collection.")
     fields <- "id"
   }
   
@@ -92,6 +102,7 @@ FacebookPagesCollection <- function(id,
                      metadata = metadata,
                      .progress = .progress)
     
+    the.pages@parent <- id.pages
     the.pages@parent.collection <- id
     return(the.pages)
   }
@@ -100,6 +111,7 @@ FacebookPagesCollection <- function(id,
     stop(paste0("you cannot build a pages collection from a ", class(id), "."))
   }
   
+  # Atomic IDs
   return(new("FacebookPagesCollection",
              id = id,
              token = token,

@@ -86,7 +86,7 @@ Create App as mentioned above.
 }
 \author{
 Pablo Barbera \email{pablo.barbera@nyu.edu},
-Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
 \seealso{
 \code{\link{facebook.search}}, \code{\link{FacebookPagesCollection}}, \code{\link{FacebookPostsCollection}}

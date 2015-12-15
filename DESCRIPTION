@@ -13,8 +13,8 @@ Imports:
     httr (>= 1.0.0),
     magrittr,
     rjson,
-    httpuv,
-    plyr
+    plyr,
+    methods
 Suggests:
     testthat
 License: MIT + file LICENSE
@@ -25,32 +25,32 @@ Collate:
     'generic-methods.R'
     'FacebookGenericCollection-class.R'
     'FacebookUsersCollection-class.R'
-    'FacebookPostsCollection-class.R'
-    'FacebookCommentsCollection-class.R'
-    'FacebookGenericCollection-methods.R'
-    'FacebookCommentsCollection-methods.R'
+    'FacebookPagesCollection-class.R'
+    'FacebookAlbumsCollection-class.R'
     'FacebookGenericCollection.R'
     'FacebookUsersCollection.R'
     'FacebookPagesCollection.R'
+    'FacebookAlbumsCollection.R'
+    'FacebookPostsCollection-class.R'
+    'FacebookCommentsCollection-class.R'
     'FacebookPostsCollection.R'
     'FacebookCommentsCollection.R'
-    'FacebookPagesCollection-class.R'
     'FacebookConversationsCollection-class.R'
     'FacebookConversationsCollection.R'
+    'FacebookGenericCollection-methods.R'
     'FacebookLikesCollection-class.R'
-    'FacebookLikesCollection-methods.R'
     'FacebookLikesCollection.R'
+    'FacebookMessagesCollection-class.R'
+    'FacebookMessagesCollection.R'
     'FacebookMixedCollection-class.R'
-    'FacebookPagesCollection-methods.R'
-    'FacebookPostsCollection-methods.R'
-    'FacebookUsersCollection-methods.R'
     'facebook.S4.R'
     'facebook.object.likes.R'
-    'facebook.pages.conversations.R'
     'facebook.participants.R'
     'facebook.permissions.R'
     'facebook.search.R'
+    'facebook.senders.R'
     'fbOAuth.R'
+    'formatFbDate.R'
     'onAttach.R'
     'onLoad.R'
     'utils.R'

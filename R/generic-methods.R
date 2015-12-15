@@ -9,7 +9,7 @@ NULL
 #' @param optional Not used in this context.
 #' @rdname as.data.frame
 #' 
-#' @export 
+#' @keywords internal 
 setGeneric("as.data.frame")
 
 #' @title
@@ -18,7 +18,7 @@ setGeneric("as.data.frame")
 #' @param x A valid collection of Facebook elements
 #' @rdname as.list
 #' 
-#' @export 
+#' @keywords internal
 setGeneric("as.list")
 
 #' @title
@@ -27,5 +27,6 @@ setGeneric("as.list")
 #' @param x A valid collection of Facebook elements
 #' @rdname summary
 #' 
-#' @export 
+#' @export
+#' @noRd
 setGeneric("summary")

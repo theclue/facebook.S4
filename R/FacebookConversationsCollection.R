@@ -1,63 +1,64 @@
 #' @include FacebookGenericCollection.R FacebookPagesCollection.R FacebookUsersCollection.R
+#' @export
 #' 
 #' @title 
-#' Build a Collection of Facebook Inbox Conversations
+#' Build a Collection of Facebook inbox conversations
 #'
 #' @description
 #' Connect to Facebook Graph API, get information from a list of inbox conversations and build a \code{\link{FacebooConversationsCollection-class}}
-#' instance.  Then, a \code{\link{FacebookMessagesCollection-class}} can be built to pull out the message of each conversation.
+#' instance.
 #' 
 #' @details
-#' \code{FacebookConversationssCollection} is the constructor for the \code{\link{FacebookConversationssCollection-class}}.
-#' It returns data about inbox conversations of users or pages but doesn't return lists of messages or users involved
-#' (altough it will return a summary view of both).
+#' \code{FacebookConversationsCollection} is the constructor for the \code{\link{FacebookConversationsCollection-class}}.
+#' It returns data about inbox conversations of users or pages but doesn't return lists of messages or users involved.
 #' 
-#' Consider using the twin functions \code{\link{FacebookMessagessCollection}}, \code{\link{FacebookUserssCollection}} to focus on these kinds
-#' of items.
+#' A \code{\link{FacebookMessagesCollection-class}} can be built on top to pull out the messages of each conversation.
 #' 
-#' Use a \code{\link{FacebookPagesCollection-class}} as \code{id} to get a list of inbox conversations
-#' related to a page (a page access token with \code{read_page_mailboxes} is needed) or a \code{\link{FacebookUserssCollection-class}}
-#' (a user access token with \code{read_mailbox} is needed and \strong{the user must be a developer for the app making the request}).
+#' @template nesting-fields
 #' 
-#' Due to the network-graph nature of Facebook data model,
-#' you can always specify fields details for each field eventually nesting \code{.fields()} clauses.
+#' @section Valid sources:
+#' Instead of a character vector, one of these collections can also be passed as parameter in \code{id}:
+#' \itemize{
+#'  \item{\code{\link{FacebookPagesCollection-class}} will build a collection with 
+#'  all the inbox conversations to pages of the source collection. A page access token with \code{read_page_mailboxes} is needed
+#'  to read the related mailboxes.}
+#'  \item{\code{\link{FacebookUsersCollection-class}} will build a collection with 
+#'  all the conversations that person is involved with \strong{if they are a developer of the app making the request.}
+#'  A user access token with \code{read_mailbox} is needed to perform this action.}
+#'  \item{\code{\link{FacebookMixedCollection-class}} will build a collection with 
+#'  all the conversations, filtering only to the \code{user} and \code{page} in the source collection.}
+#' }
 #' 
-#' For example, if you need only \code{id} and \code{name} for the \code{from} node, this clause is valid among others:
-#' \code{from.fields(id,name)}.
-#' 
-#' Assuming the senders granted the \code{user_posts} permission in the scope of the current application, you can pass 
-#' a collection of \code{FacebookPostsCollection} as \code{id} parameter. In this cases, a collection of sharedposts from the
-#' given posts will be fed.
-#'
 #' @author
-#' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
+#' Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 #' 
-#' @seealso \code{\link{FacebookPagesCollection}}, \code{\link{FacebookUsersCollection}}, \code{\link{fbOAuth}}
+#' @seealso \code{\link{FacebookMessagesCollection}}, \code{\link{facebook.participants}}, \code{\link{facebook.senders}}
 #'
 #' @inheritParams FacebookGenericCollection
 #' 
-#' @param n If \code{id} is a Collection, then \code{n} is the maximum number of conversations to be pulled for any element of the Collection in \code{id}.
-#' Otherwise, the parameter is ignored. It can be set to \code{Inf} to pull out any available public post and assumes the default value from the value
-#' of \code{facebook.maxitems} global option if missing.
+#' @param n If \code{id} is an iterable collection, then \code{n} is the maximum number of conversations to be pulled for each element of the source collection
+#' in \code{id}. It can be set to \code{Inf} to pull out any available conversation and assumes the default value from the value
+#' of \code{facebook.maxitems} global option if missing. If \code{id} is not a collection or cannot be iterated, the parameter is ignored.
 #'
-#' @return A collection of posts in a \code{\link{FacebookPostsCollection-class}} object.
+#' @return A collection of conversations in a \code{\link{FacebookConversationsCollection-class}} object.
 #'
 #' @examples \dontrun{
 #' ## See examples for fbOAuth to know how token was created.
-#'  load("fb_oauth")
+#'  load("fb_page_oauth")
 #'  
-#' ## Getting information about two example Facebook Pages
-#'  fb.pages <- FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth)
-#'  
+#' ## Getting the conversations of an example page. A page access token is needed to access the inbox
+#'  conversations <- FacebookConversationsCollection(FacebookPagesCollection("9thcirclegames", fb_page_oauth))
 #' }
 #'
 #' @family Facebook Collection Costructors
-#' @export
+#' @importFrom plyr create_progress_bar progress_none
 FacebookConversationsCollection <- function(id, 
                                     token = NULL, 
                                     parameters = list(), 
-                                    fields = c("id", "snippet", "updated_time", "message_count"),
-                                    feed = TRUE,
+                                    fields = c("id",
+                                               "snippet",
+                                               "updated_time",
+                                               "message_count"),
                                     n = getOption("facebook.maxitems"),
                                     metadata = FALSE,
                                     .progress = create_progress_bar()){
@@ -70,8 +71,42 @@ FacebookConversationsCollection <- function(id,
   #e.fields <- paste(paste0(fields, collapse=","), "participants.summary(true).limit(0)", sep=",")
   
   if(is(id, "FacebookUsersCollection") | is(id, "FacebookPagesCollection")){
-    return(new("FacebookConversationsCollection", id = id, token = token, parameters = parameters, fields = paste0("conversations.fields(", paste0(fields, collapse=","), ")"), n = n, metadata = metadata, .progress = .progress))
+    return(new("FacebookConversationsCollection",
+               id = id,
+               token = token,
+               parameters = parameters, 
+               fields = paste0("conversations.fields(", paste0(fields, collapse=","), ")"),
+               n = n,
+               metadata = metadata,
+               .progress = .progress))
   }
   
-  return(new("FacebookConversationsCollection", id = id, token = token, parameters = parameters, fields = paste0(fields, collapse=","), n = n, metadata = metadata, .progress = .progress))
+  if(is(id, "FacebookMixedsCollection")){
+
+    the.conversations <- new("FacebookConversationsCollection",
+               id = id[which(id@type=="page" | id@type=="user")],
+               token = token,
+               parameters = parameters, 
+               fields = paste0("conversations.fields(", paste0(fields, collapse=","), ")"),
+               n = n,
+               metadata = metadata,
+               .progress = .progress)
+    
+    the.conversations@parent.collection <- id
+    return(the.conversations)
+  }
+  
+  if(is(id, "FacebookGenericCollection")){
+    stop(paste0("you cannot build a conversations collection from a ", class(id), "."))
+  }
+  
+  # Atomic IDs
+  return(new("FacebookConversationsCollection",
+             id = id,
+             token = token,
+             parameters = parameters,
+             fields = paste0(fields, collapse=","),
+             n = n,
+             metadata = metadata,
+             .progress = .progress))
 }

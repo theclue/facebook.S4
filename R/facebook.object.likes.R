@@ -89,7 +89,7 @@ facebook.object.likes <- function(id,
                    parameters = parameters,
                    metadata = TRUE,
                    .progress = .progress)
-  
+
   likes.idx@type <- join(data.frame(id=likes.idx@id, 
                                            stringsAsFactors = FALSE),
                                 data.frame(id=the.likes@id, 

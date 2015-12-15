@@ -1,4 +1,5 @@
-#' @include FacebookPostsCollection.R FacebookCommentsCollection.R
+#' @include FacebookPostsCollection.R FacebookCommentsCollection.R FacebookAlbumsCollection.R
+#' @export
 #' 
 #' @title 
 #' Build a Collection of Facebook Likes to posts and comments
@@ -11,31 +12,38 @@
 #' \code{FacebookLikesCollection} is the constructor for the \code{\link{FacebookLikesCollection-class}}.
 #' It returns data about likes to posts or comments but doesn't return the comments or posts themselves.
 #' 
-#' Since Facebook doesn't provide a key for a single like, the ID slot for this kind of collection is not enough to uniquely identify a like on Facebook.
+#' Since Facebook doesn't provide a key for a single like, the ID slot for this kind of collection doesn't uniquely identify a like on Facebook.
 #' The \code{id} (the user who put the like) coupled with the \code{parent} (the place where she put the like) identifies a unique key for the like.
 #' 
-#' As a consequences, you cannot build a like collection starting from atomic IDs, but you must pass an instance of a Facecook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
+#' As a consequence, you cannot build a like collection starting from atomic IDs, but you must pass an instance of a Facecook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
 #' or \code{\link{FacebookCommentsCollection}} as \code{id} parameter.
 #' 
-#' Also, please note that this kind of collection cannot have mixed parents. You can eventually feed it with a FacebookPostsCollection
-#' or a FacebookCommentsCollection, but no both at the same time: likes to comments and likes to posts are distinct items, on Facebook Graph API.
+#' @template nesting-fields
 #' 
-#' Due to the network-graph nature of Facebook data model,
-#' you can always specify field details nesting \code{.fields()} clauses.
-#' 
-#' For example, if you need only \code{id} and \code{name} for the \code{from} node, this clause is valid among others:
-#' \code{from.fields(id,name)}.
+#' @section Valid sources:
+#' Instead of a character vector, one of these collections can also be passed as parameter in \code{id}:
+#' \itemize{
+#'  \item{\code{\link{FacebookPostsCollection-class}} will build a collection with 
+#'  all the likes to the posts of the source collection}
+#'  \item{\code{\link{FacebookCommentsCollection-class}} will build a collection with 
+#'  all the likes to the comments of the source collection}
+#'  \item{\code{\link{FacebookUsersCollection-class}} will build a collection with 
+#'  the posts written on the walls of the users in the source collection.}
+#' }
 #'
 #' @author
-#' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
+#' Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 #' 
-#' @seealso \code{\link{FacebookCommentssCollection}}, \code{\link{FacebookPostssCollection}}, \code{\link{FacebookUsersLikesCollection}}, \code{\link{fbOAuth}}
+#' @seealso \code{\link{FacebookCommentsCollection}},
+#' \code{\link{FacebookPostsCollection}},
+#' \code{\link{facebook.object.likes}},
+#' \code{\link{fbOAuth}}
 #'
 #' @inheritParams FacebookGenericCollection
 #' 
-#' @param n A numerical value with is the maximum number of likes to be pulled for any element of the Collection in \code{id}.
-#' It can be set to \code{Inf} to pull out all the available likes and assumes the default value from the value
-#' of \code{facebook.maxitems} global option if missing.
+#' @param n If \code{id} is an iterable collection, then \code{n} is the maximum number of likes to be pulled for each element of the source collection
+#' in \code{id}. It can be set to \code{Inf} to pull out any available public like and assumes the default value from the value
+#' of \code{facebook.maxitems} global option if missing. If \code{id} is not a collection or cannot be iterated, the parameter is ignored.
 #'
 #' @return A collection of likes in a \code{\link{FacebookLikesCollection-class}} object.
 #'
@@ -44,7 +52,9 @@
 #'  load("fb_oauth")
 #'  
 #' ## Getting information about two example Facebook Pages
-#'  fb.pages <- FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth)
+#'  fb.pages <- FacebookPagesCollection(id = c("9thcirclegames",
+#'                                             "NathanNeverSergioBonelliEditore"),
+#'                                      token = fb_oauth)
 #'  
 #' ## Pull the latest 10 posts from each page in a pages collection
 #'  fb.posts <- FacebookPostscollection(id = fb.pages, token = fb_oauth, n = 10)
@@ -64,12 +74,15 @@
 #' # The same as before in a more compact fashion using the pipe operator
 #' # chaining from a Pages then to a Posts Collection and finally building a Likes Collection
 #' fb.posts.likes.pipe <- 
-#'  FacebookPagesCollection(id = c("9thcirclegames", "NathanNeverSergioBonelliEditore"), token = fb_oauth) %>%
-#'    FacebookPostscollection(n = 10) %>% FacebookLikesCollection(n = Inf)
+#'  FacebookPagesCollection(id = c("9thcirclegames",
+#'                                 "NathanNeverSergioBonelliEditore"),
+#'                          token = fb_oauth) %>%
+#'      FacebookPostscollection(n = 10) %>%
+#'      FacebookLikesCollection(n = Inf)
 #' }
 #'
 #' @family Facebook Collection Costructors
-#' @export
+#' @importFrom plyr create_progress_bar progress_none
 FacebookLikesCollection <- function(id, 
                                     token = NULL, 
                                     parameters = list(), 
@@ -77,6 +90,11 @@ FacebookLikesCollection <- function(id,
                                     n = getOption("facebook.maxitems"),
                                     metadata = FALSE,
                                     .progress = create_progress_bar()){
+  
+  if(length(fields)==0){
+    message("You've specified no fields. Only the ID will be pulled into the collection.")
+    fields <- "id"
+  }
   
   real.n <- (function(n, p.limit){
     if(n > p.limit) {
@@ -87,17 +105,17 @@ FacebookLikesCollection <- function(id,
     }
   })(n, getOption("facebook.pagination"))
   
-  fields <- (function(f){ 
-    if(length(f) > 0){
-      
-      if(is(id, "FacebookPostsCollection") | is(id, "FacebookCommentsCollection")){
-        return(paste0("likes.fields(", paste0(f, collapse=",", sep=""), ").limit(", real.n , ").summary(true)", sep=""))
-      }
-      else {
-        return(paste0(f, sep="", collapse=","))
-      }
-    } else return(NULL)
-  })(fields)
+  if(is(id, "FacebookPostsCollection") | is(id, "FacebookCommentsCollection")| is(id, "FacebookAlbumsCollection")){
+    likes.fields <- paste0("likes.fields(", paste0(fields, collapse=",", sep=""), ").limit(", real.n , ").summary(true)", sep="")
+    return(new("FacebookLikesCollection",
+               id = id,
+               token = token,
+               parameters = parameters,
+               fields = likes.fields,
+               n = n,
+               metadata = metadata,
+               .progress = .progress))
+  }
   
-  return(new("FacebookLikesCollection", id = id, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata, .progress = .progress))
+  stop(paste0("you cannot build a likes collection starting from a ", class(id), "."))
 }

@@ -12,6 +12,6 @@
 #' is a trick taken from the {dplyr} package
 #' (in the file chain.r)
 #' 
-#' @seealso 
-#' \link[magrittr]{pipe}
+#' @seealso \link[magrittr]{pipe}
+#' @importFrom magrittr %>%
 `%>%` <- magrittr::`%>%`
