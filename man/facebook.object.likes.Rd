@@ -61,6 +61,6 @@ Then, a proper collection for each type must be built accordingly.
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{facebook.friends}}, \code{\link{facebook.search}}, \code{\link{fbOAuth}}
+\code{\link{facebook.search}}, \code{\link{fbOAuth}}
 }
 

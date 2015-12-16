@@ -43,6 +43,8 @@ Collate:
     'FacebookMessagesCollection-class.R'
     'FacebookMessagesCollection.R'
     'FacebookMixedCollection-class.R'
+    'FacebookPhotosCollection-class.R'
+    'FacebookPhotosCollection.R'
     'facebook.S4.R'
     'facebook.object.likes.R'
     'facebook.participants.R'

@@ -19,8 +19,6 @@ created with \code{fbOAuth}.}
 
 \item{type}{string containing the type of content to get.
 Valid content types are \code{user, page, event, group, place, placetopic}}
-
-\item{fields}{comma-delimited string or string vector with the details to get.}
 }
 \description{
 \code{facebook.search} retrieves public content that mention a given keyword(s) and for a given type.

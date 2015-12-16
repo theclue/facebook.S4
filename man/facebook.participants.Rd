@@ -51,7 +51,8 @@ output collection if they have a different \code{parent}.
  load("fb_oauth")
 
 ## Returns the conversations of the current user
- my.conversations <- FacebookUsersCollection(id="me", fb_oauth) \%>\% FacebookConversationsCollection()
+ my.conversations <- FacebookUsersCollection(id="me", fb_oauth) \%>\%
+    FacebookConversationsCollection()
 
 ## Who talks to the current users
  participants <- facebook.participants(my.conversations) \%>\% FacebookUsersCollection()

@@ -2,7 +2,7 @@
 #' @export
 #' 
 #' @title 
-#' Build a collection of Facebook Pages
+#' Build a collection of Facebook pages
 #'
 #' @description
 #' Connect to Facebook Graph API, get information from a list of public Facebook pages and build a \code{\link{FacebookPagesCollection-class}}

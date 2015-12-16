@@ -47,7 +47,8 @@
 #'  load("fb_oauth")
 #'  
 #' ## Returns the conversations of a given page
-#'  conversations <- FacebookPagesCollection(id="9thcirclegames", fb_oauth) %>% FacebookConversationsCollection()
+#'  conversations <- FacebookPagesCollection(id="9thcirclegames", fb_oauth) %>%
+#'    FacebookConversationsCollection()
 #'  
 #' ## Who sent a message to the page
 #'  senders <- facebook.senders(conversations) %>% FacebookUsersCollection()

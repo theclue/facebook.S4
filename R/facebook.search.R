@@ -27,8 +27,6 @@
 #' created with \code{fbOAuth}.
 #'
 #' @param n Maximum number of elements to return.
-#' 
-#' @param fields comma-delimited string or string vector with the details to get.
 #'
 #' @examples \dontrun{
 #' ## See examples for fbOAuth to know how token was created.

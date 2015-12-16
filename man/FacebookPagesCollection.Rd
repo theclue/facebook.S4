@@ -2,7 +2,7 @@
 % Please edit documentation in R/FacebookPagesCollection.R
 \name{FacebookPagesCollection}
 \alias{FacebookPagesCollection}
-\title{Build a collection of Facebook Pages}
+\title{Build a collection of Facebook pages}
 \usage{
 FacebookPagesCollection(id, token = NULL, parameters = list(),
   fields = c("id", "username", "name", "about", "category", "description",
@@ -103,6 +103,7 @@ Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}};
   \code{\link{FacebookConversationsCollection}};
   \code{\link{FacebookLikesCollection}};
   \code{\link{FacebookMessagesCollection}};
+  \code{\link{FacebookPhotosCollection}};
   \code{\link{FacebookPostsCollection}};
   \code{\link{FacebookUsersCollection}}
 }

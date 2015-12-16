@@ -24,7 +24,7 @@
 #' @author
 #' Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 #' 
-#' @seealso \code{\link{FacebookConversationssCollection}}, \code{\link{facebook.participants}}, \code{\link{facebook.senders}}
+#' @seealso \code{\link{FacebookConversationsCollection}}, \code{\link{facebook.participants}}, \code{\link{facebook.senders}}
 #'
 #' @inheritParams FacebookGenericCollection
 #' 

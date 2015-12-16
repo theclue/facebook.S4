@@ -5,7 +5,7 @@
 #' Build a Collection of Facebook inbox conversations
 #'
 #' @description
-#' Connect to Facebook Graph API, get information from a list of inbox conversations and build a \code{\link{FacebooConversationsCollection-class}}
+#' Connect to Facebook Graph API, get information from a list of inbox conversations and build a \code{\link{FacebookConversationsCollection-class}}
 #' instance.
 #' 
 #' @details
@@ -47,7 +47,8 @@
 #'  load("fb_page_oauth")
 #'  
 #' ## Getting the conversations of an example page. A page access token is needed to access the inbox
-#'  conversations <- FacebookConversationsCollection(FacebookPagesCollection("9thcirclegames", fb_page_oauth))
+#'  conversations <- FacebookConversationsCollection(FacebookPagesCollection(
+#'                                                     "9thcirclegames", fb_page_oauth))
 #' }
 #'
 #' @family Facebook Collection Costructors

@@ -20,7 +20,7 @@
 #' @author
 #' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
 #' 
-#' @seealso \code{\link{facebook.friends}}, \code{\link{facebook.search}}, \code{\link{fbOAuth}}
+#' @seealso \code{\link{facebook.search}}, \code{\link{fbOAuth}}
 #'
 #' @param id An existing \code{\link{FacebookUsersCollection}} or \code{\link{FacebookPagesCollection}}
 #' @param token Either a temporary access token created at

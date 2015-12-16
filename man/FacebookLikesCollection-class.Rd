@@ -42,9 +42,10 @@ Other Facebook Collections: \code{\link{FacebookAlbumsCollection-class}};
   \code{\link{FacebookCommentsCollection-class}};
   \code{\link{FacebookConversationsCollection-class}};
   \code{\link{FacebookGenericCollection-class}};
+  \code{\link{FacebookMessagesCollection-class}};
   \code{\link{FacebookMixedCollection-class}};
-  \code{\link{FacebookMsssagesCollection-class}};
   \code{\link{FacebookPagesCollection-class}};
+  \code{\link{FacebookPhotosCollection-class}};
   \code{\link{FacebookPostsCollection-class}}
 }
 

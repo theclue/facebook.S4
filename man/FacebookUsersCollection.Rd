@@ -120,7 +120,7 @@ This requires more queries and, usually, more time.
 Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{FacebookPostsCollections}},
+\code{\link{FacebookPostsCollection}},
 \code{\link{FacebookCommentsCollection}},
 \code{\link{FacebookLikesCollection}},
 \code{\link{facebook.search}}
@@ -131,6 +131,7 @@ Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}};
   \code{\link{FacebookLikesCollection}};
   \code{\link{FacebookMessagesCollection}};
   \code{\link{FacebookPagesCollection}};
+  \code{\link{FacebookPhotosCollection}};
   \code{\link{FacebookPostsCollection}}
 }
 

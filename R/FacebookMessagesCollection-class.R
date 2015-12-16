@@ -6,7 +6,7 @@
 #' @description
 #' This class is used to collect Facebook inbox messages in a convenient structure.
 #' 
-#' @name FacebookMsssagesCollection-class
+#' @name FacebookMessagesCollection-class
 #' @exportClass FacebookMessagesCollection
 #' 
 #' @template collection-slots

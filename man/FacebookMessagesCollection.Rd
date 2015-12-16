@@ -74,13 +74,14 @@ Instead of a character vector, one of these collections can also be passed as pa
 Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{FacebookConversationssCollection}}, \code{\link{facebook.participants}}, \code{\link{facebook.senders}}
+\code{\link{FacebookConversationsCollection}}, \code{\link{facebook.participants}}, \code{\link{facebook.senders}}
 
 Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}};
   \code{\link{FacebookCommentsCollection}};
   \code{\link{FacebookConversationsCollection}};
   \code{\link{FacebookLikesCollection}};
   \code{\link{FacebookPagesCollection}};
+  \code{\link{FacebookPhotosCollection}};
   \code{\link{FacebookPostsCollection}};
   \code{\link{FacebookUsersCollection}}
 }
