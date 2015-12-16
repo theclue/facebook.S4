@@ -3,8 +3,7 @@ parseFbList <- function(
   id,
   token,
   parameters = list(),
-  fields = character(0),
-  .progress = create_progress_bar()){
+  fields = character(0)){
   
   token <- (function(){ 
     if(is.null(token) & is(id, "FacebookGenericCollection")){
@@ -21,10 +20,6 @@ parseFbList <- function(
   elements.chunks <- split(elements.v, f = elements.f)
   
   if(length(elements.chunks) > 1){
-    
-    # Init the progress bar
-    .progress$init(length(elements.chunks))
-    .progress$step()
     
     return(do.call(c, 
                    unname(
@@ -135,9 +130,5 @@ parseFbList <- function(
       return(do.call(c, all.elements))
     }
     
-    # Advance the progress bar
-    try(.progress$step(), silent=T) 
   }
-  
-  return(.Object)
 }
