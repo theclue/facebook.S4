@@ -3,6 +3,7 @@ test_that("facebook.S4.comments", {
   skip_on_cran()
 
   setwd("../../")
+  if(!file.exists("./.httr-oauth")) skip("Cannot authenticate. Skipping...")
   
   app.key <- Sys.getenv("FACEBOOK_CONNECTOR_APP", "")
   app.secret <- Sys.getenv("FACEBOOK_CONNECTOR_SECRET", "")

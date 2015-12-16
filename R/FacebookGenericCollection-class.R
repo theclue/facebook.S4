@@ -24,6 +24,8 @@
 #' @author Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 #' 
 #' @keywords internal
+#' @importFrom utils URLencode
+#' @importFrom plyr create_progress_bar progress_none
 setClass("FacebookGenericCollection",
          slots = c(id = "ANY",
                    fields = "character",
@@ -125,7 +127,7 @@ setMethod("initialize",
               
               if(getOption("facebook.verbose")) message("Query URL: ", url)
               
-              content <- callAPI(url=url, token=token)
+              content <- callAPI(url=URLencode(url), token=token)
               
               # If ID is an atomic list, just push out the results
               if(!is(elements.v, "FacebookGenericCollection")){

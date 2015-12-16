@@ -101,10 +101,13 @@ Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}};
   \code{\link{FacebookCommentsCollection}};
   \code{\link{FacebookConversationsCollection}};
+  \code{\link{FacebookEventsCollection}};
+  \code{\link{FacebookGroupsCollection}};
   \code{\link{FacebookLikesCollection}};
   \code{\link{FacebookMessagesCollection}};
   \code{\link{FacebookPhotosCollection}};
   \code{\link{FacebookPostsCollection}};
-  \code{\link{FacebookUsersCollection}}
+  \code{\link{FacebookUsersCollection}};
+  \code{\link{FacebookVideosCollection}}
 }
 

@@ -2,7 +2,7 @@
 #' @export
 #' 
 #' @title 
-#' Build a Collection of Facebook inbox conversations
+#' Build a collection of Facebook inbox conversations
 #'
 #' @description
 #' Connect to Facebook Graph API, get information from a list of inbox conversations and build a \code{\link{FacebookConversationsCollection-class}}

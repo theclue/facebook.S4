@@ -20,8 +20,16 @@
 #' \itemize{
 #'  \item{\code{\link{FacebookPostsCollection-class}} will build a collection with 
 #'  the comments to the posts in the source collection.}
+#'  \item{\code{\link{FacebookPhotosCollection-class}} will build a collection with 
+#'  the comments to the photos in the source collection. The author of the photo may grant the
+#'  \code{user_photos} to the current application to perform this action.}
+#'  \item{\code{\link{FacebookVideosCollection-class}} will build a collection with 
+#'  the comments to the videos in the source collection. The author of the photo may grant the
+#'  \code{user_videos} to the current application to perform this action.}
 #'  \item{\code{\link{FacebookCommentsCollection-class}} will build a collection with 
 #'  the replies to the comments in the source collection.}
+#'  \item{\code{\link{FacebookEventsCollection-class}} will build a collection with 
+#'  the comments to the events in the source collection.}
 #' }
 #'
 #' @author
@@ -95,7 +103,7 @@ FacebookCommentsCollection <- function(id,
     }
   })(n, getOption("facebook.pagination"))
   
-  if(is(id, "FacebookPostsCollection") | is(id, "FacebookCommentsCollection") | is(id, "FacebookAlbumsCollection")){
+  if(is(id, "FacebookPostsCollection") | is(id, "FacebookCommentsCollection") | is(id, "FacebookAlbumsCollection") | is(id, "FacebookPhotosCollection") | is(id, "FacebookVideosCollection") | is(id, "FacebookEventsCollection")){
     comments.fields <- paste0("comments.fields(", paste0(fields, collapse=",", sep=""), ",comments.summary(true).limit(0),likes.summary(true).limit(0)).limit(", real.n , ").summary(true)", sep="")
     return(new("FacebookCommentsCollection",
                id = id,

@@ -67,8 +67,16 @@ Instead of a character vector, one of these collections can also be passed as pa
 \itemize{
  \item{\code{\link{FacebookPostsCollection-class}} will build a collection with
  the comments to the posts in the source collection.}
+ \item{\code{\link{FacebookPhotosCollection-class}} will build a collection with
+ the comments to the photos in the source collection. The author of the photo may grant the
+ \code{user_photos} to the current application to perform this action.}
+ \item{\code{\link{FacebookVideosCollection-class}} will build a collection with
+ the comments to the videos in the source collection. The author of the photo may grant the
+ \code{user_videos} to the current application to perform this action.}
  \item{\code{\link{FacebookCommentsCollection-class}} will build a collection with
  the replies to the comments in the source collection.}
+ \item{\code{\link{FacebookEventsCollection-class}} will build a collection with
+ the comments to the events in the source collection.}
 }
 }
 \examples{
@@ -111,11 +119,14 @@ Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 
 Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}};
   \code{\link{FacebookConversationsCollection}};
+  \code{\link{FacebookEventsCollection}};
+  \code{\link{FacebookGroupsCollection}};
   \code{\link{FacebookLikesCollection}};
   \code{\link{FacebookMessagesCollection}};
   \code{\link{FacebookPagesCollection}};
   \code{\link{FacebookPhotosCollection}};
   \code{\link{FacebookPostsCollection}};
-  \code{\link{FacebookUsersCollection}}
+  \code{\link{FacebookUsersCollection}};
+  \code{\link{FacebookVideosCollection}}
 }
 

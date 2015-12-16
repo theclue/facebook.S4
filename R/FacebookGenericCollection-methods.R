@@ -37,7 +37,7 @@ setMethod("summary",
               })()
               
               cat(paste0(separator, "\n"))
-              if(length(object@fields) > 1) {
+              if(length(object@fields) > 1 & !is.null(object@data)) {
                 print(head(as.data.frame(object), 5)[,1:min(3, length(object@fields))])
               } else {
                 snap <- as.data.frame(head(as.data.frame(object), 5)[,1])
@@ -47,7 +47,7 @@ setMethod("summary",
               cat(ifelse(length(object) > 5, paste0("\n (", length(object) - 5, " more element", ifelse(length(object) - 5 != 1, "s", ""), ")\n"), ""))
               cat(paste0(separator, "\n"))
             } else {
-              cat("\n\n### The collection is empty.")
+              cat("\n\n### The collection has no data.")
             }
             invisible(object)
           }

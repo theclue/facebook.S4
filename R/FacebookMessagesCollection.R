@@ -2,10 +2,10 @@
 #' @export
 #' 
 #' @title 
-#' Build a Collection of Facebook inbox messages
+#' Build a collection of Facebook inbox messages
 #'
 #' @description
-#' Connect to Facebook Graph API, get information from a list of inbox messages and build a \code{\link{FacebooMessagesCollection-class}}
+#' Connect to Facebook Graph API, get information from a list of inbox messages and build a \code{\link{FacebookMessagesCollection-class}}
 #' instance.
 #' 
 #' @details

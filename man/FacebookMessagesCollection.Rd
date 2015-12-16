@@ -2,7 +2,7 @@
 % Please edit documentation in R/FacebookMessagesCollection.R
 \name{FacebookMessagesCollection}
 \alias{FacebookMessagesCollection}
-\title{Build a Collection of Facebook inbox messages}
+\title{Build a collection of Facebook inbox messages}
 \usage{
 FacebookMessagesCollection(id, token = NULL, parameters = list(),
   fields = c("id", "from", "created_time", "subject"),
@@ -41,7 +41,7 @@ By default the \code{none} progress bar is used, which prints nothing to the con
 A collection of messages in a \code{\link{FacebookMessagesCollection-class}} object.
 }
 \description{
-Connect to Facebook Graph API, get information from a list of inbox messages and build a \code{\link{FacebooMessagesCollection-class}}
+Connect to Facebook Graph API, get information from a list of inbox messages and build a \code{\link{FacebookMessagesCollection-class}}
 instance.
 }
 \details{
@@ -79,10 +79,13 @@ Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}};
   \code{\link{FacebookCommentsCollection}};
   \code{\link{FacebookConversationsCollection}};
+  \code{\link{FacebookEventsCollection}};
+  \code{\link{FacebookGroupsCollection}};
   \code{\link{FacebookLikesCollection}};
   \code{\link{FacebookPagesCollection}};
   \code{\link{FacebookPhotosCollection}};
   \code{\link{FacebookPostsCollection}};
-  \code{\link{FacebookUsersCollection}}
+  \code{\link{FacebookUsersCollection}};
+  \code{\link{FacebookVideosCollection}}
 }
 

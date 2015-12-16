@@ -1,3 +1,4 @@
+#' @slot data The raw data in a list form and as pulled from Facebook
 #' @slot id A character vector with the \code{id} of the items included in the collection
 #' @slot fields A character vector with the fields included for each ID in the collection. Ie. \code{id, name, created_time}...
 #' @slot token Either a temporary access token created at

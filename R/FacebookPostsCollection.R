@@ -21,10 +21,17 @@
 #'  \item{\code{\link{FacebookPostsCollection-class}} will build a collection with 
 #'  the shared posts from the posts of the source collection. It assumes the authors of the shared posts
 #'  have granted the \code{user_posts} permission to the current application.}
+#'  \item{\code{\link{FacebookVideosCollection-class}} will build a collection with 
+#'  the shared posts from the videos of the source collection. It assumes the authors of the shared posts
+#'  have granted the \code{user_posts} permission to the current application.}
 #'  \item{\code{\link{FacebookPagesCollection-class}} will build a collection with 
 #'  the posts written on the pages in the source collection.}
 #'  \item{\code{\link{FacebookUsersCollection-class}} will build a collection with 
-#'  the posts written on the walls of the users in the source collection.}
+#'  the posts written on the walls of the users in the source collection. Users must have granted
+#'  the \code{user_posts} permission to the current app to be able to perform this action.}
+#'  \item{\code{\link{FacebookGroupsCollection-class}} will build a collection with 
+#'  the posts written on the walls of the groups in the source collection. Users must have granted
+#'  the \code{user_managed_groups} permission to the current app to be able to perform this action.}
 #' }
 #' 
 #' @author
@@ -35,7 +42,8 @@
 #' @inheritParams FacebookGenericCollection
 #' 
 #' @param feed If \code{id} is a collection and \code{feed} is set to \code{TRUE}, the collection will also include posts 
-#' written by others (not only by the owner of the collection items themselves). If \code{id} is not a collection, the parameter is ignored.
+#' written by others (not only by the owner of the collection items themselves). If \code{id} is not a collection or
+#' it is a \code{\link{FacebookGroupsCollection-class}}, the parameter is ignored.
 #' 
 #' @param n If \code{id} is an iterable collection, then \code{n} is the maximum number of posts to be pulled for each element of the source collection
 #' in \code{id}. It can be set to \code{Inf} to pull out any available public post and assumes the default value from the value
@@ -95,7 +103,11 @@ FacebookPostsCollection <- function(id,
   
   e.fields <- paste(paste0(fields, collapse=","), "comments.summary(true).limit(0),likes.summary(true).limit(0)", sep=",")
   
-  if(is(id, "FacebookPagesCollection") | is(id, "FacebookUsersCollection")){
+  if(is(id, "FacebookGroupsCollection")){
+    feed <- TRUE
+  }
+  
+  if(is(id, "FacebookPagesCollection") | is(id, "FacebookUsersCollection") | is(id, "FacebookGroupsCollection")){
     
     posts.idx <- new("FacebookPostsCollection",
                      id = id,
@@ -126,7 +138,7 @@ FacebookPostsCollection <- function(id,
     return(posts.idx)
   }
   
-  if(is(id, "FacebookPostsCollection")){
+  if(is(id, "FacebookPostsCollection") | is(id, "FacebookVideosCollection")){
     return(new("FacebookPostsCollection",
                id = id,
                token = token,

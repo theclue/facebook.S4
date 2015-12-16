@@ -2,7 +2,7 @@
 #' @export
 #' 
 #' @title 
-#' Build a Collection of Facebook Likes to posts and comments
+#' Build a collection of Facebook likes to posts and comments
 #'
 #' @description
 #' Connect to Facebook Graph API, get information from a list of likes to public posts or comments and build a \code{FacebookLikesCollection-class}
@@ -15,7 +15,7 @@
 #' Since Facebook doesn't provide a key for a single like, the ID slot for this kind of collection doesn't uniquely identify a like on Facebook.
 #' The \code{id} (the user who put the like) coupled with the \code{parent} (the place where she put the like) identifies a unique key for the like.
 #' 
-#' As a consequence, you cannot build a like collection starting from atomic IDs, but you must pass an instance of a Facecook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
+#' As a consequence, you cannot build a likes collection starting from atomic IDs, but you must pass an instance of a Facecook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
 #' or \code{\link{FacebookCommentsCollection}} as \code{id} parameter.
 #' 
 #' @template nesting-fields
@@ -29,6 +29,13 @@
 #'  all the likes to the comments of the source collection}
 #'  \item{\code{\link{FacebookUsersCollection-class}} will build a collection with 
 #'  the posts written on the walls of the users in the source collection.}
+#'  \item{\code{\link{FacebookPhotosCollection-class}} will build a collection with 
+#'  the likes to the photos in the source collection. The author of the photo may grant the
+#'  \code{user_photos} to the current application to perform this action.}
+#'  \item{\code{\link{FacebookVideosCollection-class}} will build a collection with 
+#'  the likes to the videos in the source collection. The author of the photo may grant the
+#'  \code{user_videos} to the current application to perform this action.}
+
 #' }
 #'
 #' @author
@@ -105,7 +112,7 @@ FacebookLikesCollection <- function(id,
     }
   })(n, getOption("facebook.pagination"))
   
-  if(is(id, "FacebookPostsCollection") | is(id, "FacebookCommentsCollection")| is(id, "FacebookAlbumsCollection")){
+  if(is(id, "FacebookPostsCollection") | is(id, "FacebookCommentsCollection")| is(id, "FacebookAlbumsCollection") | is(id, "FacebookPhotosCollection") | is(id, "FacebookVideosCollection")){
     likes.fields <- paste0("likes.fields(", paste0(fields, collapse=",", sep=""), ").limit(", real.n , ").summary(true)", sep="")
     return(new("FacebookLikesCollection",
                id = id,

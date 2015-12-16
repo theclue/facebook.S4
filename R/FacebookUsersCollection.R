@@ -2,7 +2,7 @@
 #' @export
 #' 
 #' @title 
-#' Build a Collection of Facebook users
+#' Build a collection of Facebook users
 #'
 #' @description
 #' Connect to Facebook Graph API, get public information from a list of Facebook users
@@ -32,6 +32,8 @@
 #'  the authors of the likes of the source collection.}
 #'  \item{\code{\link{FacebookUsersCollection-class}} will build a collection with 
 #'  the posts written on the walls of the users in the source collection.}
+#'  \item{\code{\link{FacebookGroupsCollection-class}} will build a collection with 
+#'  the members of the groups in the source collection.}
 #'  \item{\code{\link{FacebookMixedCollection-class}} will build a collection with 
 #'  only the user elements of the source collection.}
 #' }
@@ -47,7 +49,7 @@
 #' This requires more queries and, usually, more time.
 #'  
 #' @author
-#' Gabriele Baldassarre \email{gabriele@@gabrielebaldassarre.com}
+#' Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 #' 
 #' @seealso \code{\link{FacebookPostsCollection}},
 #' \code{\link{FacebookCommentsCollection}},
@@ -115,11 +117,17 @@ FacebookUsersCollection <- function(id,
   })(n, getOption("facebook.pagination"))
   
   e.fields <- paste(paste0(fields, collapse=","), "friends.summary(true).limit(0)", sep=",")
-  
+
   if(is(id, "FacebookUsersCollection")){
     friends.fields <- paste0("friends.fields(", paste0(fields, collapse=",", sep=""), ").limit(", real.n , ").summary(true)", sep="")
     return(new("FacebookUsersCollection", id = id, token = token, parameters = parameters, fields = friends.fields, n = n, metadata = metadata, .progress = .progress))
   }
+  
+  if(is(id, "FacebookGroupsCollection")){
+    friends.fields <- paste0("members.fields(", paste0(fields, collapse=",", sep=""), ").limit(", real.n , ").summary(true)", sep="")
+    return(new("FacebookUsersCollection", id = id, token = token, parameters = parameters, fields = friends.fields, n = n, metadata = metadata, .progress = .progress))
+  }
+  
   
   # Supported Collection
   if(is(id, "FacebookPostsCollection") | is(id, "FacebookCommentsCollection") | is(id, "FacebookLikesCollection")){

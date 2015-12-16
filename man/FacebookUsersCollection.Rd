@@ -2,7 +2,7 @@
 % Please edit documentation in R/FacebookUsersCollection.R
 \name{FacebookUsersCollection}
 \alias{FacebookUsersCollection}
-\title{Build a Collection of Facebook users}
+\title{Build a collection of Facebook users}
 \usage{
 FacebookUsersCollection(id, token = NULL, parameters = list(),
   fields = c("id", "name", "first_name", "last_name", "gender", "locale",
@@ -79,6 +79,8 @@ Instead of a character vector, one of these collections can also be passed as pa
  the authors of the likes of the source collection.}
  \item{\code{\link{FacebookUsersCollection-class}} will build a collection with
  the posts written on the walls of the users in the source collection.}
+ \item{\code{\link{FacebookGroupsCollection-class}} will build a collection with
+ the members of the groups in the source collection.}
  \item{\code{\link{FacebookMixedCollection-class}} will build a collection with
  only the user elements of the source collection.}
 }
@@ -117,7 +119,7 @@ This requires more queries and, usually, more time.
 }
 }
 \author{
-Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
 \seealso{
 \code{\link{FacebookPostsCollection}},
@@ -128,10 +130,13 @@ Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
 Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}};
   \code{\link{FacebookCommentsCollection}};
   \code{\link{FacebookConversationsCollection}};
+  \code{\link{FacebookEventsCollection}};
+  \code{\link{FacebookGroupsCollection}};
   \code{\link{FacebookLikesCollection}};
   \code{\link{FacebookMessagesCollection}};
   \code{\link{FacebookPagesCollection}};
   \code{\link{FacebookPhotosCollection}};
-  \code{\link{FacebookPostsCollection}}
+  \code{\link{FacebookPostsCollection}};
+  \code{\link{FacebookVideosCollection}}
 }
 

@@ -26,7 +26,8 @@ accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/us
 for a given field is found, it will be set to \code{NULL}.}
 
 \item{feed}{If \code{id} is a collection and \code{feed} is set to \code{TRUE}, the collection will also include posts
-written by others (not only by the owner of the collection items themselves). If \code{id} is not a collection, the parameter is ignored.}
+written by others (not only by the owner of the collection items themselves). If \code{id} is not a collection or
+it is a \code{\link{FacebookGroupsCollection-class}}, the parameter is ignored.}
 
 \item{n}{If \code{id} is an iterable collection, then \code{n} is the maximum number of posts to be pulled for each element of the source collection
 in \code{id}. It can be set to \code{Inf} to pull out any available public post and assumes the default value from the value
@@ -71,10 +72,17 @@ Instead of a character vector, one of these collections can also be passed as pa
  \item{\code{\link{FacebookPostsCollection-class}} will build a collection with
  the shared posts from the posts of the source collection. It assumes the authors of the shared posts
  have granted the \code{user_posts} permission to the current application.}
+ \item{\code{\link{FacebookVideosCollection-class}} will build a collection with
+ the shared posts from the videos of the source collection. It assumes the authors of the shared posts
+ have granted the \code{user_posts} permission to the current application.}
  \item{\code{\link{FacebookPagesCollection-class}} will build a collection with
  the posts written on the pages in the source collection.}
  \item{\code{\link{FacebookUsersCollection-class}} will build a collection with
- the posts written on the walls of the users in the source collection.}
+ the posts written on the walls of the users in the source collection. Users must have granted
+ the \code{user_posts} permission to the current app to be able to perform this action.}
+ \item{\code{\link{FacebookGroupsCollection-class}} will build a collection with
+ the posts written on the walls of the groups in the source collection. Users must have granted
+ the \code{user_managed_groups} permission to the current app to be able to perform this action.}
 }
 }
 \examples{
@@ -115,10 +123,13 @@ Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}};
   \code{\link{FacebookCommentsCollection}};
   \code{\link{FacebookConversationsCollection}};
+  \code{\link{FacebookEventsCollection}};
+  \code{\link{FacebookGroupsCollection}};
   \code{\link{FacebookLikesCollection}};
   \code{\link{FacebookMessagesCollection}};
   \code{\link{FacebookPagesCollection}};
   \code{\link{FacebookPhotosCollection}};
-  \code{\link{FacebookUsersCollection}}
+  \code{\link{FacebookUsersCollection}};
+  \code{\link{FacebookVideosCollection}}
 }
 

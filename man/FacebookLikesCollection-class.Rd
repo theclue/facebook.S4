@@ -17,6 +17,8 @@ This collection covers the first, while the \code{\link{facebook.object.likes}} 
 \section{Slots}{
 
 \describe{
+\item{\code{data}}{The raw data in a list form and as pulled from Facebook}
+
 \item{\code{id}}{A character vector with the \code{id} of the items included in the collection}
 
 \item{\code{fields}}{A character vector with the fields included for each ID in the collection. Ie. \code{id, name, created_time}...}
@@ -41,11 +43,14 @@ Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 Other Facebook Collections: \code{\link{FacebookAlbumsCollection-class}};
   \code{\link{FacebookCommentsCollection-class}};
   \code{\link{FacebookConversationsCollection-class}};
+  \code{\link{FacebookEventsCollection-class}};
   \code{\link{FacebookGenericCollection-class}};
+  \code{\link{FacebookGroupsCollection-class}};
   \code{\link{FacebookMessagesCollection-class}};
   \code{\link{FacebookMixedCollection-class}};
   \code{\link{FacebookPagesCollection-class}};
   \code{\link{FacebookPhotosCollection-class}};
-  \code{\link{FacebookPostsCollection-class}}
+  \code{\link{FacebookPostsCollection-class}};
+  \code{\link{FacebookVideosCollection-class}}
 }
 

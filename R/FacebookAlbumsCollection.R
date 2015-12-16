@@ -23,6 +23,9 @@
 #'  \item{\code{\link{FacebookUsersCollection-class}} will build a collection with 
 #'  the albums created the users in the source collection. Users must have granted
 #'  the \code{user_photos} permission to the current app to be able to perform this action.}
+#'  \item{\code{\link{FacebookGroupsCollection-class}} will build a collection with 
+#'  the albums created in the groups in the source collection. Users must have granted
+#'  the \code{user_managed_groups} permission to the current app to be able to perform this action.}
 #' }
 #' 
 #' @author

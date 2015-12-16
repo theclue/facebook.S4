@@ -2,7 +2,7 @@
 % Please edit documentation in R/FacebookConversationsCollection.R
 \name{FacebookConversationsCollection}
 \alias{FacebookConversationsCollection}
-\title{Build a Collection of Facebook inbox conversations}
+\title{Build a collection of Facebook inbox conversations}
 \usage{
 FacebookConversationsCollection(id, token = NULL, parameters = list(),
   fields = c("id", "snippet", "updated_time", "message_count"),
@@ -94,11 +94,14 @@ Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 
 Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}};
   \code{\link{FacebookCommentsCollection}};
+  \code{\link{FacebookEventsCollection}};
+  \code{\link{FacebookGroupsCollection}};
   \code{\link{FacebookLikesCollection}};
   \code{\link{FacebookMessagesCollection}};
   \code{\link{FacebookPagesCollection}};
   \code{\link{FacebookPhotosCollection}};
   \code{\link{FacebookPostsCollection}};
-  \code{\link{FacebookUsersCollection}}
+  \code{\link{FacebookUsersCollection}};
+  \code{\link{FacebookVideosCollection}}
 }
 

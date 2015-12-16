@@ -4,42 +4,48 @@
 \alias{facebook.search}
 \title{Perform a search on Facebook}
 \usage{
-facebook.search(query, token, n = getOption("facebook.maxitems"),
-  type = "page")
+facebook.search(query, token, parameters = list(),
+  n = getOption("facebook.maxitems"), type = c("page", "group"))
 }
 \arguments{
-\item{query}{comma-delimited string or string vector containing keywords to search.
-Note that the returned results will contain any of the keywords.}
+\item{query}{A character vector vector containing keywords to search in OR condition.}
 
 \item{token}{Either a temporary access token created at
 \url{https://developers.facebook.com/tools/explorer} or the OAuth token
 created with \code{fbOAuth}.}
 
-\item{n}{Maximum number of elements to return.}
+\item{parameters}{A list of parameters to be added to the Facebook Graph API query. For more information on the
+accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/using-graph-api}.}
 
-\item{type}{string containing the type of content to get.
-Valid content types are \code{user, page, event, group, place, placetopic}}
+\item{n}{Maximum number of elements to return for each type.}
+
+\item{type}{A character vector containing the types of content to get.
+Valid content types are \code{user, page, event, group, place}}
+}
+\value{
+A \code{\link{FacebookMixedCollection-class}} collection with the \code{id} and the \code{type} for
+each element included.
 }
 \description{
 \code{facebook.search} retrieves public content that mention a given keyword(s) and for a given type.
 Please note that each type has its unique set of fields,
-as referenced on official documentation \url{https://developers.facebook.com/docs/graph-api/using-graph-api/v2.3#search}
+as referenced on official documentation \url{https://developers.facebook.com/docs/graph-api/using-graph-api/v2.5#search}
 
-If \code{fields} is not specified or null, the function return a data frame containing \code{id} and \code{name} for each result
-plus the given \code{type}.
+Since this is a finder function, duplicated \code{id} won't be removed to the
+output collection unless they also have the same \code{parent}.
 }
 \examples{
 \dontrun{
 ## See examples for fbOAuth to know how token was created.
-## Searching 100 public pages that mention "facebook"
+## Searching 100 public pages that mention cats
  load("fb_oauth")
 	pages <- facebook.search(query="cats", type="page", token=fb_oauth, n=100)
 }
 }
 \author{
-Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
 \seealso{
-\code{\link{fbOAuth}}, \code{\link{facebook.query}}
+\code{\link{fbOAuth}}
 }
 

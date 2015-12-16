@@ -2,7 +2,7 @@
 % Please edit documentation in R/FacebookLikesCollection.R
 \name{FacebookLikesCollection}
 \alias{FacebookLikesCollection}
-\title{Build a Collection of Facebook Likes to posts and comments}
+\title{Build a collection of Facebook likes to posts and comments}
 \usage{
 FacebookLikesCollection(id, token = NULL, parameters = list(),
   fields = c("id", "name", "profile_type"),
@@ -51,7 +51,7 @@ It returns data about likes to posts or comments but doesn't return the comments
 Since Facebook doesn't provide a key for a single like, the ID slot for this kind of collection doesn't uniquely identify a like on Facebook.
 The \code{id} (the user who put the like) coupled with the \code{parent} (the place where she put the like) identifies a unique key for the like.
 
-As a consequence, you cannot build a like collection starting from atomic IDs, but you must pass an instance of a Facecook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
+As a consequence, you cannot build a likes collection starting from atomic IDs, but you must pass an instance of a Facecook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
 or \code{\link{FacebookCommentsCollection}} as \code{id} parameter.
 }
 \section{Nesting fields}{
@@ -76,6 +76,12 @@ Instead of a character vector, one of these collections can also be passed as pa
  all the likes to the comments of the source collection}
  \item{\code{\link{FacebookUsersCollection-class}} will build a collection with
  the posts written on the walls of the users in the source collection.}
+ \item{\code{\link{FacebookPhotosCollection-class}} will build a collection with
+ the likes to the photos in the source collection. The author of the photo may grant the
+ \code{user_photos} to the current application to perform this action.}
+ \item{\code{\link{FacebookVideosCollection-class}} will build a collection with
+ the likes to the videos in the source collection. The author of the photo may grant the
+ \code{user_videos} to the current application to perform this action.}
 }
 }
 \examples{
@@ -125,10 +131,13 @@ Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}};
   \code{\link{FacebookCommentsCollection}};
   \code{\link{FacebookConversationsCollection}};
+  \code{\link{FacebookEventsCollection}};
+  \code{\link{FacebookGroupsCollection}};
   \code{\link{FacebookMessagesCollection}};
   \code{\link{FacebookPagesCollection}};
   \code{\link{FacebookPhotosCollection}};
   \code{\link{FacebookPostsCollection}};
-  \code{\link{FacebookUsersCollection}}
+  \code{\link{FacebookUsersCollection}};
+  \code{\link{FacebookVideosCollection}}
 }
 
