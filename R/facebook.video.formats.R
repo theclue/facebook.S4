@@ -1,4 +1,4 @@
-#' @include FacebookVideosCollection.R parseFbList.R
+#' @include FacebookVideosCollection.R utils.R
 #' @export
 #' 
 #' @title 

@@ -1,4 +1,4 @@
-#' @include FacebookPhotosCollection.R FacebookAlbumsCollection.R parseFbList.R
+#' @include FacebookPhotosCollection.R FacebookAlbumsCollection.R utils.R
 #' @export
 #' 
 #' @title 

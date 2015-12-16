@@ -52,7 +52,7 @@ Collate:
     'FacebookVideosCollection-class.R'
     'FacebookVideosCollection.R'
     'facebook.S4.R'
-    'parseFbList.R'
+    'utils.R'
     'facebook.image.formats.R'
     'facebook.object.likes.R'
     'facebook.participants.R'
@@ -64,4 +64,3 @@ Collate:
     'formatFbDate.R'
     'onAttach.R'
     'onLoad.R'
-    'utils.R'
