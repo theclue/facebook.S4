@@ -53,7 +53,7 @@ FacebookMessagesCollection <- function(id,
                                     fields = c("id",
                                                "from",
                                                "created_time",
-                                               "subject"),
+                                               "message"),
                                     n = getOption("facebook.maxitems"),
                                     metadata = FALSE,
                                     .progress = create_progress_bar()){
