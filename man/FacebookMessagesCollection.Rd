@@ -5,7 +5,7 @@
 \title{Build a collection of Facebook inbox messages}
 \usage{
 FacebookMessagesCollection(id, token = NULL, parameters = list(),
-  fields = c("id", "from", "created_time", "subject"),
+  fields = c("id", "from", "created_time", "message"),
   n = getOption("facebook.maxitems"), metadata = FALSE,
   .progress = create_progress_bar())
 }

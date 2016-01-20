@@ -52,6 +52,7 @@ Collate:
     'FacebookVideosCollection-class.R'
     'FacebookVideosCollection.R'
     'facebook.S4.R'
+    'facebook.current.accounts.R'
     'utils.R'
     'facebook.image.formats.R'
     'facebook.object.likes.R'

@@ -58,7 +58,7 @@ Then, a proper collection for each type must be built accordingly.
 }
 }
 \author{
-Gabriele Baldassarre \email{gabriele@gabrielebaldassarre.com}
+Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
 \seealso{
 \code{\link{facebook.search}}, \code{\link{fbOAuth}}
