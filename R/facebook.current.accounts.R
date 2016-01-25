@@ -93,8 +93,7 @@ facebook.current.accounts <- function(token,
                    token = token,
                    fields="id",
                    parameters = parameters,
-                   metadata = TRUE,
-                   .progress = .progress)
+                   metadata = TRUE)
 
   return(the.accounts)
 }
