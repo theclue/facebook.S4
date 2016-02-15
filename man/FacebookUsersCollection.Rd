@@ -112,7 +112,7 @@ This requires more queries and, usually, more time.
                                 n = Inf)
 
 ## Build a collection of users from who actually commented those posts
- fb.commenting.users <- fb.comments -> FacebookUsersCollection()
+ fb.commenting.users <- fb.comments \%>\% FacebookUsersCollection()
 
 ## Convert the collection to a data frame
  fb.commenting.df <- as.data.frame(fb.commenting.users)

@@ -40,7 +40,7 @@ In normal circumnstances, \code{type} is always equal to \code{page}.
 
 	admin.pages <- facebook.current.accounts(fb_oauth)
 
-	extended.posts <- FacebookPostsCollection(page.collection, page_token)
+	extended.pages <- admin.pages \%>\% FacebookPagesCollection()
 
 }
 }
