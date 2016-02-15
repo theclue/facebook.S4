@@ -135,10 +135,10 @@ FacebookUsersCollection <- function(id,
     if(!("from.id" %in% colnames(indexes.df))){
       stop(paste0("you cannot build a users collection from a ", class(id), " if the source has not the 'from.id' field inside."))
     } else {
-      
+
       users.id <- new("FacebookMixedCollection",
                       id = unique(indexes.df$from.id),
-                      token = token,
+                      token = id@token,
                       parameters = parameters,
                       fields = "id",
                       n = n,
@@ -146,7 +146,7 @@ FacebookUsersCollection <- function(id,
 
       users <- new("FacebookUsersCollection",
                    id = unique(users.id[which(users.id@type=="user")]@id),
-                   token = token,
+                   token = id@token,
                    parameters = parameters,
                    fields = e.fields,
                    n = n,
