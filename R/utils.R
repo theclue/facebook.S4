@@ -17,7 +17,7 @@ detailsDataToDF <- function(json, fields = NULL){
 #' @importFrom rjson fromJSON
 callAPI <- function(url, token){
   if (class(token)[1]=="Token2.0"){
-    url.data <- GET(url, config(token=token, verbose = getOption("facebook.verbose")))
+    url.data <- GET(url, config(token=token, accept_encoding = "UTF-8", verbose = getOption("facebook.verbose")))
   }	
   if (class(token)[1]=="character"){
     url <- paste0(url, "&access_token=", token)
