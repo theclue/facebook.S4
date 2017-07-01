@@ -28,3 +28,4 @@ NEWS.md
 ^configure\.ac$
 ^\.gitignore$
 ^\.travis\.yml$
+^\.httr-oauth$
