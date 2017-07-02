@@ -5,7 +5,7 @@
 \alias{FacebookLikesCollection-class}
 \title{Class for representing a Collection of Facebook likes}
 \description{
-This class is used to collect Facebook posts in a convenient structure.
+This class is used to collect Facebook likes in a convenient structure.
 
 Use the \code{\link{FacebookLikesCollection}} constructor for building a instance of this class, as it provides better
 sanity and validation checks.
@@ -49,6 +49,7 @@ Other Facebook Collections: \code{\link{FacebookAlbumsCollection-class}},
   \code{\link{FacebookPagesCollection-class}},
   \code{\link{FacebookPhotosCollection-class}},
   \code{\link{FacebookPostsCollection-class}},
+  \code{\link{FacebookReactionsCollection-class}},
   \code{\link{FacebookVideosCollection-class}}
 }
 \author{

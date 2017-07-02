@@ -43,6 +43,7 @@ Other Facebook Collections: \code{\link{FacebookAlbumsCollection-class}},
   \code{\link{FacebookPagesCollection-class}},
   \code{\link{FacebookPhotosCollection-class}},
   \code{\link{FacebookPostsCollection-class}},
+  \code{\link{FacebookReactionsCollection-class}},
   \code{\link{FacebookVideosCollection-class}}
 }
 \author{

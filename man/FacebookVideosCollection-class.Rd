@@ -43,7 +43,8 @@ Other Facebook Collections: \code{\link{FacebookAlbumsCollection-class}},
   \code{\link{FacebookMixedCollection-class}},
   \code{\link{FacebookPagesCollection-class}},
   \code{\link{FacebookPhotosCollection-class}},
-  \code{\link{FacebookPostsCollection-class}}
+  \code{\link{FacebookPostsCollection-class}},
+  \code{\link{FacebookReactionsCollection-class}}
 }
 \author{
 Gabriele Baldassarre \url{https://gabrielebaldassarre.com}

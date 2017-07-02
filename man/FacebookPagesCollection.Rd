@@ -106,6 +106,7 @@ Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}},
   \code{\link{FacebookMessagesCollection}},
   \code{\link{FacebookPhotosCollection}},
   \code{\link{FacebookPostsCollection}},
+  \code{\link{FacebookReactionsCollection}},
   \code{\link{FacebookUsersCollection}},
   \code{\link{FacebookVideosCollection}}
 }

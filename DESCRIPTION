@@ -49,6 +49,8 @@ Collate:
     'FacebookMixedCollection-class.R'
     'FacebookPhotosCollection-class.R'
     'FacebookPhotosCollection.R'
+    'FacebookReactionsCollection-class.R'
+    'FacebookReactionsCollection.R'
     'FacebookVideosCollection-class.R'
     'FacebookVideosCollection.R'
     'facebook.S4.R'

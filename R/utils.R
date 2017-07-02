@@ -47,14 +47,14 @@ callAPI <- function(url, token){
 
 parse.input.fields <- function(fields){
   # sub("[^(]*\\(([^()]*+(?:\\((?1)\\)[^()]*)*+)\\).*", "\\1", url, perl=T)
-  # sub("(sharedposts|posts|users|likes|comments|feed|participants)\\.fields\\((.*)\\)", "\\2", fields)
+  # sub("(sharedposts|posts|users|likes|comments|feed|participants|reactions)\\.fields\\((.*)\\)", "\\2", fields)
   list(url = paste0(unique(
     unlist(strsplit(fields, split = ","))),
     collapse = ","
   ),
   fields = unique(
     unlist(strsplit(gsub('\\.(fields|type|summary|limit)\\((.*?)\\)','', 
-                         sub("[^.]*+(?:\\.(?!fields\\()[^.]*)*+(?<=\\bformat|\\bvideos|\\bmembers|\\bgroups|\\bimages|\\bphotos|\\balbums|\\bmessages|\\bsenders|\\bparticipants|\\bconversations|\\bsharedposts|\\bposts|\\bcomments|\\busers|\\blikes|\\bfeed|\\bfriends)\\.fields\\(([^()]*+(?:\\((?1)\\)[^()]*)*+)\\)(?s:.*)", "\\1", fields, perl=T)
+                         sub("[^.]*+(?:\\.(?!fields\\()[^.]*)*+(?<=\\bformat|\\bvideos|\\bmembers|\\bgroups|\\bimages|\\bphotos|\\balbums|\\bmessages|\\bsenders|\\bparticipants|\\bconversations|\\bsharedposts|\\bposts|\\bcomments|\\busers|\\blikes||\\breactions|\\bfeed|\\bfriends)\\.fields\\(([^()]*+(?:\\((?1)\\)[^()]*)*+)\\)(?s:.*)", "\\1", fields, perl=T)
                          , perl = TRUE), split = ",")))
   )
 }
