@@ -118,7 +118,7 @@ setMethod("initialize",
                                       )
               )
               url <- paste0(
-                "https://graph.facebook.com/v", getOption("facebook.api"), "/",
+                "https://graph.facebook.com/", ifelse(class(token)[1]=="Token2.0", class(token)[4], getOption("facebook.api")), "/",
                 "?metadata=", as.numeric(ifelse(is.null(metadata), FALSE, metadata)),
                 "&ids=", paste0(elements.v, collapse=","),
                 ifelse(length(parameters), paste0("&", query.parameters), ""),

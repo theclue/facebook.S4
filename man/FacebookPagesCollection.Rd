@@ -6,7 +6,7 @@
 \usage{
 FacebookPagesCollection(id, token = NULL, parameters = list(),
   fields = c("id", "username", "name", "about", "category", "description",
-  "likes", "link", "talking_about_count"), metadata = FALSE,
+  "fan_count", "link", "talking_about_count"), metadata = FALSE,
   .progress = create_progress_bar())
 }
 \arguments{
