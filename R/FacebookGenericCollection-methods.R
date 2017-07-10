@@ -101,7 +101,7 @@ setMethod("[",
 #' @description
 #' This method returns the number of members in a given Facebook collection.
 #' 
-#' @param x a valid not-null Facebook colle
+#' @param x a valid not-null Facebook collection
 #' 
 #' @rdname generic-length
 #' @aliases length,ANY-method
@@ -117,7 +117,7 @@ setMethod("length",
 #' 
 #' @description
 #' This method serializes a Facebook collection extracting all the IDs of its member into a
-#' comma-separated string. This could be useful for lazy chaining into other FB queries
+#' comma-separated string. This could be useful for lazy chaining into other Facebook queries
 #' or for debugging purposes.
 #' 
 #' @param x a valid not-null Facebook Collection
@@ -214,7 +214,7 @@ setMethod("c",
 #' Returns a data frame from a Facebook collection
 #' 
 #' @description
-#' This generic return a valid data frame rapresentation of various Facebook collections
+#' This generic return a valid data frame representation of various Facebook collections
 #' 
 #' @param x A valid collection of Facebook elements
 #' @param row.names If set to \code{TRUE}, names the rows of the returned data frame with IDs of the elements

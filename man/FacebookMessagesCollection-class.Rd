@@ -3,7 +3,7 @@
 \docType{class}
 \name{FacebookMessagesCollection-class}
 \alias{FacebookMessagesCollection-class}
-\title{Class for representing a collection of Facebook messagers between users or users and pages}
+\title{Class for representing a collection of Facebook messangers between users or users and pages}
 \description{
 This class is used to collect Facebook inbox messages in a convenient structure.
 }

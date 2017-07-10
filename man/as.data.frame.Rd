@@ -15,6 +15,6 @@
 \item{optional}{Not used in this context.}
 }
 \description{
-This generic return a valid data frame rapresentation of various Facebook collections
+This generic return a valid data frame representation of various Facebook collections
 }
 \keyword{internal}

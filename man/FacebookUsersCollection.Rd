@@ -29,7 +29,7 @@ for a given field is found, it will be set to \code{NULL}.}
  in \code{id}. It can be set to \code{Inf} to pull out any accessible user and assumes the default value from the value
 of \code{facebook.maxitems} global option if missing. If \code{id} is not a collection or cannot be iterated, the parameter is ignored.}
 
-\item{metadata}{If set to \code{TRUE}, the medatata for each ID is pulled with the data
+\item{metadata}{If set to \code{TRUE}, the metatata for each ID is pulled with the data
 and the \code{type} slot is fed accordingly.
 Please note that setting this to \code{TRUE} could considerably
 slow down the execution time, as more queries are needed.}
@@ -89,10 +89,10 @@ Be careful when binding this kind of collection starting from a \code{\link{Face
 or a \code{\link{FacebookLikesCollection}}.
 
 In Facebook, one can publish, comment or like acting as a user or as a page. But since users and pages have different sets of fields 
-and you won't know in advance if the author is a page or not, the constructor of this collection would fail due to inconsitent fields.
+and you won't know in advance if the author is a page or not, the constructor of this collection would fail due to inconsistent fields.
 
-To avoid this, if \code{id} is an instance of one of the aforementioned collections, an pre-serialization query is performed
-to eventually filter out the pages and retain only the users. Finally, the real collection is built on this valid subset of user IDs only.
+To avoid this, if \code{id} is an instance of one of the aforementioned collections, a serialization query is performed
+before to eventually filter out the pages and retain only the users. Finally, the real collection is built on this valid subset of user IDs only.
 This requires more queries and, usually, more time.
 }
 
@@ -126,18 +126,7 @@ This requires more queries and, usually, more time.
 \code{\link{FacebookLikesCollection}},
 \code{\link{facebook.search}}
 
-Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}},
-  \code{\link{FacebookCommentsCollection}},
-  \code{\link{FacebookConversationsCollection}},
-  \code{\link{FacebookEventsCollection}},
-  \code{\link{FacebookGroupsCollection}},
-  \code{\link{FacebookLikesCollection}},
-  \code{\link{FacebookMessagesCollection}},
-  \code{\link{FacebookPagesCollection}},
-  \code{\link{FacebookPhotosCollection}},
-  \code{\link{FacebookPostsCollection}},
-  \code{\link{FacebookReactionsCollection}},
-  \code{\link{FacebookVideosCollection}}
+Other Facebook Collection Costructors: \code{\link{FacebookConversationsCollection}}
 }
 \author{
 Gabriele Baldassarre \url{https://gabrielebaldassarre.com}

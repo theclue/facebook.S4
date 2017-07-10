@@ -58,7 +58,7 @@
 #'  fb.photos.inf <- FacebookPhotoscollection(id = fb.albums, n = Inf)
 #' }
 #'
-#' @family Facebook Collection Costructors
+#' @family Facebook Collection Constructors
 #' @importFrom plyr create_progress_bar progress_none
 FacebookPhotosCollection <- function(id, 
                                        token = NULL, 

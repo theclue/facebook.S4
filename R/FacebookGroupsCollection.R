@@ -10,7 +10,7 @@
 #' 
 #' @details
 #' \code{FacebookGroupsCollection} is the constructor for the \code{\link{FacebookGroupsCollection-class}}.
-#' It returns data about groups but doesn't return it member lists, altough it \strong{does} return 
+#' It returns data about groups but doesn't return it member lists, although it \strong{does} return 
 #' an approximate total count for both (depending on privacy settings of the users).
 #' 
 #' @template nesting-fields
@@ -50,7 +50,7 @@
 #' 
 #' }
 #' 
-#' @family Facebook Collection Costructors
+#' @family Facebook Collection Constructors
 #' @importFrom plyr create_progress_bar progress_none join
 FacebookGroupsCollection <- function(id, 
                                     token = NULL, 

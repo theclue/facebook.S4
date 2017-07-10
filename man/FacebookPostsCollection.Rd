@@ -33,7 +33,7 @@ it is a \code{\link{FacebookGroupsCollection-class}}, the parameter is ignored.}
 in \code{id}. It can be set to \code{Inf} to pull out any available public post and assumes the default value from the value
 of \code{facebook.maxitems} global option if missing. If \code{id} is not a collection or cannot be iterated, the parameter is ignored.}
 
-\item{metadata}{If set to \code{TRUE}, the medatata for each ID is pulled with the data
+\item{metadata}{If set to \code{TRUE}, the metatata for each ID is pulled with the data
 and the \code{type} slot is fed accordingly.
 Please note that setting this to \code{TRUE} could considerably
 slow down the execution time, as more queries are needed.}
@@ -50,7 +50,7 @@ instance.
 }
 \details{
 \code{FacebookPostsCollection} is the constructor for the \code{\link{FacebookPostsCollection-class}}.
-It returns data about posts but doesn't return lists of comments or likes, altough it \strong{does} return 
+It returns data about posts but doesn't return lists of comments or likes, although it \strong{does} return 
 an approximate total count for both (depending on privacy settings of the users).
 }
 \section{Nesting fields}{
@@ -79,7 +79,7 @@ Instead of a character vector, one of these collections can also be passed as pa
  the posts written on the pages in the source collection.}
  \item{\code{\link{FacebookUsersCollection-class}} will build a collection with 
  the posts written on the walls of the users in the source collection. Users must have granted
- the \code{user_posts} permission to the current app to be able to perform this action.}
+ the \code{user_posts} permission to the current application to be able to perform this action.}
  \item{\code{\link{FacebookGroupsCollection-class}} will build a collection with 
  the posts written on the walls of the groups in the source collection. Users must have granted
  the \code{user_managed_groups} permission to the current app to be able to perform this action.}
@@ -119,9 +119,8 @@ fb.posts.df <- as.data.frame(fb.posts)
 \seealso{
 \code{\link{FacebookPagesCollection}}, \code{\link{FacebookCommentsCollection}}, \code{\link{fbOAuth}}
 
-Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}},
+Other Facebook Collection Constructors: \code{\link{FacebookAlbumsCollection}},
   \code{\link{FacebookCommentsCollection}},
-  \code{\link{FacebookConversationsCollection}},
   \code{\link{FacebookEventsCollection}},
   \code{\link{FacebookGroupsCollection}},
   \code{\link{FacebookLikesCollection}},
@@ -129,7 +128,6 @@ Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}},
   \code{\link{FacebookPagesCollection}},
   \code{\link{FacebookPhotosCollection}},
   \code{\link{FacebookReactionsCollection}},
-  \code{\link{FacebookUsersCollection}},
   \code{\link{FacebookVideosCollection}}
 }
 \author{

@@ -31,7 +31,7 @@ This function requires the use of a OAuth token with \code{pages_show_list}
 permission granted. 
 
 Only the \code{id} and the \code{type} is returned in a mixed collection.
-In normal circumnstances, \code{type} is always equal to \code{page}.
+In normal circumstances, \code{type} is always equal to \code{page}.
 }
 \examples{
 \dontrun{

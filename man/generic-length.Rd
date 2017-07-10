@@ -9,7 +9,7 @@
 \S4method{length}{FacebookGenericCollection}(x)
 }
 \arguments{
-\item{x}{a valid not-null Facebook colle}
+\item{x}{a valid not-null Facebook collection}
 }
 \description{
 This method returns the number of members in a given Facebook collection.

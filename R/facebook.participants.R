@@ -12,7 +12,7 @@
 #' This function requires the use of a OAuth page access token with \code{read_pages_mailboxes}
 #' permission granted if \code{id} is a collection of pages conversations
 #' or a user access token with \code{read_mailbox} permission granted and
-#' \strong{when the users are developers for the app making the request}
+#' \strong{when the users are developers for the application making the request}
 #' if \code{id} is a collection of users' conversations.
 #' 
 #' Only the \code{id} and the \code{type} is returned in a mixed collection.

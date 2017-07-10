@@ -15,7 +15,7 @@
 #' Since Facebook doesn't provide a key for a single reaction, the ID slot for this kind of collection doesn't uniquely identify a reaction on Facebook.
 #' The \code{id} (the user who expressed the reaction) coupled with the \code{parent} (the place where she put the like) identifies a unique key for the reaction
 #' 
-#' As a consequence, you cannot build a reactions collection starting from atomic IDs, but you must pass an instance of a Facecook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
+#' As a consequence, you cannot build a reactions collection starting from atomic IDs, but you must pass an instance of a Facebook Posts Collection or a Facebook Comments Collection built using the construction \code{\link{FacebookPostsCollection}}
 #' or \code{\link{FacebookCommentsCollection}} as \code{id} parameter.
 #' 
 #' @template nesting-fields
@@ -89,7 +89,7 @@
 #'      FacebookReactionsCollection(n = Inf)
 #' }
 #'
-#' @family Facebook Collection Costructors
+#' @family Facebook Collection Constructors
 #' @importFrom plyr create_progress_bar progress_none
 FacebookReactionsCollection <- function(id, 
                                     token = NULL, 

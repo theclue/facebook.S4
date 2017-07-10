@@ -25,7 +25,7 @@ accepted parameters, see: \url{https://developers.facebook.com/docs/graph-api/us
 \item{fields}{A character vector with the fields to get for each \code{id}. If no value
 for a given field is found, it will be set to \code{NULL}.}
 
-\item{metadata}{If set to \code{TRUE}, the medatata for each ID is pulled with the data
+\item{metadata}{If set to \code{TRUE}, the metatata for each ID is pulled with the data
 and the \code{type} slot is fed accordingly.
 Please note that setting this to \code{TRUE} could considerably
 slow down the execution time, as more queries are needed.}
@@ -42,7 +42,7 @@ instance.
 }
 \details{
 \code{FacebookPagesCollection} is the constructor for the \code{\link{FacebookPagesCollection-class}}.
-It returns data about pages but doesn't return lists of posts or the fanbase (altough it will return a summary view for the latter).
+It returns data about pages but doesn't return lists of posts or the fanbase (although it will return a summary view for the latter).
 }
 \section{Nesting fields}{
 
@@ -97,9 +97,8 @@ fb.pages <- FacebookPagesCollection(id = c("9thcirclegames",
 \seealso{
 \code{\link{FacebookPostsCollection}}, \code{\link{FacebookCommentsCollection}}, \code{\link{fbOAuth}}
 
-Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}},
+Other Facebook Collection Constructors: \code{\link{FacebookAlbumsCollection}},
   \code{\link{FacebookCommentsCollection}},
-  \code{\link{FacebookConversationsCollection}},
   \code{\link{FacebookEventsCollection}},
   \code{\link{FacebookGroupsCollection}},
   \code{\link{FacebookLikesCollection}},
@@ -107,7 +106,6 @@ Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}},
   \code{\link{FacebookPhotosCollection}},
   \code{\link{FacebookPostsCollection}},
   \code{\link{FacebookReactionsCollection}},
-  \code{\link{FacebookUsersCollection}},
   \code{\link{FacebookVideosCollection}}
 }
 \author{

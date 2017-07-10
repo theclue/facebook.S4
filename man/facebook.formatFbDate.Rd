@@ -13,7 +13,7 @@ formatFbDate(datestring, format = "datetime")
 to convert into a Date. Any other values will make the function returns \code{NULL}.}
 }
 \description{
-\code{facebook.formatFbDate} converts the string datetime returned by Facebook in a valid POSIX format.
+\code{facebook.formatFbDate} converts the date-time string returned by Facebook in a valid POSIX format.
 }
 \author{
 Pablo Barbera \email{pablo.barbera@nyu.edu}

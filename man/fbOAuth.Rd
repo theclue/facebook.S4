@@ -19,7 +19,7 @@ After version 2.0 of the Graph API, creating an application with extended permis
 requires passing App Review (\url{https://developers.facebook.com/docs/facebook-login/review})}
 
 \item{cache}{If set to \code{TRUE} a file with the authentication details for the current user
-is saved to disk as \code{.http-oauth}, so it won't be asked to authenticate throu the browser anymore.}
+is saved to disk as \code{.http-oauth}, so it won't be asked to authenticate through the browser anymore.}
 }
 \description{
 \code{fbOAuth} creates a long-lived OAuth access token that enables R to make

@@ -45,7 +45,7 @@
 #'              FacebookMessagesCollection()
 #' }
 #'
-#' @family Facebook Collection Costructors
+#' @family Facebook Collection Constructors
 #' @importFrom plyr create_progress_bar progress_none
 FacebookMessagesCollection <- function(id, 
                                     token = NULL, 

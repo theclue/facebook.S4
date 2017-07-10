@@ -8,7 +8,7 @@
 \title{Access to Facebook API v2 via R}
 \description{
 This package provides a series of functions that allow R users
-to access Facebook's API and builds collectiond of items
+to access Facebook's API and builds collections of items
 that model and mimic the graph organization and network relations
 between different elements.
 }

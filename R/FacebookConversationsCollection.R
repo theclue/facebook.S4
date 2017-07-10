@@ -23,7 +23,7 @@
 #'  all the inbox conversations to pages of the source collection. A page access token with \code{read_page_mailboxes} is needed
 #'  to read the related mailboxes.}
 #'  \item{\code{\link{FacebookUsersCollection-class}} will build a collection with 
-#'  all the conversations that person is involved with \strong{if they are a developer of the app making the request.}
+#'  all the conversations that person is involved with \strong{if they are a developer of the application making the request.}
 #'  A user access token with \code{read_mailbox} is needed to perform this action.}
 #'  \item{\code{\link{FacebookMixedCollection-class}} will build a collection with 
 #'  all the conversations, filtering only to the \code{user} and \code{page} in the source collection.}

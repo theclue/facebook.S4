@@ -42,10 +42,10 @@
 #' or a \code{\link{FacebookLikesCollection}}.
 #' 
 #' In Facebook, one can publish, comment or like acting as a user or as a page. But since users and pages have different sets of fields 
-#' and you won't know in advance if the author is a page or not, the constructor of this collection would fail due to inconsitent fields.
+#' and you won't know in advance if the author is a page or not, the constructor of this collection would fail due to inconsistent fields.
 #' 
-#' To avoid this, if \code{id} is an instance of one of the aforementioned collections, an pre-serialization query is performed
-#' to eventually filter out the pages and retain only the users. Finally, the real collection is built on this valid subset of user IDs only.
+#' To avoid this, if \code{id} is an instance of one of the aforementioned collections, a serialization query is performed
+#' before to eventually filter out the pages and retain only the users. Finally, the real collection is built on this valid subset of user IDs only.
 #' This requires more queries and, usually, more time.
 #'  
 #' @author

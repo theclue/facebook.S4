@@ -4,7 +4,7 @@
 #' Convert a Facebook datetime string into a valid R datetime
 #'
 #' @description
-#' \code{facebook.formatFbDate} converts the string datetime returned by Facebook in a valid POSIX format.
+#' \code{facebook.formatFbDate} converts the date-time string returned by Facebook in a valid POSIX format.
 #' 
 #' @param datestring The date to convert in the character format used by Facebook.
 #' 

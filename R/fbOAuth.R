@@ -51,7 +51,7 @@
 #' Available at \url{https://developers.facebook.com/apps}, in Basic Settings panel.
 #' 
 #' @param cache If set to \code{TRUE} a file with the authentication details for the current user
-#' is saved to disk as \code{.http-oauth}, so it won't be asked to authenticate throu the browser anymore.
+#' is saved to disk as \code{.http-oauth}, so it won't be asked to authenticate through the browser anymore.
 #'
 #' @param permissions A character vector with a list of the permissions to grant to the application.
 #' After version 2.0 of the Graph API, creating an application with extended permissions

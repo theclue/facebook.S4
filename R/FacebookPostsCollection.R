@@ -10,7 +10,7 @@
 #' 
 #' @details
 #' \code{FacebookPostsCollection} is the constructor for the \code{\link{FacebookPostsCollection-class}}.
-#' It returns data about posts but doesn't return lists of comments or likes, altough it \strong{does} return 
+#' It returns data about posts but doesn't return lists of comments or likes, although it \strong{does} return 
 #' an approximate total count for both (depending on privacy settings of the users).
 #' 
 #' @template nesting-fields
@@ -28,7 +28,7 @@
 #'  the posts written on the pages in the source collection.}
 #'  \item{\code{\link{FacebookUsersCollection-class}} will build a collection with 
 #'  the posts written on the walls of the users in the source collection. Users must have granted
-#'  the \code{user_posts} permission to the current app to be able to perform this action.}
+#'  the \code{user_posts} permission to the current application to be able to perform this action.}
 #'  \item{\code{\link{FacebookGroupsCollection-class}} will build a collection with 
 #'  the posts written on the walls of the groups in the source collection. Users must have granted
 #'  the \code{user_managed_groups} permission to the current app to be able to perform this action.}
@@ -79,7 +79,7 @@
 #'  fb.sharedposts <- FacebookPostsCollection(id = fb.posts, token = fb_oauth, n = Inf)
 #' }
 #' 
-#' @family Facebook Collection Costructors
+#' @family Facebook Collection Constructors
 #' @importFrom plyr create_progress_bar progress_none join
 FacebookPostsCollection <- function(id, 
                                     token = NULL, 

@@ -29,7 +29,7 @@ for a given field is found, it will be set to \code{NULL}.}
 in \code{id}. It can be set to \code{Inf} to pull out any available comment and assumes the default value from the value
 of \code{facebook.maxitems} global option if missing. If \code{id} is not a collection or cannot be iterated, the parameter is ignored.}
 
-\item{metadata}{If set to \code{TRUE}, the medatata for each ID is pulled with the data
+\item{metadata}{If set to \code{TRUE}, the metatata for each ID is pulled with the data
 and the \code{type} slot is fed accordingly.
 Please note that setting this to \code{TRUE} could considerably
 slow down the execution time, as more queries are needed.}
@@ -47,7 +47,7 @@ instance.
 \details{
 \code{FacebookCommentsCollection} is the constructor for the \code{\link{FacebookCommentsCollection-class}}.
 It returns data about comments but doesn't return lists of their own comments or likes,
-altough it \strong{does} return an approximate total count for both (depending on the privacy settings of the users).
+although it \strong{does} return an approximate total count for both (depending on the privacy settings of the users).
 }
 \section{Nesting fields}{
 
@@ -116,8 +116,7 @@ fb.comments.pipe <-
 \seealso{
 \code{\link{FacebookLikesCollection}}, \code{\link{FacebookPostsCollection}}, \code{\link{fbOAuth}}
 
-Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}},
-  \code{\link{FacebookConversationsCollection}},
+Other Facebook Collection Constructors: \code{\link{FacebookAlbumsCollection}},
   \code{\link{FacebookEventsCollection}},
   \code{\link{FacebookGroupsCollection}},
   \code{\link{FacebookLikesCollection}},
@@ -126,7 +125,6 @@ Other Facebook Collection Costructors: \code{\link{FacebookAlbumsCollection}},
   \code{\link{FacebookPhotosCollection}},
   \code{\link{FacebookPostsCollection}},
   \code{\link{FacebookReactionsCollection}},
-  \code{\link{FacebookUsersCollection}},
   \code{\link{FacebookVideosCollection}}
 }
 \author{

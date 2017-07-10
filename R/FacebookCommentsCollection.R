@@ -11,7 +11,7 @@
 #' @details
 #' \code{FacebookCommentsCollection} is the constructor for the \code{\link{FacebookCommentsCollection-class}}.
 #' It returns data about comments but doesn't return lists of their own comments or likes,
-#' altough it \strong{does} return an approximate total count for both (depending on the privacy settings of the users).
+#' although it \strong{does} return an approximate total count for both (depending on the privacy settings of the users).
 #' 
 #' @template nesting-fields
 #' 
@@ -76,7 +76,7 @@
 #'    FacebookCommentsCollection(n = Inf)
 #' }
 #'
-#' @family Facebook Collection Costructors
+#' @family Facebook Collection Constructors
 #' @importFrom plyr create_progress_bar progress_none
 FacebookCommentsCollection <- function(id, 
                                        token = NULL, 

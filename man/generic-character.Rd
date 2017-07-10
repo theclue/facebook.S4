@@ -13,6 +13,6 @@
 }
 \description{
 This method serializes a Facebook collection extracting all the IDs of its member into a
-comma-separated string. This could be useful for lazy chaining into other FB queries
+comma-separated string. This could be useful for lazy chaining into other Facebook queries
 or for debugging purposes.
 }

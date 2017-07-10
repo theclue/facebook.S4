@@ -10,7 +10,7 @@
 #' 
 #' @details
 #' \code{FacebookPagesCollection} is the constructor for the \code{\link{FacebookPagesCollection-class}}.
-#' It returns data about pages but doesn't return lists of posts or the fanbase (altough it will return a summary view for the latter).
+#' It returns data about pages but doesn't return lists of posts or the fanbase (although it will return a summary view for the latter).
 #' 
 #' @template nesting-fields
 #' 
@@ -57,7 +57,7 @@
 #'    FacebookPagesCollection()
 #' }
 #'
-#' @family Facebook Collection Costructors
+#' @family Facebook Collection Constructors
 #' @importFrom plyr create_progress_bar progress_none
 FacebookPagesCollection <- function(id, 
                                     token = NULL, 
