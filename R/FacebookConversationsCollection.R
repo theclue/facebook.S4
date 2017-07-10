@@ -51,7 +51,7 @@
 #'                                                     "9thcirclegames", fb_page_oauth))
 #' }
 #'
-#' @family Facebook Collection Costructors
+#' @family Facebook Collection Constructors
 #' @importFrom plyr create_progress_bar progress_none
 FacebookConversationsCollection <- function(id, 
                                     token = NULL, 

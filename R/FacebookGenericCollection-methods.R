@@ -248,7 +248,7 @@ setMethod("as.data.frame", signature(x = "FacebookGenericCollection", row.names 
 #' Returns a list from a Facebook collection
 #'  
 #' @description
-#' This generic return a valid list rapresentation of various Facebook collections
+#' This generic return a valid list representation of various Facebook collections
 #' 
 #' @param x A valid collection of Facebook elements
 #' 
