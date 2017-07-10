@@ -29,7 +29,7 @@ for a given field is found, it will be set to \code{NULL}.}
 in \code{id}. It can be set to \code{Inf} to pull out any available public album and assumes the default value from the value
 of \code{facebook.maxitems} global option if missing. If \code{id} is not a collection or cannot be iterated, the parameter is ignored.}
 
-\item{metadata}{If set to \code{TRUE}, the metatata for each ID is pulled with the data
+\item{metadata}{If set to \code{TRUE}, the metadata for each ID is pulled with the data
 and the \code{type} slot is fed accordingly.
 Please note that setting this to \code{TRUE} could considerably
 slow down the execution time, as more queries are needed.}
@@ -72,7 +72,7 @@ Instead of a character vector, one of these collections can also be passed as pa
  the \code{user_photos} permission to the current application to be able to perform this action.}
  \item{\code{\link{FacebookGroupsCollection-class}} will build a collection with 
  the albums created in the groups in the source collection. Users must have granted
- the \code{user_managed_groups} permission to the current app to be able to perform this action.}
+ the \code{user_managed_groups} permission to the current application to be able to perform this action.}
 }
 }
 
@@ -107,6 +107,7 @@ fb.albums.df <- as.data.frame(fb.albums)
 \code{\link{FacebookPagesCollection}}, \code{\link{FacebookUsersCollection}}, \code{\link{fbOAuth}}
 
 Other Facebook Collection Constructors: \code{\link{FacebookCommentsCollection}},
+  \code{\link{FacebookConversationsCollection}},
   \code{\link{FacebookEventsCollection}},
   \code{\link{FacebookGroupsCollection}},
   \code{\link{FacebookLikesCollection}},
@@ -115,6 +116,7 @@ Other Facebook Collection Constructors: \code{\link{FacebookCommentsCollection}}
   \code{\link{FacebookPhotosCollection}},
   \code{\link{FacebookPostsCollection}},
   \code{\link{FacebookReactionsCollection}},
+  \code{\link{FacebookUsersCollection}},
   \code{\link{FacebookVideosCollection}}
 }
 \author{

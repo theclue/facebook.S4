@@ -10,6 +10,6 @@
 \item{x}{A valid collection of Facebook elements}
 }
 \description{
-This generic return a valid list rapresentation of various Facebook collections
+This generic return a valid list representation of various Facebook collections
 }
 \keyword{internal}

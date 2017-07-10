@@ -29,7 +29,7 @@ for a given field is found, it will be set to \code{NULL}.}
 in \code{id}. It can be set to \code{Inf} to pull out any available photo and assumes the default value from the value
 of \code{facebook.maxitems} global option if missing. If \code{id} is not a collection or cannot be iterated, the parameter is ignored.}
 
-\item{metadata}{If set to \code{TRUE}, the metatata for each ID is pulled with the data
+\item{metadata}{If set to \code{TRUE}, the metadata for each ID is pulled with the data
 and the \code{type} slot is fed accordingly.
 Please note that setting this to \code{TRUE} could considerably
 slow down the execution time, as more queries are needed.}
@@ -100,6 +100,7 @@ Instead of a character vector, one of these collections can also be passed as pa
 
 Other Facebook Collection Constructors: \code{\link{FacebookAlbumsCollection}},
   \code{\link{FacebookCommentsCollection}},
+  \code{\link{FacebookConversationsCollection}},
   \code{\link{FacebookEventsCollection}},
   \code{\link{FacebookGroupsCollection}},
   \code{\link{FacebookLikesCollection}},
@@ -107,6 +108,7 @@ Other Facebook Collection Constructors: \code{\link{FacebookAlbumsCollection}},
   \code{\link{FacebookPagesCollection}},
   \code{\link{FacebookPostsCollection}},
   \code{\link{FacebookReactionsCollection}},
+  \code{\link{FacebookUsersCollection}},
   \code{\link{FacebookVideosCollection}}
 }
 \author{

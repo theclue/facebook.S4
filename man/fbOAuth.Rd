@@ -49,7 +49,7 @@ arguments.
 
 Third, after pressing Enter, R will try to open a browser window to sign the token. If 
 everything works well, you will get a message that says you can return to R. If not,
-try again in a few minutes to make sure your app had its settings updated properly.
+try again in a few minutes to make sure your application had its settings updated properly.
 
 If you set \code{cache=TRUE}, a file \code{.httr-oauth} is then saved in your home directory.
 This file caches the OAuth credentials so you don't need to perform the browser authentication a second time

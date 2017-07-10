@@ -27,7 +27,7 @@ for a given field is found, it will be set to \code{NULL}.}
 \item{.progress}{progress_bar object as defined in the plyr package.
 By default the \code{none} progress bar is used, which prints nothing to the console. See \link[plyr]{create_progress_bar} for details.}
 
-\item{metadata}{If set to \code{TRUE}, the metatata for each ID is pulled with the data
+\item{metadata}{If set to \code{TRUE}, the metadata for each ID is pulled with the data
 and the \code{type} slot is fed accordingly.
 Please note that setting this to \code{TRUE} could considerably
 slow down the execution time, as more queries are needed.}
