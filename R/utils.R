@@ -17,10 +17,10 @@ detailsDataToDF <- function(json, fields = NULL){
 #' @importFrom rjson fromJSON
 callAPI <- function(url, token){
   if ((class(token)[1]=="Token2.0") & (class(token)[5]=="StandardToken")){
-    url.data <- GET(url, config(token=token, accept_encoding = "UTF-8", verbose = getOption("facebook.verbose")))
+    url.data <- GET(url, config(token = token, accept_encoding = "UTF-8", verbose = getOption("facebook.verbose")))
   }
   if(((class(token)[1]=="Token2.0") & (class(token)[5]=="NonStandardToken"))){
-    url <- paste0(url, "&access_token=", (fromJSON(names(fb_token$credentials))$access_token))
+    url <- paste0(url, "&access_token=", (fromJSON(names(token$credentials))$access_token))
     url <- gsub(" ", "%20", url)
     url.data <- GET(url, verbose = getOption("facebook.verbose"))
   }
@@ -85,7 +85,7 @@ parseFbList <- function(
                    unname(
                      lapply(
                        elements.chunks, function(single.chunk) {
-                         parseFbList(id = single.chunk, token = token, parameters = parameters, fields = fields, .progress = .progress)
+                         parseFbList(id = single.chunk, token = token, parameters = parameters, fields = fields)
                        })
                    )
     )

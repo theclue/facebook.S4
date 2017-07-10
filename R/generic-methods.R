@@ -2,31 +2,52 @@
 NULL
 
 #' @title
-#'  Returns a data frame representation of various kinds of Facebook collections
+#'  Return parts of a Facebook collection
+#'  
+#' @description
+#' This generic returns parts of a given Facebook collections
 #' 
 #' @param x A valid collection of Facebook elements
-#' @param row.names If set to \code{TRUE}, names the rows of the returned data frame with IDs of the elements
-#' @param optional Not used in this context.
-#' @rdname as.data.frame
+#' @param i slicing on the first dimension index
+#' @param j not used in this context
+#' @param ... not used in this context
+#' @param drop not used in this context
 #' 
-#' @keywords internal 
+#' @rdname square-methods
+#' @name [
+#' @exportMethod [
+#' 
+#' @examples \dontrun{
+#' ## See examples for fbOAuth to know how token was created.
+#'  load("fb_oauth")
+#'  
+#' ## Getting information about two example Facebook Pages
+#'  fb.pages <- FacebookPagesCollection(id = c("9thcirclegames",
+#'                                            "NathanNeverSergioBonelliEditore"), 
+#'                                      token = fb_oauth)
+#'  
+#' ## Pull at most 20 albums from each page
+#'  fb.albums <- FacebookAlbumscollection(id = fb.pages, token = fb_oauth, n = 20)
+#'  
+#' ## Create a new collection skipping the first 10 albums
+#'  fb.oldest.albums <- fb.albums[11:length(fb.oldest.albums)]
+#' }
+setGeneric("[")
+
 setGeneric("as.data.frame")
 
-#' @title
-#'  Returns a list representation of various kinds of Facebook collections
-#' 
-#' @param x A valid collection of Facebook elements
-#' @rdname as.list
-#' 
-#' @keywords internal
 setGeneric("as.list")
 
 #' @title
-#'  Returns a summarized rapresentation of a Facebook collection
+#'  Returns a summary of a Facebook collection
+#'  
+#' @description
+#' This generic returns a summarized version from various Facebook collections
 #' 
-#' @param x A valid collection of Facebook elements
-#' @rdname summary
+#' @param object A valid collection of Facebook elements
+#' @param ... not used in this context
 #' 
-#' @export
-#' @noRd
+#' @rdname summary-methods
+#' @name summary
+#' @exportMethod summary
 setGeneric("summary")

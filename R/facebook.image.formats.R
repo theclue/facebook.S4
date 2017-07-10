@@ -74,8 +74,7 @@ facebook.image.formats <- function(id,
     return(parseFbList(id = id,
                        token = token,
                        parameters = parameters,
-                       fields = images.fields,
-                       .progress = .progress))
+                       fields = images.fields))
   }
   
   # Unsupported Collections

@@ -29,8 +29,7 @@
 #'
 facebook.permissions <- function(token){
   
-  query <- "?ids=me&fields=permissions"
-  content <- facebook.query(query = query, token = token)
+  content <- parseFbList(id = "me", token = token, fields="permissions")
   
   permissions <- sapply(content$me$permissions$data, function(x) { if(x$status == "granted") return(x$permission) })
   

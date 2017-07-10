@@ -15,4 +15,5 @@
 #' @keywords package facebook
 #' @author Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 #' @import methods
+#' @importFrom utils head
 NULL

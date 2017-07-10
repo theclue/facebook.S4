@@ -1,6 +1,8 @@
 #' @include generic-methods.R
 NULL
 
+#' @rdname summary-methods
+#' @aliases summary,ANY-method
 setMethod("summary",
           signature(object = "FacebookGenericCollection"),
           function (object, ...) 
@@ -53,6 +55,8 @@ setMethod("summary",
           }
 )
 
+#' @rdname square-methods
+#' @aliases [,ANY-method
 setMethod("[",
           signature="FacebookGenericCollection",
           function(x,i,j,drop){
@@ -91,6 +95,16 @@ setMethod("[",
           }
 )
 
+#' @title
+#' Return the number of items in a given Facebook collection
+#' 
+#' @description
+#' This method returns the number of members in a given Facebook collection.
+#' 
+#' @param x a valid not-null Facebook colle
+#' 
+#' @rdname generic-length
+#' @aliases length,ANY-method
 setMethod("length",
           signature="FacebookGenericCollection",
           function(x){
@@ -98,6 +112,18 @@ setMethod("length",
           }
 )
 
+#' @title
+#' Return a comma-separated string of all the IDs of the given Facebook collection
+#' 
+#' @description
+#' This method serializes a Facebook collection extracting all the IDs of its member into a
+#' comma-separated string. This could be useful for lazy chaining into other FB queries
+#' or for debugging purposes.
+#' 
+#' @param x a valid not-null Facebook Collection
+#' 
+#' @rdname generic-character
+#' @aliases as.character,ANY-method
 setMethod("as.character",
           signature="FacebookGenericCollection",
           function(x){
@@ -105,6 +131,19 @@ setMethod("as.character",
           }
 )
 
+#' @title
+#' Combine two or more Facebook collections
+#' 
+#' @description
+#' This method combines two or more Facebook collections of the same kind. Please note that duplicates are removed unless they have
+#' different parents.
+#' 
+#' @param x the first collection to chain into
+#' @param ... the other collections to chain from
+#' @param recursive not used in this context
+#' 
+#' @rdname generic-c
+#' @aliases c,ANY-method
 setMethod("c",
           signature(x = "FacebookGenericCollection"),
           function (x, ..., recursive = FALSE) 
@@ -171,8 +210,20 @@ setMethod("c",
           }
 )
 
-#' @noRd
+#' @title
+#' Returns a data frame from a Facebook collection
+#' 
+#' @description
+#' This generic return a valid data frame rapresentation of various Facebook collections
+#' 
+#' @param x A valid collection of Facebook elements
+#' @param row.names If set to \code{TRUE}, names the rows of the returned data frame with IDs of the elements
+#' @param optional Not used in this context.
+#' @rdname as.data.frame
+#' 
+#' @keywords internal
 #' @export
+#' @method as.data.frame FacebookGenericCollection
 as.data.frame.FacebookGenericCollection <- function (x, row.names = FALSE, optional = FALSE, ...) {
   df <- detailsDataToDF(x@data, x@fields)
   
@@ -193,7 +244,17 @@ as.data.frame.FacebookGenericCollection <- function (x, row.names = FALSE, optio
 setAs("FacebookGenericCollection", "data.frame", function(from) as.data.frame.FacebookGenericCollection(from))
 setMethod("as.data.frame", signature(x = "FacebookGenericCollection", row.names = "logical", optional = "logical"), as.data.frame.FacebookGenericCollection)
 
-#' @noRd
+#' @title
+#' Returns a list from a Facebook collection
+#'  
+#' @description
+#' This generic return a valid list rapresentation of various Facebook collections
+#' 
+#' @param x A valid collection of Facebook elements
+#' 
+#' @rdname as.list
+#' @method as.list FacebookGenericCollection 
+#' @keywords internal
 #' @export
 as.list.FacebookGenericCollection <- function (x, ...) 
 {

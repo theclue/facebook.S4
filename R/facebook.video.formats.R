@@ -55,8 +55,7 @@ facebook.video.formats <- function(id,
     return(parseFbList(id = id,
                        token = token,
                        parameters = parameters,
-                       fields = videos.fields,
-                       .progress = .progress))
+                       fields = videos.fields))
   }
   
   # Unsupported Collections

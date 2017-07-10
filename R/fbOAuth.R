@@ -37,22 +37,6 @@
 #' If you set \code{cache=TRUE}, a file \code{.httr-oauth} is then saved in your home directory.
 #' This file caches the OAuth credentials so you don't need to perform the browser authentication a second time
 #' if you don't change the App ID, the App Secret or the permissions you grant.
-#' 
-#' To ensure proper functioning of the \code{\link{facebook.insights}} function-family you will need to 
-#' specify the exact permissions granted to your app. As this is (to our knowledge) currently not
-#' possible through the R based authentication process, please follow these steps:
-#' 
-#' Create App as mentioned above.
-#' \itemize{
-#'  \item{Open the "Graph API Explorer": \url{https://developers.facebook.com/tools/explorer/}}
-#'  \item{Select your app in the upper right corner}
-#'  \item{Click "Get Token" -> "Get Access Token"}
-#'  \item{In the popup navigate to "Extended Permissions" and select "Insights"}
-#'  \item{Confirm}
-#'  \item{Go back to R and run fbOAuth \strong{without} this permission set.}
-#' }
-#'
-#' -> See third step for possible messages concerning token creation.
 #'
 #' @author
 #' Pablo Barbera \email{pablo.barbera@@nyu.edu},

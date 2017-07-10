@@ -10,6 +10,7 @@ CONTRIBUTING.md
 ^appveyor\.yml$
 cran-comments.md
 .Rhistory
+.Renviron
 inst/cache
 inst/vign/cache
 README.Rmd

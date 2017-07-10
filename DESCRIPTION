@@ -2,15 +2,15 @@ Package: facebook.S4
 Title: Access to Facebook API v2 via a set of S4 classes
 Description: Provides an interface to the Facebook API and builds collections of
     elements that models the graph architecture of Facebook.
-Version: 1.0.0
-Date: 2015/06/01
+Version: 1.1
+Date: 2017/07/10
 Authors@R: person("Gabriele", "Baldassarre", role = c("aut", "cre"), email = "gabriele@gabrielebaldassarre.com")
 URL: https://gabrielebaldassarre.com/r/facebook
 BugReports: https://github.com/theclue/facebook.S4/issues
 Depends:
     R (>= 3.0)
 Imports:
-    httr (>= 1.0.0),
+    httr (>= 1.1.0),
     magrittr,
     rjson,
     plyr,
