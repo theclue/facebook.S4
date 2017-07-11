@@ -1,9 +1,9 @@
 Package: facebook.S4
-Title: Access to Facebook API v2 via a set of S4 classes
+Title: Access to Facebook API V2 via a Set of S4 Classes
 Description: Provides an interface to the Facebook API and builds collections of
     elements that models the graph architecture of Facebook.
 Version: 1.1
-Date: 2017/07/10
+Date: 2017-07-10
 Authors@R: person("Gabriele", "Baldassarre", role = c("aut", "cre"), email = "gabriele@gabrielebaldassarre.com")
 URL: https://gabrielebaldassarre.com/r/facebook
 BugReports: https://github.com/theclue/facebook.S4/issues
