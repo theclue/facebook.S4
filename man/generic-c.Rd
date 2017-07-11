@@ -3,7 +3,6 @@
 \docType{methods}
 \name{c,FacebookGenericCollection-method}
 \alias{c,FacebookGenericCollection-method}
-\alias{c,ANY-method}
 \title{Combine two or more Facebook collections}
 \usage{
 \S4method{c}{FacebookGenericCollection}(x, ..., recursive = FALSE)

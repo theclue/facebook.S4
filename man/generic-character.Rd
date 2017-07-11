@@ -3,7 +3,6 @@
 \docType{methods}
 \name{as.character,FacebookGenericCollection-method}
 \alias{as.character,FacebookGenericCollection-method}
-\alias{as.character,ANY-method}
 \title{Return a comma-separated string of all the IDs of the given Facebook collection}
 \usage{
 \S4method{as.character}{FacebookGenericCollection}(x)

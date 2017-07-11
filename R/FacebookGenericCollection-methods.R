@@ -1,8 +1,19 @@
 #' @include generic-methods.R
 NULL
 
+#' @title
+#'  Returns a summary of a Facebook collection
+#'  
+#' @description
+#' This generic returns a summarized version from various Facebook collections
+#' 
+#' @param object A valid collection of Facebook elements
+#' @param ... not used in this context
+#' 
+#' @exportMethod summary
 #' @rdname summary-methods
-#' @aliases summary,ANY-method
+#' 
+#' @aliases summary,FacebookGenericCollection-method
 setMethod("summary",
           signature(object = "FacebookGenericCollection"),
           function (object, ...) 
@@ -55,11 +66,41 @@ setMethod("summary",
           }
 )
 
+#' @title
+#'  Return parts of a Facebook collection
+#'  
+#' @description
+#' This generic returns parts of a given Facebook collections
+#' 
+#' @param x A valid collection of Facebook elements
+#' @param i slicing on the first dimension index
+#' @param j not used in this context
+#' @param ... not used in this context
+#' @param drop not used in this context
+#' 
 #' @rdname square-methods
-#' @aliases [,ANY-method
+#' @exportMethod [
+#' 
+#' @examples \dontrun{
+#' ## See examples for fbOAuth to know how token was created.
+#'  load("fb_oauth")
+#'  
+#' ## Getting information about two example Facebook Pages
+#'  fb.pages <- FacebookPagesCollection(id = c("9thcirclegames",
+#'                                            "NathanNeverSergioBonelliEditore"), 
+#'                                      token = fb_oauth)
+#'  
+#' ## Pull at most 20 albums from each page
+#'  fb.albums <- FacebookAlbumscollection(id = fb.pages, token = fb_oauth, n = 20)
+#'  
+#' ## Create a new collection skipping the first 10 albums
+#'  fb.oldest.albums <- fb.albums[11:length(fb.oldest.albums)]
+#' }
+#' @rdname square-methods
+#' @aliases [,FacebookGenericCollection-method
 setMethod("[",
-          signature="FacebookGenericCollection",
-          function(x,i,j,drop){
+          signature(x = "FacebookGenericCollection", i = "ANY", j = "ANY"),
+          function(x, i, j, drop){
             
             empty.set <- new(class(x))
             
@@ -104,9 +145,9 @@ setMethod("[",
 #' @param x a valid not-null Facebook collection
 #' 
 #' @rdname generic-length
-#' @aliases length,ANY-method
+#' @aliases length,FacebookGenericCollection-method
 setMethod("length",
-          signature="FacebookGenericCollection",
+          signature(x = "FacebookGenericCollection"),
           function(x){
             return(length(x@id))
           }
@@ -123,9 +164,9 @@ setMethod("length",
 #' @param x a valid not-null Facebook Collection
 #' 
 #' @rdname generic-character
-#' @aliases as.character,ANY-method
+#' @aliases as.character,FacebookGenericCollection-method
 setMethod("as.character",
-          signature="FacebookGenericCollection",
+          signature(x = "FacebookGenericCollection"),
           function(x){
             return(paste0(x@id, collapse=","))
           }
@@ -143,7 +184,7 @@ setMethod("as.character",
 #' @param recursive not used in this context
 #' 
 #' @rdname generic-c
-#' @aliases c,ANY-method
+#' @aliases c,FacebookGenericCollection-method
 setMethod("c",
           signature(x = "FacebookGenericCollection"),
           function (x, ..., recursive = FALSE) 

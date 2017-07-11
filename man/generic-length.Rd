@@ -3,7 +3,6 @@
 \docType{methods}
 \name{length,FacebookGenericCollection-method}
 \alias{length,FacebookGenericCollection-method}
-\alias{length,ANY-method}
 \title{Return the number of items in a given Facebook collection}
 \usage{
 \S4method{length}{FacebookGenericCollection}(x)
