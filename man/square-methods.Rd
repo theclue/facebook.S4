@@ -4,13 +4,13 @@
 \docType{methods}
 \name{[}
 \alias{[}
-\alias{[,FacebookGenericCollection-method}
+\alias{[,FacebookGenericCollection,ANY,ANY-method}
 \alias{[,ANY-method}
 \title{Return parts of a Facebook collection}
 \usage{
 "["(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{FacebookGenericCollection}(x, i, j, drop)
+\S4method{[}{FacebookGenericCollection,ANY,ANY}(x, i, j, drop)
 }
 \arguments{
 \item{x}{A valid collection of Facebook elements}
