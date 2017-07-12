@@ -1,10 +1,10 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/facebook.S4)](http://cran.r-project.org/package=facebook.S4)
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/facebook.S4)](https://github.com/metacran/cranlogs.app)
+[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/grand-total/facebook.S4)](https://github.com/metacran/cranlogs.app)
 
 facebook.S4
 ===========
 
-`facebook.S4` allows users to connect to Facebook throu OAuth and get different kinds of content using the Facebook Graph API and organize it in a convenient set of S4 classes called *collections*. This allows to chain queries in the typical graph-oriented fashion of the Facebook API.
+`facebook.S4` allows users to connect to Facebook through OAuth and get different kinds of content using the Facebook Graph API and organize it in a convenient set of S4 classes called *collections*. This allows to chain queries in the typical graph-oriented fashion of the Facebook API.
 
 This project started as a fork of the [Rfacebook](https://github.com/pablobarbera/Rfacebook) package by Pablo Barbera, but it ended up as a complete rewrite, as I needed to better exploit the graph nature of the API and since I was a bit disappointed that the original package functions were not vectorized. Still, this package uses the `fbOAuth` function from Rfacebook, which is simply perfect.
 
