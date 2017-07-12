@@ -1,3 +1,6 @@
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/facebook.S4)](http://cran.r-project.org/package=facebook.S4)
+[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/facebook.S4)](https://github.com/metacran/cranlogs.app)
+
 facebook.S4
 ===========
 
