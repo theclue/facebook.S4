@@ -101,7 +101,7 @@ FacebookPostsCollection <- function(id,
     fields <- "id"
   }
   
-  e.fields <- paste(paste0(fields, collapse=","), "comments.summary(true).limit(0),likes.summary(true).limit(0)", sep=",")
+  e.fields <- paste(paste0(fields, collapse=","), "comments.summary(true).limit(0),likes.summary(true).limit(0),reactions.summary(true).limit(0)", sep=",")
   
   if(is(id, "FacebookGroupsCollection")){
     feed <- TRUE
