@@ -104,7 +104,7 @@ FacebookCommentsCollection <- function(id,
   })(n, getOption("facebook.pagination"))
   
   if(is(id, "FacebookPostsCollection") | is(id, "FacebookCommentsCollection") | is(id, "FacebookAlbumsCollection") | is(id, "FacebookPhotosCollection") | is(id, "FacebookVideosCollection") | is(id, "FacebookEventsCollection")){
-    comments.fields <- paste0("comments.fields(", paste0(fields, collapse=",", sep=""), ",comments.summary(true).limit(0),likes.summary(true).limit(0)).limit(", real.n , ").summary(true)", sep="")
+    comments.fields <- paste0("comments.fields(", paste0(fields, collapse=",", sep=""), ",comments.summary(true).limit(0),likes.summary(true).limit(0),reactions.summary(true).limit(0)).limit(", real.n , ").summary(true)", sep="")
     return(new("FacebookCommentsCollection",
                id = id,
                token = token,
