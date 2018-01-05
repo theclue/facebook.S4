@@ -1,16 +1,15 @@
-#' @importFrom plyr rbind.fill
+#' @importFrom data.table rbindlist
 detailsDataToDF <- function(json, fields = NULL){
   
   if(length(json) == 0 | is.null(fields)) return(NULL)
   
-  do.call(rbind.fill, lapply(json, function(item) {
+  rbindlist(lapply(json, function(item) {
     data.frame(t(unlist(
       item[which(names(item) %in%  fields)]
     )
     ), stringsAsFactors = FALSE)
   }
-  )
-  )
+  ), use.names = TRUE, fill = TRUE)
 }
 
 #' @importFrom httr GET config content
