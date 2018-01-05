@@ -62,7 +62,8 @@ FacebookConversationsCollection <- function(id,
                                                "message_count"),
                                     n = getOption("facebook.maxitems"),
                                     metadata = FALSE,
-                                    .progress = create_progress_bar()){
+                                    .progress = create_progress_bar(),
+                                    stop.condition = function(x){ FALSE }){
   
   if(length(fields)==0){
     message("You've specified no fields. Only the ID will be pulled into the collection.")
@@ -79,7 +80,8 @@ FacebookConversationsCollection <- function(id,
                fields = paste0("conversations.fields(", paste0(fields, collapse=","), ")"),
                n = n,
                metadata = metadata,
-               .progress = .progress))
+               .progress = .progress,
+               stop.condition = stop.condition))
   }
   
   if(is(id, "FacebookMixedsCollection")){
@@ -91,7 +93,8 @@ FacebookConversationsCollection <- function(id,
                fields = paste0("conversations.fields(", paste0(fields, collapse=","), ")"),
                n = n,
                metadata = metadata,
-               .progress = .progress)
+               .progress = .progress,
+               stop.condition = stop.condition)
     
     the.conversations@parent.collection <- id
     return(the.conversations)
@@ -109,5 +112,6 @@ FacebookConversationsCollection <- function(id,
              fields = paste0(fields, collapse=","),
              n = n,
              metadata = metadata,
-             .progress = .progress))
+             .progress = .progress,
+             stop.condition = stop.condition))
 }

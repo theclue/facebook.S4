@@ -32,6 +32,10 @@
 #' 
 #' @param .progress progress_bar object as defined in the plyr package.
 #' By default the \code{none} progress bar is used, which prints nothing to the console. See \link[plyr]{create_progress_bar} for details.
+#' 
+#' @param stop.condition anonymous function that is executed for each element of the collection, passed to the function as a list called 'x'. If the function returns
+#' \code{TRUE}, the execution of the query will end up at the end of the current page (even if more pages of data are available). By default, this function will
+#' always return \code{FALSE}.
 #'
 #' @return A collection of elements in a \code{\link{FacebookGenericCollection-class}}
 #' object or one of its subclasses.
@@ -43,7 +47,8 @@ FacebookGenericCollection <- function(id,
                             parameters = list(), 
                             fields = character(0),
                             .progress = create_progress_bar(),
-                            metadata = FALSE){
+                            metadata = FALSE,
+                            stop.condition = function(x){ FALSE }){
   
   return(new("FacebookGenericCollection",
              id = id,
@@ -51,5 +56,6 @@ FacebookGenericCollection <- function(id,
              parameters = parameters,
              fields = fields,
              metadata = metadata, 
-             .progress = .progress))
+             .progress = .progress,
+             stop.condition = stop.condition))
 }

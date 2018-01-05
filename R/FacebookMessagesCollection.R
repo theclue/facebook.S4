@@ -56,7 +56,8 @@ FacebookMessagesCollection <- function(id,
                                                "message"),
                                     n = getOption("facebook.maxitems"),
                                     metadata = FALSE,
-                                    .progress = create_progress_bar()){
+                                    .progress = create_progress_bar(),
+                                    stop.condition = function(x){ FALSE }){
   
   if(length(fields)==0){
     message("You've specified no fields. Only the ID will be pulled into the collection.")
@@ -73,7 +74,8 @@ FacebookMessagesCollection <- function(id,
                fields = paste0("messages.fields(", paste0(fields, collapse=","), ")"),
                n = n,
                metadata = metadata,
-               .progress = .progress))
+               .progress = .progress,
+               stop.condition = stop.condition))
   }
   
   if(is(id, "FacebookGenericCollection")){
@@ -88,5 +90,6 @@ FacebookMessagesCollection <- function(id,
              fields = paste0(fields, collapse=","),
              n = n,
              metadata = metadata,
-             .progress = .progress))
+             .progress = .progress,
+             stop.condition = stop.condition))
 }

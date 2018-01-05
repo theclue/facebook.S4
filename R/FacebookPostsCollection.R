@@ -94,7 +94,8 @@ FacebookPostsCollection <- function(id,
                                     feed = TRUE,
                                     n = getOption("facebook.maxitems"),
                                     metadata = FALSE,
-                                    .progress = create_progress_bar()){
+                                    .progress = create_progress_bar(),
+                                    stop.condition = function(x){ FALSE }){
   
   if(length(fields)==0){
     message("You've specified no fields. Only the ID will be pulled into the collection.")
@@ -116,7 +117,8 @@ FacebookPostsCollection <- function(id,
                      fields = paste0(ifelse(feed, "feed", "posts"), ".fields(", e.fields, ")"),
                      n = n,
                      metadata = FALSE,
-                     .progress = .progress)
+                     .progress = .progress,
+                     stop.condition = stop.condition)
     
     if(metadata){
       the.posts <-  new("FacebookMixedCollection",
@@ -125,7 +127,8 @@ FacebookPostsCollection <- function(id,
                         parameters = parameters,
                         fields = "id",
                         n = n,
-                        metadata = TRUE)
+                        metadata = TRUE,
+                        stop.condition = stop.condition)
 
       posts.idx@type <- join(data.frame(id=posts.idx@id, 
                                         stringsAsFactors = FALSE),
@@ -146,7 +149,8 @@ FacebookPostsCollection <- function(id,
                fields = paste0("sharedposts.fields(", e.fields, ")"),
                n = n,
                metadata = metadata,
-               .progress = .progress))
+               .progress = .progress,
+               stop.condition = stop.condition))
   }
   
   # Unsupported Collections
@@ -162,5 +166,6 @@ FacebookPostsCollection <- function(id,
              fields = e.fields,
              n = n,
              metadata = metadata,
-             .progress = .progress))
+             .progress = .progress,
+             stop.condition = stop.condition))
 }

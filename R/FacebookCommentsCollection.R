@@ -87,7 +87,8 @@ FacebookCommentsCollection <- function(id,
                                                   "created_time"),
                                        n = getOption("facebook.maxitems"),
                                        metadata = FALSE,
-                                       .progress = create_progress_bar()){
+                                       .progress = create_progress_bar(),
+                                       stop.condition = function(x){ FALSE }){
   
   if(length(fields)==0){
     message("You've specified no fields. Only the ID will be pulled into the collection.")
@@ -112,7 +113,8 @@ FacebookCommentsCollection <- function(id,
                fields = comments.fields,
                n = n,
                metadata = metadata,
-               .progress = .progress))
+               .progress = .progress,
+               stop.condition = stop.condition))
   }
   
   # Unsupported Collections
@@ -127,5 +129,6 @@ FacebookCommentsCollection <- function(id,
              fields = fields,
              n = n,
              metadata = metadata, 
-             .progress = .progress))
+             .progress = .progress,
+             stop.condition = stop.condition))
 }

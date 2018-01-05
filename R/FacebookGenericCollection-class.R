@@ -46,7 +46,8 @@ setMethod("initialize",
                               fields = character(0),
                               n = getOption("facebook.maxitems"),
                               metadata = FALSE,
-                              .progress = create_progress_bar()){
+                              .progress = create_progress_bar(),
+                              stop.condition = function(x){ FALSE }){
             
             if(metadata & is(id, "FacebookGenericCollection")){
               stop("Cannot inherit metadata from a collection. If you need to pull metadata, <id> must be an atomic character vector.")
@@ -85,8 +86,12 @@ setMethod("initialize",
               }
             })(id)
             
-            elements.f <- rep(seq_len(ceiling(length(elements.v) / getOption("facebook.pagination"))),each = getOption("facebook.pagination"),length.out = length(elements.v))
-            elements.chunks <- split(elements.v, f = elements.f)
+            elements.f <- rep(seq_len(ceiling(length(elements.v) / getOption("facebook.pagination"))),
+                              each = getOption("facebook.pagination"),
+                              length.out = length(elements.v))
+            
+            elements.chunks <- split(elements.v,
+                                     f = elements.f)
             
             if(length(elements.chunks) > 1){
               
@@ -98,7 +103,14 @@ setMethod("initialize",
                              unname(
                                lapply(
                                  elements.chunks, function(single.chunk) {
-                                   new(class(.Object), id = single.chunk, token = token, parameters = parameters, fields = fields, n = n, metadata = metadata, .progress = .progress)
+                                   new(class(.Object),
+                                       id = single.chunk,
+                                       token = token,
+                                       parameters = parameters,
+                                       fields = fields,
+                                       n = n,
+                                       metadata = metadata,
+                                       .progress = .progress)
                                  })
                              )
               )
@@ -197,6 +209,16 @@ setMethod("initialize",
 
                           if(min.time < min.since){
                             return(NULL)
+                          }
+                          
+                          # This lambda function is used as a custom stopping condition for the pagination loop
+                          # TODO:
+                          # - The exit condition should immediately end after the matching item, not the current page
+                          #
+                          # KNOWN LIMITATIONS:
+                          # - Setting next.url this way will have unpredictable results in parallel executions
+                          if(stop.condition(s)){
+                            next.url <<- NULL
                           }
                           
                           valid.posts <<- valid.posts + 1

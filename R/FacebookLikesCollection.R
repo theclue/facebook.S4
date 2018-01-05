@@ -96,7 +96,8 @@ FacebookLikesCollection <- function(id,
                                     fields = c("id", "name", "profile_type"),
                                     n = getOption("facebook.maxitems"),
                                     metadata = FALSE,
-                                    .progress = create_progress_bar()){
+                                    .progress = create_progress_bar(),
+                                    stop.condition = function(x){ FALSE }){
   
   if(length(fields)==0){
     message("You've specified no fields. Only the ID will be pulled into the collection.")
@@ -121,7 +122,8 @@ FacebookLikesCollection <- function(id,
                fields = likes.fields,
                n = n,
                metadata = metadata,
-               .progress = .progress))
+               .progress = .progress,
+               stop.condition = stop.condition))
   }
   
   stop(paste0("you cannot build a likes collection starting from a ", class(id), "."))

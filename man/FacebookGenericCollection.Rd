@@ -6,7 +6,7 @@
 \usage{
 FacebookGenericCollection(id, token, parameters = list(),
   fields = character(0), .progress = create_progress_bar(),
-  metadata = FALSE)
+  metadata = FALSE, stop.condition = function(x) {     FALSE })
 }
 \arguments{
 \item{id}{A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any 
@@ -31,6 +31,10 @@ By default the \code{none} progress bar is used, which prints nothing to the con
 and the \code{type} slot is fed accordingly.
 Please note that setting this to \code{TRUE} could considerably
 slow down the execution time, as more queries are needed.}
+
+\item{stop.condition}{anonymous function that is executed for each element of the collection, passed to the function as a list called 'x'. If the function returns
+\code{TRUE}, the execution of the query will end up at the end of the current page (even if more pages of data are available). By default, this function will
+always return \code{FALSE}.}
 }
 \value{
 A collection of elements in a \code{\link{FacebookGenericCollection-class}}

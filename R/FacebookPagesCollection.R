@@ -72,7 +72,8 @@ FacebookPagesCollection <- function(id,
                                                "link", 
                                                "talking_about_count"),
                                     metadata = FALSE,
-                                    .progress = create_progress_bar()){
+                                    .progress = create_progress_bar(),
+                                    stop.condition = function(x){ FALSE }){
   
   if(length(fields)==0){
     message("You've specified no fields. Only the IDs will be pulled into the collection.")
@@ -100,7 +101,8 @@ FacebookPagesCollection <- function(id,
                      parameters = parameters,
                      fields = fields,
                      metadata = metadata,
-                     .progress = .progress)
+                     .progress = .progress,
+                     stop.condition = stop.condition)
     
     the.pages@parent <- id.pages
     the.pages@parent.collection <- id
@@ -118,5 +120,6 @@ FacebookPagesCollection <- function(id,
              parameters = parameters,
              fields = fields,
              metadata = metadata,
-             .progress = .progress))
+             .progress = .progress,
+             stop.condition = stop.condition))
 }

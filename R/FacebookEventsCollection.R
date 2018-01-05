@@ -56,21 +56,22 @@
 #' @family Facebook Collection Constructors
 #' @importFrom plyr create_progress_bar progress_none
 FacebookEventsCollection <- function(id, 
-                                       token = NULL, 
-                                       parameters = list(), 
-                                       fields = c("id",
-                                                  "owner.fields(id,name)",
-                                                  "category",
-                                                  "description",
-                                                  "end_time",
-                                                  "attending_count",
-                                                  "declined_count",
-                                                  "maybe_count",
-                                                  "noreply_count",
-                                                  "interested_count"),
-                                       n = getOption("facebook.maxitems"),
-                                       metadata = FALSE,
-                                       .progress = create_progress_bar()){
+                                     token = NULL, 
+                                     parameters = list(), 
+                                     fields = c("id",
+                                                "owner.fields(id,name)",
+                                                "category",
+                                                "description",
+                                                "end_time",
+                                                "attending_count",
+                                                "declined_count",
+                                                "maybe_count",
+                                                "noreply_count",
+                                                "interested_count"),
+                                     n = getOption("facebook.maxitems"),
+                                     metadata = FALSE,
+                                     .progress = create_progress_bar(),
+                                     stop.condition = function(x){ FALSE }){
   
   if(length(fields)==0){
     message("You've specified no fields. Only the ID will be pulled into the collection.")
@@ -97,7 +98,8 @@ FacebookEventsCollection <- function(id,
                fields = events.fields,
                n = n,
                metadata = metadata,
-               .progress = .progress))
+               .progress = .progress,
+               stop.condition = stop.condition))
   }
   
   # Unsupported Collections
@@ -112,5 +114,6 @@ FacebookEventsCollection <- function(id,
              fields = e.fields,
              n = n,
              metadata = metadata, 
-             .progress = .progress))
+             .progress = .progress,
+             stop.condition = stop.condition))
 }

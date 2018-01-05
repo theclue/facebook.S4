@@ -100,7 +100,8 @@ FacebookUsersCollection <- function(id,
                                                "picture.fields(url).type(large)"),
                                     n = getOption("facebook.maxitems"),
                                     metadata = FALSE,
-                                    .progress = create_progress_bar()){
+                                    .progress = create_progress_bar(),
+                                    stop.condition = function(x){ FALSE }){
   
   if(length(fields)==0 | all(nchar(fields)==0)){
     message("You've specified no fields. Only the ID will be pulled into the collection.")
@@ -120,12 +121,28 @@ FacebookUsersCollection <- function(id,
 
   if(is(id, "FacebookUsersCollection")){
     friends.fields <- paste0("friends.fields(", paste0(fields, collapse=",", sep=""), ").limit(", real.n , ").summary(true)", sep="")
-    return(new("FacebookUsersCollection", id = id, token = token, parameters = parameters, fields = friends.fields, n = n, metadata = metadata, .progress = .progress))
+    return(new("FacebookUsersCollection",
+               id = id,
+               token = token,
+               parameters = parameters,
+               fields = friends.fields,
+               n = n,
+               metadata = metadata,
+               .progress = .progress,
+               stop.condition = stop.condition))
   }
   
   if(is(id, "FacebookGroupsCollection")){
     friends.fields <- paste0("members.fields(", paste0(fields, collapse=",", sep=""), ").limit(", real.n , ").summary(true)", sep="")
-    return(new("FacebookUsersCollection", id = id, token = token, parameters = parameters, fields = friends.fields, n = n, metadata = metadata, .progress = .progress))
+    return(new("FacebookUsersCollection",
+               id = id,
+               token = token,
+               parameters = parameters,
+               fields = friends.fields,
+               n = n,
+               metadata = metadata,
+               .progress = .progress,
+               stop.condition = stop.condition))
   }
   
   
@@ -142,7 +159,8 @@ FacebookUsersCollection <- function(id,
                       parameters = parameters,
                       fields = "id",
                       n = n,
-                      metadata = TRUE)
+                      metadata = TRUE,
+                      stop.condition = stop.condition)
 
       users <- new("FacebookUsersCollection",
                    id = unique(users.id[which(users.id@type=="user")]@id),
@@ -151,7 +169,8 @@ FacebookUsersCollection <- function(id,
                    fields = e.fields,
                    n = n,
                    metadata = metadata,
-                   .progress = .progress)
+                   .progress = .progress,
+                   stop.condition = stop.condition)
       
       users@parent.collection <- id
       return(users)
@@ -170,5 +189,6 @@ FacebookUsersCollection <- function(id,
              parameters = parameters,
              fields = e.fields,
              metadata = metadata,
-             .progress = .progress))
+             .progress = .progress,
+             stop.condition = stop.condition))
 }

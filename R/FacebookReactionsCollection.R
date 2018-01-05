@@ -97,7 +97,8 @@ FacebookReactionsCollection <- function(id,
                                     fields = c("id", "name", "type", "profile_type"),
                                     n = getOption("facebook.maxitems"),
                                     metadata = FALSE,
-                                    .progress = create_progress_bar()){
+                                    .progress = create_progress_bar(),
+                                    stop.condition = function(x){ FALSE }){
   
   if(length(fields)==0){
     message("You've specified no fields. Only the ID will be pulled into the collection.")
@@ -115,14 +116,15 @@ FacebookReactionsCollection <- function(id,
   
   if(is(id, "FacebookPostsCollection") | is(id, "FacebookCommentsCollection")| is(id, "FacebookAlbumsCollection") | is(id, "FacebookPhotosCollection") | is(id, "FacebookVideosCollection")){
     reactions.fields <- paste0("reactions.fields(", paste0(fields, collapse=",", sep=""), ").limit(", real.n , ").summary(true)", sep="")
-    return(new("FacebookLikesCollection",
+    return(new("FacebookReactionsCollection",
                id = id,
                token = token,
                parameters = parameters,
                fields = reactions.fields,
                n = n,
                metadata = metadata,
-               .progress = .progress))
+               .progress = .progress,
+               stop.condition = stop.condition))
   }
   
   stop(paste0("you cannot build a reactions collection starting from a ", class(id), "."))

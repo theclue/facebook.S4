@@ -7,7 +7,8 @@
 FacebookPagesCollection(id, token = NULL, parameters = list(),
   fields = c("id", "username", "name", "about", "category", "description",
   "fan_count", "link", "talking_about_count"), metadata = FALSE,
-  .progress = create_progress_bar())
+  .progress = create_progress_bar(), stop.condition = function(x) {    
+  FALSE })
 }
 \arguments{
 \item{id}{A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any 
@@ -32,6 +33,10 @@ slow down the execution time, as more queries are needed.}
 
 \item{.progress}{progress_bar object as defined in the plyr package.
 By default the \code{none} progress bar is used, which prints nothing to the console. See \link[plyr]{create_progress_bar} for details.}
+
+\item{stop.condition}{anonymous function that is executed for each element of the collection, passed to the function as a list called 'x'. If the function returns
+\code{TRUE}, the execution of the query will end up at the end of the current page (even if more pages of data are available). By default, this function will
+always return \code{FALSE}.}
 }
 \value{
 A collection of pages in a \code{\link{FacebookPagesCollection-class}} object.

@@ -80,7 +80,8 @@ FacebookAlbumsCollection <- function(id,
                                                "count"),
                                     n = getOption("facebook.maxitems"),
                                     metadata = FALSE,
-                                    .progress = create_progress_bar()){
+                                    .progress = create_progress_bar(),
+                                    stop.condition = function(x){ FALSE }){
   
   if(length(fields)==0){
     message("You've specified no fields. Only the ID will be pulled into the collection.")
@@ -98,7 +99,8 @@ FacebookAlbumsCollection <- function(id,
                      fields = paste0("albums.fields(", e.fields, ")"),
                      n = n,
                      metadata = FALSE,
-                     .progress = .progress)
+                     .progress = .progress,
+                     stop.condition = stop.condition)
     
     if(metadata){
       the.albums <-  new("FacebookMixedCollection",
@@ -107,7 +109,8 @@ FacebookAlbumsCollection <- function(id,
                         parameters = parameters,
                         fields = "id",
                         n = n,
-                        metadata = TRUE)
+                        metadata = TRUE,
+                        stop.condition = stop.condition)
 
       albums.idx@type <- join(data.frame(id=albums.idx@id, 
                                         stringsAsFactors = FALSE),
@@ -133,5 +136,6 @@ FacebookAlbumsCollection <- function(id,
              fields = e.fields,
              n = n,
              metadata = metadata,
-             .progress = .progress))
+             .progress = .progress,
+             stop.condition = stop.condition))
 }
