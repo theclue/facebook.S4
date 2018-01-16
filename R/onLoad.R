@@ -1,7 +1,7 @@
 .onLoad <- function(libname, pkgname) {
   op <- options()
   op.facebook <- list(
-    facebook.api = "2.5",
+    facebook.api = "v2.10",
     facebook.maxitems = 500,
     facebook.verbose = FALSE,
     facebook.pagination = 25
