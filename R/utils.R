@@ -104,7 +104,7 @@ parseFbList <- function(
                             )
     )
     url <- paste0(
-      "https://graph.facebook.com/v", getOption("facebook.api"), "/",
+      "https://graph.facebook.com/", getOption("facebook.api"), "/",
       "?metadata=0",
       "&ids=", paste0(elements.v, collapse=","),
       ifelse(length(parameters), paste0("&", query.parameters), ""),

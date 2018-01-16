@@ -53,7 +53,7 @@ facebook.current.accounts <- function(token,
   })(n, getOption("facebook.pagination"))
   
   query <- paste0(
-    "https://graph.facebook.com/v", getOption("facebook.api"), "/me/accounts?fields=id")
+    "https://graph.facebook.com/", getOption("facebook.api"), "/me/accounts?fields=id")
   
   if(getOption("facebook.verbose")) message("Query URL: ", query)
   

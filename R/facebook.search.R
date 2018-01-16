@@ -60,7 +60,7 @@ facebook.search <- function(query,
   )
 all.results <- do.call(c,lapply(type, function(t) { 
   query <- paste0(
-    "https://graph.facebook.com/v", getOption("facebook.api"), "/search",
+    "https://graph.facebook.com/", getOption("facebook.api"), "/search",
     "?q=", paste0(query, collapse = " "),
     ifelse(length(parameters), paste0("&", query.parameters), ""),
     "&type=", t,
