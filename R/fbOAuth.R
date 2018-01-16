@@ -95,6 +95,10 @@ fbOAuth <- function(app_id, app_secret, permissions="public_profile,user_friends
       message("Authentication successful. Queries will be performed using the access_token included into the OAuth Token due to recent changes in FB policy.")
       class(fb_oauth)[4] <- second.try$headers$`facebook-api-version`
       class(fb_oauth)[5] <- "NonStandardToken"
+      if(is.null(getOption("facebook.api")){
+        message(paste("Since you have not specified the Facebook API version to use, queries will be sent using the latest Facebook default (", class(fb_oauth)[4], ")", sep="")) 
+        options("facebook.api" = class(fb_oauth)[4])
+      }
     } else {
       stop(paste0(second.try$headers$`WWW-Authenticate`, collapse = " - "))
     }
