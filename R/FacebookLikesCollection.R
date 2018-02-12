@@ -90,6 +90,7 @@
 #'
 #' @family Facebook Collection Constructors
 #' @importFrom plyr create_progress_bar progress_none
+#' @importFrom futile.logger flog.warn
 FacebookLikesCollection <- function(id, 
                                     token = NULL, 
                                     parameters = list(), 
@@ -100,7 +101,7 @@ FacebookLikesCollection <- function(id,
                                     stop.condition = function(x){ FALSE }){
   
   if(length(fields)==0){
-    message("You've specified no fields. Only the ID will be pulled into the collection.")
+    flog.warn("You've specified no fields. Only the ID will be pulled into the collection.")
     fields <- "id"
   }
   

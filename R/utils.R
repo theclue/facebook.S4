@@ -58,6 +58,8 @@ parse.input.fields <- function(fields){
   )
 }
 
+#' @importFrom futile.logger flog.trace
+#' @importFrom futile.logger flog.info
 parseFbList <- function(
   id,
   token,
@@ -66,7 +68,7 @@ parseFbList <- function(
   
   token <- (function(){ 
     if(is.null(token) & is(id, "FacebookGenericCollection")){
-      if(getOption("facebook.verbose")) message("No token specified. The token of the input collection will be used.")
+      if(getOption("facebook.verbose")) flog.info("No token specified. The token of the input collection will be used.")
       return(id@token)
     } else return(token)
   })()
@@ -111,7 +113,7 @@ parseFbList <- function(
       ifelse(length(fields), paste("&fields", parsed$url, sep="="), "")
     )
     
-    if(getOption("facebook.verbose")) message("Query URL: ", url)
+    flog.trace("FB GraphAPI GET URL: %s", url)
     
     content <- callAPI(url=url, token=token)
     

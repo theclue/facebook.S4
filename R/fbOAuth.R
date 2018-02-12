@@ -72,6 +72,7 @@
 #'
 #' @importFrom httr oauth_endpoints oauth_app oauth2.0_token GET
 #' @importFrom rjson fromJSON
+#' @importFrom futile.logger flog.info
 fbOAuth <- function(app_id, app_secret, permissions="public_profile,user_friends", cache=TRUE)
 {
   
@@ -86,17 +87,17 @@ fbOAuth <- function(app_id, app_secret, permissions="public_profile,user_friends
   first.try  <- GET("https://graph.facebook.com/me", config(token=fb_oauth))
   
   if (first.try$status==200){
-    message("Authentication successful. You can query the FB Graph API using the OAuth token provided.")
+    flog.info("Authentication successful. You can query the FB Graph API using the OAuth token provided.")
     class(fb_oauth)[4] <- first.try$headers$`facebook-api-version`
     class(fb_oauth)[5] <- "StandardToken"
   } else {
     second.try <- GET(paste0("https://graph.facebook.com/me?access_token=", (fromJSON(names(fb_oauth$credentials)))$access_token))
     if (second.try$status==200){
-      message("Authentication successful. Queries will be performed using the access_token included into the OAuth Token due to recent changes in FB policy.")
+      flog.info("Authentication successful. Queries will be performed using the access_token included into the OAuth Token due to recent changes in FB policy.")
       class(fb_oauth)[4] <- second.try$headers$`facebook-api-version`
       class(fb_oauth)[5] <- "NonStandardToken"
       if(is.null(getOption("facebook.api"))){
-        message(paste("Since you have not specified the Facebook API version to use, queries will be sent using the latest Facebook default (", class(fb_oauth)[4], ")", sep="")) 
+        flog.info(paste("Since you have not specified the Facebook API version to use, queries will be sent using the latest Facebook default (", class(fb_oauth)[4], ")", sep="")) 
         options("facebook.api" = class(fb_oauth)[4])
       }
     } else {

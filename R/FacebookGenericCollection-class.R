@@ -26,6 +26,7 @@
 #' @keywords internal
 #' @importFrom utils URLencode
 #' @importFrom plyr create_progress_bar progress_none
+#' @importFrom futile.logger flog.trace
 setClass("FacebookGenericCollection",
          slots = c(id = "ANY",
                    fields = "character",
@@ -55,7 +56,7 @@ setMethod("initialize",
             
             token <- (function(){ 
               if(is.null(token) & is(id, "FacebookGenericCollection")){
-                if(getOption("facebook.verbose")) message("No token specified. The token of the input collection will be used instead.")
+                flog.info("No token specified. The token of the input collection will be used instead.")
                 return(id@token)
               } else return(token)
             })()
@@ -137,7 +138,7 @@ setMethod("initialize",
                 ifelse(length(fields), paste("&fields", parsed$url, sep="="), "")
               )
               
-              if(getOption("facebook.verbose")) message("Query URL: ", url)
+              flog.trace("FB GraphAPI GET URL: %s", url)
               
               content <- callAPI(url=URLencode(url), token=token)
               

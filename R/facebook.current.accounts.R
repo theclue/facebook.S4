@@ -39,6 +39,7 @@
 #'	
 #' }
 #'
+#' @importFrom futile.logger flog.trace
 facebook.current.accounts <- function(token,
                                       parameters = list(),
                                       n = getOption("facebook.maxitems")){
@@ -55,7 +56,7 @@ facebook.current.accounts <- function(token,
   query <- paste0(
     "https://graph.facebook.com/", getOption("facebook.api"), "/me/accounts?fields=id")
   
-  if(getOption("facebook.verbose")) message("Query URL: ", query)
+  flog.trace("FB GraphAPI GET URL: %s", query)
   
   # Pagination using a lambda function
   accounts.idx  <- (function() {

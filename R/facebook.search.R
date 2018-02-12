@@ -41,6 +41,7 @@
 #'	pages <- facebook.search(query="cats", type="page", token=fb_oauth, n=100)
 #' }
 #'
+#' @importFrom futile.logger flog.trace
 facebook.search <- function(query,
                             token,
                             parameters = list(),
@@ -67,7 +68,7 @@ all.results <- do.call(c,lapply(type, function(t) {
     "&limit=", n,
     "&fields=id")
   
-  if(getOption("facebook.verbose")) message("Query URL: ", query)
+  flog.trace("FB GraphAPI GET URL: %s", query)
   
   # Pagination using a lambda function
   all.Pages  <- (function() {
