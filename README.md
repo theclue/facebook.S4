@@ -43,7 +43,7 @@ While the set of Finders is very far to be considered as complete, the set of Co
 
 Before using this application, you need to build a Facebook application to authenticate `facebook.S4` against.
 
-Since the procedure was covered many times, I'm not going to reinvent the wheel here. This tutorial
+Since the procedure was covered many times, I'm not going to reinvent the wheel here. [This tutorial](https://github.com/pablobarbera/Rfacebook/wiki/How-to-get-started-with-RFacebook) will definitively help you, as facebook.S4 inherits the OAuth model from that package.
 
 ## Chaining a request
 
