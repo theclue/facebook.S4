@@ -22,7 +22,7 @@ Using facebook.S4 for a paper you are writing? Consider citing it.
 
 ### Ask a question ⁉️
 
-Using our_package and got stuck? Browse the [Wiki](https://github.com/theclue/facebook.S4) to see if you can find a solution. Still stuck? Post your question as an (issue on GitHub][https://github.com/our_org/our_package/issues/new). While we cannot guarantee user support, we'll try to do our best to address it, as questions often lead to better documentation or the discovery of bugs.
+Using our_package and got stuck? Browse the [Wiki](https://github.com/theclue/facebook.S4) to see if you can find a solution. Still stuck? Post your question as an [issue on GitHub](https://github.com/our_org/our_package/issues/new). While we cannot guarantee user support, we'll try to do our best to address it, as questions often lead to better documentation or the discovery of bugs.
 
 Want to ask a question in private? Contact the package maintainer on [https://gabrielebaldassarre.com][his website].
 
