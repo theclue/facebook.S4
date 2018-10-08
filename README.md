@@ -24,7 +24,7 @@ There are two ways of making authenticated requests with `facebook.S4`. One opti
 
     library(facebook.S4)
     # token generated here: https://developers.facebook.com/tools/explorer 
-    token <- "XXXXXXXXXXXXXX"
+    fb_token <- "XXXXXXXXXXXXXX"
 
 It is possible to generate a 'long-lived' token (valid for two months) using the fbOAuth function, but the process is a bit longer. For a step-by-step tutorial, check this [setup tutorial](http://thinktostart.com/analyzing-facebook-with-r/).
 
@@ -52,7 +52,7 @@ Almost all the Collections support chaining. It means, you can pass a collection
     # Assuming fb_token is valid
     
     # First, we build the collection of pages. Since we're not interested in pages, we download no fields for pages
-    fb.pages <- FacebookPagesCollection(id = c("9thcirclegames", "linuspage", fb_token, fields = "")
+    fb.pages <- FacebookPagesCollection(id = c("9thcirclegames", "linuspage", fb_token, fields = ""))
     
     # Then, we pull out the last 20 posts for each page. Again, no fields here
     # When you pass another collection as source parameter, you can omit the token
