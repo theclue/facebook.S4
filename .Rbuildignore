@@ -1,8 +1,9 @@
+^facebook\.Rproj$
+^\.Rproj\.user$
 ^Makefile$
 appveyor.yml
 man-roxygen
 ^.*\.Rproj$
-^\.Rproj\.user$
 inst/img
 inst/ignore
 vignettes/margins.sty

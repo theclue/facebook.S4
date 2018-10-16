@@ -70,4 +70,4 @@ Collate:
     'formatFbDate.R'
     'onAttach.R'
     'onLoad.R'
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0

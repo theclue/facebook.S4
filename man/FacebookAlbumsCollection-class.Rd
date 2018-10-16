@@ -49,3 +49,4 @@ Other Facebook Collections: \code{\link{FacebookCommentsCollection-class}},
 \author{
 Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
+\concept{Facebook Collections}

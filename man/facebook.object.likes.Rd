@@ -5,7 +5,8 @@
 \title{Pull all the public likes of Facebook users or pages}
 \usage{
 facebook.object.likes(id, token = NULL, parameters = list(),
-  n = getOption("facebook.maxitems"), .progress = create_progress_bar())
+  n = getOption("facebook.maxitems"),
+  .progress = create_progress_bar())
 }
 \arguments{
 \item{id}{An existing \code{\link{FacebookUsersCollection}} or \code{\link{FacebookPagesCollection}}}

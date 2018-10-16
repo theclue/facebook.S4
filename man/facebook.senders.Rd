@@ -5,7 +5,8 @@
 \title{Pull the list of senders from a set of inbox conversations}
 \usage{
 facebook.senders(id, token = NULL, parameters = list(),
-  n = getOption("facebook.maxitems"), .progress = create_progress_bar())
+  n = getOption("facebook.maxitems"),
+  .progress = create_progress_bar())
 }
 \arguments{
 \item{id}{An existing \code{\link{FacebookConversationsCollection}}.}
@@ -64,3 +65,4 @@ Other FacebookFinders: \code{\link{facebook.participants}}
 \author{
 Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
+\concept{FacebookFinders}
