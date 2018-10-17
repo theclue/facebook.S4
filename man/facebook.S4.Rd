@@ -4,7 +4,6 @@
 \name{facebook.S4}
 \alias{facebook.S4}
 \alias{facebook.S4-package}
-\alias{facebook.S4-package}
 \title{Access to Facebook API v2 via R}
 \description{
 This package provides a series of functions that allow R users

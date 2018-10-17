@@ -5,10 +5,10 @@
 \title{Build a collection of Facebook pages}
 \usage{
 FacebookPagesCollection(id, token = NULL, parameters = list(),
-  fields = c("id", "username", "name", "about", "category", "description",
-  "fan_count", "link", "talking_about_count"), metadata = FALSE,
-  .progress = create_progress_bar(), stop.condition = function(x) {    
-  FALSE })
+  fields = c("id", "username", "name", "about", "category",
+  "description", "fan_count", "link", "talking_about_count"),
+  metadata = FALSE, .progress = create_progress_bar(),
+  stop.condition = function(x) {     FALSE })
 }
 \arguments{
 \item{id}{A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any 
@@ -118,3 +118,4 @@ Other Facebook Collection Constructors: \code{\link{FacebookAlbumsCollection}},
 \author{
 Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
+\concept{Facebook Collection Constructors}

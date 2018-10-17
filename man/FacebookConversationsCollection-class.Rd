@@ -46,3 +46,4 @@ Other Facebook Collections: \code{\link{FacebookAlbumsCollection-class}},
 \author{
 Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
+\concept{Facebook Collections}

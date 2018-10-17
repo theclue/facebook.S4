@@ -137,3 +137,4 @@ Other Facebook Collection Constructors: \code{\link{FacebookAlbumsCollection}},
 \author{
 Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
+\concept{Facebook Collection Constructors}

@@ -6,9 +6,10 @@
 \usage{
 FacebookVideosCollection(id, token = NULL, parameters = list(),
   fields = c("id", "from.fields(id,name)", "source", "length",
-  "content_category", "created_time"), n = getOption("facebook.maxitems"),
-  metadata = FALSE, .progress = create_progress_bar(),
-  stop.condition = function(x) {     FALSE })
+  "content_category", "created_time"),
+  n = getOption("facebook.maxitems"), metadata = FALSE,
+  .progress = create_progress_bar(), stop.condition = function(x) {    
+  FALSE })
 }
 \arguments{
 \item{id}{A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any 
@@ -98,3 +99,4 @@ Other Facebook Collection Constructors: \code{\link{FacebookAlbumsCollection}},
 \author{
 Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
+\concept{Facebook Collection Constructors}

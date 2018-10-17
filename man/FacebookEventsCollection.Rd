@@ -7,9 +7,10 @@
 FacebookEventsCollection(id, token = NULL, parameters = list(),
   fields = c("id", "owner.fields(id,name)", "category", "description",
   "end_time", "attending_count", "declined_count", "maybe_count",
-  "noreply_count", "interested_count"), n = getOption("facebook.maxitems"),
-  metadata = FALSE, .progress = create_progress_bar(),
-  stop.condition = function(x) {     FALSE })
+  "noreply_count", "interested_count"),
+  n = getOption("facebook.maxitems"), metadata = FALSE,
+  .progress = create_progress_bar(), stop.condition = function(x) {    
+  FALSE })
 }
 \arguments{
 \item{id}{A character vector or a comma-delimited string of IDs or an existing Facebook Collection of any 
@@ -115,3 +116,4 @@ Other Facebook Collection Constructors: \code{\link{FacebookAlbumsCollection}},
 \author{
 Gabriele Baldassarre \url{https://gabrielebaldassarre.com}
 }
+\concept{Facebook Collection Constructors}
